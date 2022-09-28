@@ -2,7 +2,10 @@ import React from 'react'
 
 function Homepage() {
   return (
-    <div>Homepage</div>
+    <>
+        <div>Homepage</div>
+        <a href="/signup">Sign Up</a>
+    </>
   )
 }
 

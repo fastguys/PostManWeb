@@ -1,8 +1,8 @@
 import React from "react";
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
 
-import Homepage from './Homepage';
-import SignUp from "./SignUp";
+import Homepage from './components/Homepage';
+import SignUp from "./components/SignUp";
 
 
 
