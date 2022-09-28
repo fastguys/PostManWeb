@@ -11,8 +11,8 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { auth } from "../firebase"
+import {createTheme, ThemeProvider} from '@mui/material/styles';
+import {auth} from "../firebase"
 
 function Copyright(props) {
     return (
@@ -37,15 +37,25 @@ export default function SignUp() {
             email: data.get('email'),
             password: data.get('password'),
         });
-        const email = data.get('email')
-        const password = data.get('password')
+        let email = data.get('email')
+        let password = data.get('password')
         auth.createUserWithEmailAndPassword(email, password)
+            .then((userCredential) => {
+                // Signed in
+                const user = userCredential.user;
+                // ...
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                // ..
+            });
     };
 
     return (
         <ThemeProvider theme={theme}>
             <Container component="main" maxWidth="xs">
-                <CssBaseline />
+                <CssBaseline/>
                 <Box
                     sx={{
                         marginTop: 8,
@@ -54,13 +64,13 @@ export default function SignUp() {
                         alignItems: 'center',
                     }}
                 >
-                    <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                        <LockOutlinedIcon />
+                    <Avatar sx={{m: 1, bgcolor: 'secondary.main'}}>
+                        <LockOutlinedIcon/>
                     </Avatar>
                     <Typography component="h1" variant="h5">
                         Sign up
                     </Typography>
-                    <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+                    <Box component="form" noValidate onSubmit={handleSubmit} sx={{mt: 3}}>
                         <Grid container spacing={2}>
                             <Grid item xs={12} sm={6}>
                                 <TextField
@@ -87,6 +97,16 @@ export default function SignUp() {
                                 <TextField
                                     required
                                     fullWidth
+                                    id="phone_number"
+                                    label="Phone number"
+                                    name="phone_number"
+                                    autoComplete="tel"
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    required
+                                    fullWidth
                                     id="email"
                                     label="Email Address"
                                     name="email"
@@ -106,7 +126,7 @@ export default function SignUp() {
                             </Grid>
                             <Grid item xs={12}>
                                 <FormControlLabel
-                                    control={<Checkbox value="allowExtraEmails" color="primary" />}
+                                    control={<Checkbox value="allowExtraEmails" color="primary"/>}
                                     label="I want to receive inspiration, marketing promotions and updates via email."
                                 />
                             </Grid>
@@ -115,7 +135,7 @@ export default function SignUp() {
                             type="submit"
                             fullWidth
                             variant="contained"
-                            sx={{ mt: 3, mb: 2 }}
+                            sx={{mt: 3, mb: 2}}
                         >
                             Sign Up
                         </Button>
@@ -128,7 +148,7 @@ export default function SignUp() {
                         </Grid>
                     </Box>
                 </Box>
-                <Copyright sx={{ mt: 5 }} />
+                <Copyright sx={{mt: 5}}/>
             </Container>
         </ThemeProvider>
     );
