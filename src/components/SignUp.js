@@ -1,5 +1,4 @@
 import React from "react"
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -13,6 +12,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
 import {auth} from "../firebase"
+import {SvgIcon} from "@mui/material";
+
 
 function Copyright(props) {
     return (
@@ -64,9 +65,8 @@ export default function SignUp() {
                         alignItems: 'center',
                     }}
                 >
-                    <Avatar sx={{m: 1, bgcolor: 'secondary.main'}}>
-                        <LockOutlinedIcon/>
-                    </Avatar>
+
+                    <img src={'/logo.svg'} alt="logo" style={{width:200, height:185}}/>
                     <Typography component="h1" variant="h5">
                         Sign up
                     </Typography>
