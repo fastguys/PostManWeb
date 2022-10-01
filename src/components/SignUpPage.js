@@ -11,6 +11,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
 import {auth} from "../firebase"
+import ResponsiveAppBar from "./TopBar";
 
 
 function Copyright(props) {
@@ -56,7 +57,7 @@ export default function SignUp() {
     
     return (
         <ThemeProvider theme={theme}>
-            <Container component="main" maxWidth="xs">
+            <Container component="main" maxWidth="sm">
                 <CssBaseline/>
                 <Box
                     sx={{
@@ -66,7 +67,7 @@ export default function SignUp() {
                         alignItems: 'center',
                     }}
                 >
-
+                    <ResponsiveAppBar />
                     <img src={'/logo.svg'} alt="logo" style={{width:200, height:185}}/>
                     <Typography component="h1" variant="h5">
                         Sign up

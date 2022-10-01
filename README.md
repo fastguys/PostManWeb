@@ -1,70 +1,90 @@
-# Getting Started with Create React App
+﻿
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
 
-In the project directory, you can run:
+![](asset/Aspose.Words.d7711270-4d70-4f6d-b2cc-9a3e68c52b11.001.png)
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+![](asset/Aspose.Words.d7711270-4d70-4f6d-b2cc-9a3e68c52b11.002.png)Tianyi Liu
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+![](asset/Aspose.Words.d7711270-4d70-4f6d-b2cc-9a3e68c52b11.003.png)Yiting An
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+![](asset/Aspose.Words.d7711270-4d70-4f6d-b2cc-9a3e68c52b11.004.png)Chengxiang Wu
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+![](asset/Aspose.Words.d7711270-4d70-4f6d-b2cc-9a3e68c52b11.004.png)Nanyi Jiang
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+![](asset/Aspose.Words.d7711270-4d70-4f6d-b2cc-9a3e68c52b11.005.png)Bingxuan Li
 
-## Learn More
+![](asset/Aspose.Words.d7711270-4d70-4f6d-b2cc-9a3e68c52b11.006.png)Zhuowen Fang
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+**Purpose**
 
-### Code Splitting
+With the fast-paced lifestyle people seem to follow, there appears to be no time to take a break. Slowing down is equivalent to going backward. Imagine that you may forget to buy flowers when you're rushing to a date, or you may find that you've forgotten to bring the PowerPoint presentation you loaded onto your USB drive when you get to the office. Thus, the demand for lightning-fast and convenient delivery services for all kinds of items is high and growing. Once it gathers attention, its popularity can spread far and wide. 
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+In order to tackle this dilemma, our App, PostMan, which can find a delivery person nearby to run errands with only a few taps on the phone screen, would come in handy. PostMan is a task-based product where users can post tasks to deliver items to friends/partners by delivery people as soon as possible or pick up items for them from grocery stores, convenience stores, residential addresses, and more in the surrounding area. Our product features real-time tracking by means of which users can easily track their items on an embedded map as it is on the way. From delivery time to traffic, we’ve factored in all the elements that come between users and their items. See the estimated delivery time to your address. Get notified when the items arrive. While users are spending more time doing the things more important, we’ll take care of the rest. 
 
-### Analyzing the Bundle Size
+Meanwhile, we hope our App will build stronger communities where people are connected with the best in their cities. We fulfill this by optimizing a cutting-edge person-to-person delivery App so as to generate new ways for people to earn, work and live. 
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+**UI Mockup**
 
-### Making a Progressive Web App
+![](asset/Aspose.Words.d7711270-4d70-4f6d-b2cc-9a3e68c52b11.007.png)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+This is the Homepage when we open our web. Left part is a showpiece of our web, briefly showing our web function. Right part is the login part, it allows users to login with their username and password or use an external account such as Microsoft, Google, Apple and Github. The user can also reset the password by clicking the reset password message and get an email to get the instructions. 
 
-### Advanced Configuration
+![](asset/Aspose.Words.d7711270-4d70-4f6d-b2cc-9a3e68c52b11.007.png)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+If we click the SIGN UP button on the home page, this register page will show up and allow users to sign up with their basic user name, password, telephone and email.
 
-### Deployment
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+![](asset/Aspose.Words.d7711270-4d70-4f6d-b2cc-9a3e68c52b11.008.png)
 
-### `npm run build` fails to minify
+This is the main page for the TaskTaker after they logged in. Users can view the existing tasks which appear at the right-hand side of the page. There are two buttons on each task, one is the take button and the other is the like button. Users can click the take button to accept this task and click the like button to add them to the user's favorites. Users can also enter their current address into the text field on the left-hand side. The task list will transform into a sorted distance-related order based on the address entered by the user and the map will also focus on the address users entered.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+![](asset/Aspose.Words.d7711270-4d70-4f6d-b2cc-9a3e68c52b11.009.png)
+
+This is the detail page after the user clicks one of the task lists. The map will focus on the address that the chosen task provided, and the description will show up under the chosen task.
+
+
+![](asset/Aspose.Words.d7711270-4d70-4f6d-b2cc-9a3e68c52b11.010.png)
+
+Users can click the topple on the top right of the page so that the page will change to the TaskPoster page. Users can post a task with a task name, task description, name, address, and telephone. 
+
+
+![](asset/Aspose.Words.d7711270-4d70-4f6d-b2cc-9a3e68c52b11.011.png)
+
+This page will appear when TaskPoster successfully posts a task, it will show the status, time remaining, and the confirmation code. Code will show up when a TaskTaker takes the task. Also, TaskPoster can cancel the task before someone takes the task. What is more, TaskPoster can also chat with the task taker after the task is taken.
+
+![](asset/Aspose.Words.d7711270-4d70-4f6d-b2cc-9a3e68c52b11.007.png)
+
+This page appears when a TaskPoster successfully posts a task, it will show the status, remaining time, and the confirmation code used for the confirmation when the task taker completes the task. Also, Task Poster can click the button under the code to chat with the task taker.
+
+
+![](asset/Aspose.Words.d7711270-4d70-4f6d-b2cc-9a3e68c52b11.012.png)
+
+This page appears when the TaskTaker takes a task, it will show the status, time remaining, and need to enter the code to finish the task. Code can be confirmed when the taker arrived and talked with the task poster.
+
+
+
+![](asset/Aspose.Words.d7711270-4d70-4f6d-b2cc-9a3e68c52b11.013.png)
+
+After a task taker takes the task, an option will be shown to both the task taker and task poster so that they will be directed to this page. You can chat with the other users, and you can see what chat your sent before.
+
+
+
+
+
+
+
+![](asset/Aspose.Words.d7711270-4d70-4f6d-b2cc-9a3e68c52b11.007.png)
+
+This page will display the user’s information, including the user profile picture, user name, user rating, user description, the tasks they have posted, and the history tasks. Users can delete their account, and change their profile picture on this page.
