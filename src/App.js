@@ -1,8 +1,8 @@
 import React from "react";
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
 
-import Homepage from './components/Homepage';
-import SignUp from "./components/SignUpPage";
+import LoginPage from './LoginPage';
+import SignUpPage from "./SignupPage/SignUpPage";
 
 
 
@@ -11,8 +11,8 @@ function App() {
     <div>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Homepage />} />
-          <Route path="/signup" element={<SignUp />} />
+          <Route path="/" element={<LoginPage />} />
+          <Route path="/signup" element={<SignUpPage />} />
         </Routes>
       </BrowserRouter>
     </div>
