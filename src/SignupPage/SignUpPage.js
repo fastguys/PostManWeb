@@ -11,6 +11,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
 import {auth} from "../firebase"
+import { SystemSecurityUpdate } from "@mui/icons-material";
 
 
 
@@ -36,22 +37,53 @@ export default function SignUp() {
         console.log({
             email: data.get('email'),
             password: data.get('password'),
+            phone_number: data.get('phone_number'),
+            firstName: data.get('firstName'),
+            lastName: data.get('lastName')
         });
         let email = data.get('email')
         let password = data.get('password')
+        let phone_number = data.get('phone_number')
+        let firstName = data.get('firstName')
+        let lastName = data.get('lastName')
+        let isnum = /^\d+$/.test(phone_number);
+
+        if(email.length == 0 || !email.includes("@")) {
+            alert("Invalid Email Input");
+        }
+        else if(firstName.length == 0 || lastName.length == 0) {
+            alert("Invalid Name Input");
+        }
+        else if (isnum == false) {
+            alert("Invalid Phone number")
+        }
+        else{
         auth.createUserWithEmailAndPassword(email, password)
             .then((userCredential) => {
                 // Signed in
                 const user = userCredential.user;
+                user.linkWithPhoneNumber(phone_number)
                 // ...
             })
             .catch((error) => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
+                alert(errorMessage)
+                if(errorMessage == "Firebase: The email address is already in use by another account. (auth/email-already-in-use)."){
+                    alert("Email Already in use by another account, try to log in instead")
+
+                }
+                else if (errorMessage.includes("email")) {
+                    alert("Invalid Email Input")
+                }
+                else if (errorMessage == "Firebase: Password should be at least 6 characters (auth/weak-password).") {
+                    alert("Invalid Password\nPassword should be at least 6 character!")
+                }
                 // ..
             });
+        }
     };
-
+  
     return (
         <ThemeProvider theme={theme}>
             <Container component="main" maxWidth="sm">
@@ -152,4 +184,5 @@ export default function SignUp() {
         </ThemeProvider>
     );
 }
+
 
