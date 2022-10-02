@@ -11,6 +11,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
 import {auth} from "../firebase"
+import { SystemSecurityUpdate } from "@mui/icons-material";
 
 
 
@@ -36,9 +37,22 @@ export default function SignUp() {
         console.log({
             email: data.get('email'),
             password: data.get('password'),
+            phone_number: data.get('phone_number'),
+            firstName: data.get('firstName'),
+            lastName: data.get('lastName')
         });
         let email = data.get('email')
         let password = data.get('password')
+        let phone_number = data.get('phone_number')
+        let firstName = data.get('firstName')
+        let lastName = data.get('lastName')
+
+        if(email.length == 0 || !email.includes("@")) {
+            alert("Invalid Email Input");
+        }
+        else if(firstName.length == 0 || lastName.length == 0) {
+            alert("Invalid Name Input");
+        }
         auth.createUserWithEmailAndPassword(email, password)
             .then((userCredential) => {
                 // Signed in
@@ -155,4 +169,5 @@ export default function SignUp() {
         </ThemeProvider>
     );
 }
+
 
