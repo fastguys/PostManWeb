@@ -41,6 +41,7 @@ export default function SignUp() {
             firstName: data.get('firstName'),
             lastName: data.get('lastName')
         });
+        
         let email = data.get('email')
         let password = data.get('password')
         let phone_number = data.get('phone_number')
