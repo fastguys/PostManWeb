@@ -46,12 +46,16 @@ export default function SignUp() {
         let phone_number = data.get('phone_number')
         let firstName = data.get('firstName')
         let lastName = data.get('lastName')
+        let isnum = /^\d+$/.test(phone_number);
 
         if(email.length == 0 || !email.includes("@")) {
             alert("Invalid Email Input");
         }
         else if(firstName.length == 0 || lastName.length == 0) {
             alert("Invalid Name Input");
+        }
+        else if (isnum == false) {
+            alert("Invalid Phone number")
         }
         else{
         auth.createUserWithEmailAndPassword(email, password)
@@ -64,20 +68,22 @@ export default function SignUp() {
             .catch((error) => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
+                alert(errorMessage)
                 if(errorMessage == "Firebase: The email address is already in use by another account. (auth/email-already-in-use)."){
                     alert("Email Already in use by another account, try to log in instead")
+
                 }
                 else if (errorMessage.includes("email")) {
                     alert("Invalid Email Input")
+                }
+                else if (errorMessage == "Firebase: Password should be at least 6 characters (auth/weak-password).") {
+                    alert("Invalid Password\nPassword should be at least 6 character!")
                 }
                 // ..
             });
         }
     };
   
-
-
-    
     return (
         <ThemeProvider theme={theme}>
             <Container component="main" maxWidth="sm">
