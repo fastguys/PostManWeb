@@ -53,17 +53,26 @@ export default function SignUp() {
         else if(firstName.length == 0 || lastName.length == 0) {
             alert("Invalid Name Input");
         }
+        else{
         auth.createUserWithEmailAndPassword(email, password)
             .then((userCredential) => {
                 // Signed in
                 const user = userCredential.user;
+                user.linkWithPhoneNumber(phone_number)
                 // ...
             })
             .catch((error) => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
+                if(errorMessage == "Firebase: The email address is already in use by another account. (auth/email-already-in-use)."){
+                    alert("Email Already in use by another account, try to log in instead")
+                }
+                else if (errorMessage.includes("email")) {
+                    alert("Invalid Email Input")
+                }
                 // ..
             });
+        }
     };
   
 
