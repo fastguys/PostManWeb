@@ -35,23 +35,24 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignUp() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-      phone_number: data.get("phone_number"),
-      firstName: data.get("firstName"),
-      lastName: data.get("lastName"),
-    });
-    let email = data.get("email");
-    let password = data.get("password");
-    let phone_number = data.get("phone_number");
-    let firstName = data.get("firstName");
-    let lastName = data.get("lastName");
-    let isnum = /^\d+$/.test(phone_number);
 
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        const data = new FormData(event.currentTarget);
+        console.log({
+            email: data.get('email'),
+            password: data.get('password'),
+            phone_number: data.get('phone_number'),
+            firstName: data.get('firstName'),
+            lastName: data.get('lastName')
+        });
+        
+        let email = data.get('email')
+        let password = data.get('password')
+        let phone_number = data.get('phone_number')
+        let firstName = data.get('firstName')
+        let lastName = data.get('lastName')
+        let isnum = /^\d+$/.test(phone_number);
     if (email.length == 0 || !email.includes("@")) {
       alert("Invalid Email Input");
     } else if (firstName.length == 0 || lastName.length == 0) {
