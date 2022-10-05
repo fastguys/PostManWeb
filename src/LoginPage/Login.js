@@ -1,4 +1,5 @@
 import React from "react";
+import { useState } from "react";
 import Button from "@mui/material/Button";
 
 import TextField from "@mui/material/TextField";
@@ -11,6 +12,7 @@ import Typography from "@mui/material/Typography";
 import { auth } from "../firebase";
 
 export default function Login() {
+  const [loginError, setLoginError] = useState(false);
   return (
     <div>
       <Box
@@ -27,6 +29,7 @@ export default function Login() {
         <TextField
           required
           fullWidth
+          error = {loginError}
           id="email"
           label="Email Address"
           name="email"
@@ -36,6 +39,8 @@ export default function Login() {
 
         <TextField
           required
+          error = {loginError}
+          helperText = {loginError ? "Incorrect email or password" : ""}
           fullWidth
           name="password"
           label="Password"
@@ -57,6 +62,9 @@ export default function Login() {
             type="submit"
             variant="contained"
             sx={{ mt: 3, mb: 2, mr: 2, width: 100 }}
+            onClick={() => {
+              setLoginError(!loginError);
+            }}
           >
             Login
           </Button>
