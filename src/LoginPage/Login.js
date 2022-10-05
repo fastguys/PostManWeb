@@ -73,6 +73,13 @@ export default function Login() {
         </Box>
 
         {/* Third party */}
+        <Box sx= {{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", mt: 2}}>
+          <Box sx={{width: 50, height: 50, mr: 5, backgroundColor: "#eaeaea"}}></Box>
+          <Box sx={{width: 50, height: 50, mr: 5, backgroundColor: "#eaeaea"}}></Box>
+          <Box sx={{width: 50, height: 50, backgroundColor: "#eaeaea"}}></Box>
+        </Box>
+
+
       </Box>
     </div>
   );
