@@ -20,7 +20,8 @@ export default function Login() {
           flexDirection: "column",
           alignItems: "center",
           padding: 2,
-          border: 1,
+          borderRadius: 2,
+          border: "1px solid #eaeaea",
         }}
       >
         <TextField
@@ -30,6 +31,7 @@ export default function Login() {
           label="Email Address"
           name="email"
           autoComplete="email"
+          sx={{ mt: 1, mb: 1 }}
         />
 
         <TextField
@@ -40,8 +42,10 @@ export default function Login() {
           type="password"
           id="password"
           autoComplete="new-password"
+          sx={{ mt: 1, mb: 1 }}
         />
 
+        {/* Buttons */}
         <Box
           sx={{
             display: "flex",
@@ -52,21 +56,23 @@ export default function Login() {
           <Button
             type="submit"
             variant="contained"
-            sx={{ mt: 3, mb: 2, mr: 2, width: 50 }}
+            sx={{ mt: 3, mb: 2, mr: 2, width: 100 }}
           >
             Login
           </Button>
+          
           <Link href="./signup">
             <Button
               type="submit"
-              fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ mt: 3, mb: 2 , width: 100}}
             >
               Sign Up
             </Button>
           </Link>
         </Box>
+
+        {/* Third party */}
       </Box>
     </div>
   );
