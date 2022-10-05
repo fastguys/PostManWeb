@@ -38,7 +38,9 @@ const LoginPage = () => {
             <Box sx={{ width: 700, height: 50, border: 1, mb: 5 }}>
               Enter address
             </Box>
-            <Box sx={{ width: 700, height: 400, border: 1 }} />
+            <Box sx={{ width: 700, height: 400, border: 1 }} >
+              Map
+            </Box>
           </Box>
 
           {/*Right part*/}
