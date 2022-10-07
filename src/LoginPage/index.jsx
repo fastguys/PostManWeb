@@ -53,7 +53,7 @@ const LoginPage = () => {
               alignItems: "center",
             }}
           >
-            <Box sx={{ width: 300, height: 600, padding: 10 }}>
+            <Box sx={{ width: 350, height: 600, padding: 10 }}>
               <Login />
             </Box>
           </Box>

@@ -61,7 +61,7 @@ export default function Login() {
           <Button
             type="submit"
             variant="contained"
-            sx={{ mt: 3, mb: 2, mr: 2, width: 100 }}
+            sx={{ mt: 3, mb: 2, mr: 2, width: 100, backgroundColor: "#656268" }}
             onClick={() => {
               setLoginError(!loginError);
             }}
@@ -69,11 +69,11 @@ export default function Login() {
             Login
           </Button>
           
-          <Link href="./signup">
+          <Link href="./signup" sx={{textDecoration: 'none' }}>
             <Button
               type="submit"
               variant="contained"
-              sx={{ mt: 3, mb: 2 , width: 100}}
+              sx={{ mt: 3, mb: 2 , width: 100, color: "#656268", backgroundColor:"#FFFFFF"}}
             >
               Sign Up
             </Button>
@@ -82,8 +82,9 @@ export default function Login() {
 
         {/* Third party */}
         <Box sx= {{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", mt: 2}}>
-          <Box sx={{width: 50, height: 50, mr: 5, backgroundColor: "#eaeaea"}}></Box>
-          <Box sx={{width: 50, height: 50, mr: 5, backgroundColor: "#eaeaea"}}></Box>
+          <Box sx={{width: 50, height: 50, mr: 3, backgroundColor: "#eaeaea"}}></Box>
+          <Box sx={{width: 50, height: 50, mr: 3, backgroundColor: "#eaeaea"}}></Box>
+          <Box sx={{width: 50, height: 50, mr: 3, backgroundColor: "#eaeaea"}}></Box>
           <Box sx={{width: 50, height: 50, backgroundColor: "#eaeaea"}}></Box>
         </Box>
 
