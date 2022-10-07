@@ -1,4 +1,5 @@
 import React from "react";
+import { useState } from "react";
 import Button from "@mui/material/Button";
 
 import TextField from "@mui/material/TextField";
@@ -11,6 +12,7 @@ import Typography from "@mui/material/Typography";
 import { auth } from "../firebase";
 
 export default function Login() {
+  const [loginError, setLoginError] = useState(false);
   return (
     <div>
       <Box
@@ -27,6 +29,7 @@ export default function Login() {
         <TextField
           required
           fullWidth
+          error = {loginError}
           id="email"
           label="Email Address"
           name="email"
@@ -36,6 +39,8 @@ export default function Login() {
 
         <TextField
           required
+          error = {loginError}
+          helperText = {loginError ? "Incorrect email or password" : ""}
           fullWidth
           name="password"
           label="Password"
@@ -56,16 +61,19 @@ export default function Login() {
           <Button
             type="submit"
             variant="contained"
-            sx={{ mt: 3, mb: 2, mr: 2, width: 100 }}
+            sx={{ mt: 3, mb: 2, mr: 2, width: 100, backgroundColor: "#656268" }}
+            onClick={() => {
+              setLoginError(!loginError);
+            }}
           >
             Login
           </Button>
           
-          <Link href="./signup">
+          <Link href="./signup" sx={{textDecoration: 'none' }}>
             <Button
               type="submit"
               variant="contained"
-              sx={{ mt: 3, mb: 2 , width: 100}}
+              sx={{ mt: 3, mb: 2 , width: 100, color: "#656268", backgroundColor:"#FFFFFF"}}
             >
               Sign Up
             </Button>
@@ -74,8 +82,9 @@ export default function Login() {
 
         {/* Third party */}
         <Box sx= {{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", mt: 2}}>
-          <Box sx={{width: 50, height: 50, mr: 5, backgroundColor: "#eaeaea"}}></Box>
-          <Box sx={{width: 50, height: 50, mr: 5, backgroundColor: "#eaeaea"}}></Box>
+          <Box sx={{width: 50, height: 50, mr: 3, backgroundColor: "#eaeaea"}}></Box>
+          <Box sx={{width: 50, height: 50, mr: 3, backgroundColor: "#eaeaea"}}></Box>
+          <Box sx={{width: 50, height: 50, mr: 3, backgroundColor: "#eaeaea"}}></Box>
           <Box sx={{width: 50, height: 50, backgroundColor: "#eaeaea"}}></Box>
         </Box>
 
