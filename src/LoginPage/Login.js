@@ -13,6 +13,10 @@ import { auth } from "../firebase";
 
 export default function Login() {
   const [loginError, setLoginError] = useState(false);
+  const handleSubmit = (e) => {
+    //要是输入的密码or用户名错，就set成true
+    setLoginError(true);
+  };
   return (
     <div>
       <Box
@@ -58,14 +62,14 @@ export default function Login() {
             alignItems: "center",
           }}
         >
-        <Link href="./homepage" sx={{ textDecoration: "none" }}>
+        <Link href={!loginError && "./homepage"} sx={{ textDecoration: "none" }} >
           <Button
             type="submit"
             variant="contained"
             sx={{ mt: 3, mb: 2, mr: 2, width: 100, backgroundColor: "#656268" }}
-            // onClick={() => {
-            //   setLoginError(!loginError);
-            // }}
+            onClick={() => {
+              handleSubmit();
+            }}
           >
             Login
           </Button>
