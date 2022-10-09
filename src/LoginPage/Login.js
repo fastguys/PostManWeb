@@ -10,14 +10,15 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { auth } from "../firebase";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, signInWithPopup, OAuthProvider } from "firebase/auth";
 
 export default function Login() {
   const [loginError, setLoginError] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
-  const handleSubmit = async (e) => {
+  const provider = new OAuthProvider('microsoft.com');
+  const handleLoginSubmit = async (e) => {
     const auth = getAuth();
     let errorMessage = '';
     await signInWithEmailAndPassword(auth, email, password)
@@ -34,6 +35,28 @@ export default function Login() {
       }
 
   };
+
+  const handleMicrosoftLogin = async (e) => {
+    const auth = getAuth();
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        // User is signed in.
+        // IdP data available in result.additionalUserInfo.profile.
+
+        // Get the OAuth access token and ID Token
+        const credential = OAuthProvider.credentialFromResult(result);
+        const accessToken = credential.accessToken;
+        const idToken = credential.idToken;
+        navigate("./homepage");
+      })
+      .catch((error) => {
+        // Handle error.
+        console.log(error);
+      });
+  };
+
+
+
   return (
     <div>
       <Box
@@ -95,7 +118,7 @@ export default function Login() {
           variant="contained"
           sx={{ mt: 3, mb: 2, mr: 2, width: 100, backgroundColor: "#656268" }}
           onClick={() => {
-            handleSubmit();
+            handleLoginSubmit();
           }}
         >
           Login
@@ -127,16 +150,16 @@ export default function Login() {
             mt: 2,
           }}
         >
-          <Box
-            sx={{ width: 50, height: 50, mr: 3, backgroundColor: "#eaeaea" }}
-          ></Box>
-          <Box
-            sx={{ width: 50, height: 50, mr: 3, backgroundColor: "#eaeaea" }}
-          ></Box>
-          <Box
-            sx={{ width: 50, height: 50, mr: 3, backgroundColor: "#eaeaea" }}
-          ></Box>
-          <Box sx={{ width: 50, height: 50, backgroundColor: "#eaeaea" }}></Box>
+            {/* Added Microsoft OAuth */}
+            <Button
+              type="submit"
+              onClick={() => {
+                handleMicrosoftLogin();
+              }}
+              startIcon={<img src={"./Microsoft.svg"} alt="microsoft" />}
+            />
+            {/* TODO: Added Google OAuth */}
+            {/* Added Meta OAuth */}
         </Box>
       </Box>
     </div>
