@@ -2,10 +2,8 @@ import { Box } from "@mui/material";
 import React from "react";
 import Login from "./Login";
 import ResponsiveAppBar from "./TopBar";
-import { useState } from "react";
 
 const LoginPage = () => {
-  const [aaa, setaaa] = useState(false)
   return (
     <>
       <Box
@@ -40,9 +38,7 @@ const LoginPage = () => {
             <Box sx={{ width: 700, height: 50, border: 1, mb: 5 }}>
               Enter address
             </Box>
-            <Box sx={{ width: 700, height: 400, border: 1 }} >
-              Map
-            </Box>
+            <Box sx={{ width: 700, height: 400, border: 1 }} />
           </Box>
 
           {/*Right part*/}
@@ -55,8 +51,8 @@ const LoginPage = () => {
               alignItems: "center",
             }}
           >
-            <Box sx={{ width: 350, height: 600, padding: 10 }}>
-              <Login aaa = {aaa} setaaa = {setaaa}/>
+            <Box sx={{ width: 300, height: 600, padding: 10 }}>
+              <Login />
             </Box>
           </Box>
         </Box>

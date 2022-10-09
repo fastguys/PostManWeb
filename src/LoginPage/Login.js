@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import Button from "@mui/material/Button";
-
+import { useNavigate } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
@@ -12,32 +12,27 @@ import Typography from "@mui/material/Typography";
 import { auth } from "../firebase";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
-export default function Login(aaa,setaaa) {
+export default function Login() {
   const [loginError, setLoginError] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const handleSubmit = (e) => {
+  const navigate = useNavigate();
+  const handleSubmit = async (e) => {
     const auth = getAuth();
-    let flag = true
-    signInWithEmailAndPassword(auth, email, password)
+    let errorMessage = '';
+    await signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        // Signed in
-        console.log('adssd');
         const user = userCredential.user;
-        // ...
+        navigate("./homepage");
       })
       .catch((error) => {
-        setaaa(true)
-        console.log(loginError);
         const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorMessage);
+        errorMessage = error.message;
       });
-      if (flag == false) {
+      if (errorMessage !== '') {
         setLoginError(true);
-        console.log(loginError);
-
       }
+
   };
   return (
     <div>
@@ -71,8 +66,8 @@ export default function Login(aaa,setaaa) {
         <TextField
           value={password}
           required
-          error={aaa}
-          helperText={aaa ? "Incorrect email or password" : ""}
+          error={loginError}
+          helperText={loginError ? "Incorrect email or password" : ""}
           fullWidth
           name="password"
           label="Password"
@@ -94,19 +89,17 @@ export default function Login(aaa,setaaa) {
             alignItems: "center",
           }}
         >
-        <Link sx={{ textDecoration: "none" }} >
-          <Button
-            type="submit"
-            variant="contained"
-            sx={{ mt: 3, mb: 2, mr: 2, width: 100, backgroundColor: "#656268" }}
-            onClick={() => {
-              handleSubmit();
-            }}
-          >
-            Login
-          </Button>
-        </Link>
 
+        <Button
+          type="submit"
+          variant="contained"
+          sx={{ mt: 3, mb: 2, mr: 2, width: 100, backgroundColor: "#656268" }}
+          onClick={() => {
+            handleSubmit();
+          }}
+        >
+          Login
+        </Button>
           <Link href="./signup" sx={{ textDecoration: "none" }}>
             <Button
               type="submit"
