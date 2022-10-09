@@ -10,12 +10,34 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { auth } from "../firebase";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
-export default function Login() {
+export default function Login(aaa,setaaa) {
   const [loginError, setLoginError] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const handleSubmit = (e) => {
-    //要是输入的密码or用户名错，就set成true
-    setLoginError(true);
+    const auth = getAuth();
+    let flag = true
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in
+        console.log('adssd');
+        const user = userCredential.user;
+        // ...
+      })
+      .catch((error) => {
+        setaaa(true)
+        console.log(loginError);
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorMessage);
+      });
+      if (flag == false) {
+        setLoginError(true);
+        console.log(loginError);
+
+      }
   };
   return (
     <div>
@@ -31,6 +53,7 @@ export default function Login() {
         }}
       >
         <TextField
+          value={email}
           required
           fullWidth
           error={loginError}
@@ -38,19 +61,28 @@ export default function Login() {
           label="Email Address"
           name="email"
           autoComplete="email"
+          onChange={(e) => {
+            setEmail(e.target.value);
+            setLoginError(false)
+          }}
           sx={{ mt: 1, mb: 1 }}
         />
 
         <TextField
+          value={password}
           required
-          error={loginError}
-          helperText={loginError ? "Incorrect email or password" : ""}
+          error={aaa}
+          helperText={aaa ? "Incorrect email or password" : ""}
           fullWidth
           name="password"
           label="Password"
           type="password"
           id="password"
           autoComplete="new-password"
+          onChange={(e) => {
+            setPassword(e.target.value);
+            setLoginError(false)
+          }}
           sx={{ mt: 1, mb: 1 }}
         />
 
@@ -62,7 +94,7 @@ export default function Login() {
             alignItems: "center",
           }}
         >
-        <Link href={!loginError && "./homepage"} sx={{ textDecoration: "none" }} >
+        <Link sx={{ textDecoration: "none" }} >
           <Button
             type="submit"
             variant="contained"
