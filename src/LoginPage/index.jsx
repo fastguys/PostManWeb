@@ -2,8 +2,10 @@ import { Box } from "@mui/material";
 import React from "react";
 import Login from "./Login";
 import ResponsiveAppBar from "./TopBar";
+import { useState } from "react";
 
 const LoginPage = () => {
+  const [aaa, setaaa] = useState(false)
   return (
     <>
       <Box
@@ -54,7 +56,7 @@ const LoginPage = () => {
             }}
           >
             <Box sx={{ width: 350, height: 600, padding: 10 }}>
-              <Login />
+              <Login aaa = {aaa} setaaa = {setaaa}/>
             </Box>
           </Box>
         </Box>
