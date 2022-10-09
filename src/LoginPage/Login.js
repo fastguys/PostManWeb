@@ -10,14 +10,16 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { auth } from "../firebase";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, signInWithPopup, OAuthProvider, FacebookAuthProvider } from "firebase/auth";
 
 export default function Login() {
   const [loginError, setLoginError] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
-  const handleSubmit = async (e) => {
+  const msftProvider = new OAuthProvider('microsoft.com');
+  const fbProvider = new FacebookAuthProvider();
+  const handleLoginSubmit = async (e) => {
     const auth = getAuth();
     let errorMessage = '';
     await signInWithEmailAndPassword(auth, email, password)
@@ -34,6 +36,57 @@ export default function Login() {
       }
 
   };
+
+  const handleMicrosoftLogin = async (e) => {
+    const auth = getAuth();
+    signInWithPopup(auth, msftProvider)
+      .then((result) => {
+        // User is signed in.
+        // IdP data available in result.additionalUserInfo.profile.
+
+        // Get the OAuth access token and ID Token
+        const credential = OAuthProvider.credentialFromResult(result);
+        const accessToken = credential.accessToken;
+        const idToken = credential.idToken;
+        navigate("./homepage");
+      })
+      .catch((error) => {
+        // Handle error.
+        console.log(error);
+      });
+  };
+
+  // 
+  const handleFacebookLogin = async (e) => {
+    const auth = getAuth();
+    signInWithPopup(auth, fbProvider)
+      .then((result) => {
+        // The signed-in user info.
+        const user = result.user;
+
+        // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+        const credential = FacebookAuthProvider.credentialFromResult(result);
+        const accessToken = credential.accessToken;
+
+        // navigate to homepage
+        navigate("./homepage");
+      })
+      .catch((error) => {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // The email of the user's account used.
+        const email = error.customData.email;
+        // The AuthCredential type that was used.
+        const credential = FacebookAuthProvider.credentialFromError(error);
+
+        // ...
+      });
+  };
+
+
+
+
   return (
     <div>
       <Box
@@ -95,7 +148,7 @@ export default function Login() {
           variant="contained"
           sx={{ mt: 3, mb: 2, mr: 2, width: 100, backgroundColor: "#656268" }}
           onClick={() => {
-            handleSubmit();
+            handleLoginSubmit();
           }}
         >
           Login
@@ -127,16 +180,23 @@ export default function Login() {
             mt: 2,
           }}
         >
-          <Box
-            sx={{ width: 50, height: 50, mr: 3, backgroundColor: "#eaeaea" }}
-          ></Box>
-          <Box
-            sx={{ width: 50, height: 50, mr: 3, backgroundColor: "#eaeaea" }}
-          ></Box>
-          <Box
-            sx={{ width: 50, height: 50, mr: 3, backgroundColor: "#eaeaea" }}
-          ></Box>
-          <Box sx={{ width: 50, height: 50, backgroundColor: "#eaeaea" }}></Box>
+            {/* Added Microsoft OAuth */}
+            <Button
+              type="submit"
+              onClick={() => {
+                handleMicrosoftLogin();
+              }}
+              startIcon={<img src={"./Microsoft.svg"} alt="microsoft" />}
+            />
+            {/* TODO: Added Google OAuth */}
+            {/* Added Meta OAuth */}
+            <Button
+              type="submit"
+              onClick={() => {
+                handleFacebookLogin();
+              }}
+              startIcon={<img src={"./Meta.svg"} alt="facebook" />}
+            />
         </Box>
       </Box>
     </div>
