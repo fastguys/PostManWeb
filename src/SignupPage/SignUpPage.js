@@ -13,6 +13,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { auth } from "../firebase";
 import { SystemSecurityUpdate } from "@mui/icons-material";
 import ResponsiveAppBar from "./TopBar";
+import { useState } from "react";
 
 function Copyright(props) {
   return (
@@ -35,7 +36,11 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignUp() {
-
+  const [NameError, setNameError] = useState(false);
+  const [PhoneError, setPhoneError] = useState(false);
+  const [PasswordError, setPasswordError] = useState(false);
+  const [EmailError, setEmailError] = useState(false);
+  const [EmailInUsed, setInUsed] = useState(false);
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
@@ -53,15 +58,21 @@ export default function SignUp() {
         let firstName = data.get('firstName')
         let lastName = data.get('lastName')
         let isnum = /^\d+$/.test(phone_number);
-    if (email.length == 0 || !email.includes("@")) {
-      alert("Invalid Email Input");
-    } else if (firstName.length == 0 || lastName.length == 0) {
-      alert("Invalid Name Input");
-    } else if (isnum == false) {
-      alert("Invalid Phone number");
-    } else {
-      auth
-        .createUserWithEmailAndPassword(email, password)
+    setNameError(false)
+    setPhoneError(false)
+    setPasswordError(false)
+    setEmailError(false)
+    setInUsed(false)
+    if (firstName.length == 0 || lastName.length == 0) {
+      setNameError(true)
+    } 
+    if (isnum == false) {
+      setPhoneError(true)
+    }
+    if (password.length < 6) {
+      setPasswordError(true)
+    } 
+    auth.createUserWithEmailAndPassword(email, password)
         .then((userCredential) => {
           // Signed in
           const user = userCredential.user;
@@ -75,20 +86,18 @@ export default function SignUp() {
             errorMessage ==
             "Firebase: The email address is already in use by another account. (auth/email-already-in-use)."
           ) {
-            alert(
-              "Email Already in use by another account, try to log in instead"
-            );
+              setInUsed(true)
           } else if (errorMessage.includes("email")) {
-            alert("Invalid Email Input");
-          } else if (
+            setEmailError(true)
+          } 
+          if (
             errorMessage ==
             "Firebase: Password should be at least 6 characters (auth/weak-password)."
           ) {
-            alert("Invalid Password\nPassword should be at least 6 character!");
+            setPasswordError(true)
           }
           // ..
         });
-    }
   };
 
   return (
@@ -122,6 +131,8 @@ export default function SignUp() {
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
                   <TextField
+                    error = {NameError}
+                    helperText = {NameError ? "Name Can't be empty" : ""}
                     autoComplete="given-name"
                     name="firstName"
                     required
@@ -135,6 +146,7 @@ export default function SignUp() {
                   <TextField
                     required
                     fullWidth
+                    error = {NameError}
                     id="lastName"
                     label="Last Name"
                     name="lastName"
@@ -145,6 +157,8 @@ export default function SignUp() {
                   <TextField
                     required
                     fullWidth
+                    error = {PhoneError}
+                    helperText = {PhoneError ? "Invalid Phone Number" : ""}
                     id="phone_number"
                     label="Phone number"
                     name="phone_number"
@@ -155,6 +169,8 @@ export default function SignUp() {
                   <TextField
                     required
                     fullWidth
+                    error = {EmailError | EmailInUsed} 
+                    helperText = {EmailError ? "Invalid email input" : EmailInUsed ? "Email Already In Used Try to Log in Instead": ""}
                     id="email"
                     label="Email Address"
                     name="email"
@@ -165,6 +181,8 @@ export default function SignUp() {
                   <TextField
                     required
                     fullWidth
+                    error = {PasswordError}
+                    helperText = {PasswordError ? "Invalid Password:Password should be at least 6 character!" : ""}
                     name="password"
                     label="Password"
                     type="password"
