@@ -100,7 +100,7 @@ export default function Login() {
         >
           Login
         </Button>
-          <Link href="./signup" sx={{ textDecoration: "none" }}>
+         
             <Button
               type="submit"
               variant="contained"
@@ -111,10 +111,13 @@ export default function Login() {
                 color: "#656268",
                 backgroundColor: "#FFFFFF",
               }}
+              onClick={() => {
+                navigate("./signup");
+              }}
             >
               Sign Up
             </Button>
-          </Link>
+      
         </Box>
 
         {/* Third party */}
