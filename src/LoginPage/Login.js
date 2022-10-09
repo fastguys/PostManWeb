@@ -10,14 +10,15 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { auth } from "../firebase";
-import { getAuth, signInWithEmailAndPassword, signInWithPopup, OAuthProvider } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, signInWithPopup, OAuthProvider, FacebookAuthProvider } from "firebase/auth";
 
 export default function Login() {
   const [loginError, setLoginError] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
-  const provider = new OAuthProvider('microsoft.com');
+  const msftProvider = new OAuthProvider('microsoft.com');
+  const fbProvider = new FacebookAuthProvider();
   const handleLoginSubmit = async (e) => {
     const auth = getAuth();
     let errorMessage = '';
@@ -38,7 +39,7 @@ export default function Login() {
 
   const handleMicrosoftLogin = async (e) => {
     const auth = getAuth();
-    signInWithPopup(auth, provider)
+    signInWithPopup(auth, msftProvider)
       .then((result) => {
         // User is signed in.
         // IdP data available in result.additionalUserInfo.profile.
@@ -54,6 +55,35 @@ export default function Login() {
         console.log(error);
       });
   };
+
+  // 
+  const handleFacebookLogin = async (e) => {
+    const auth = getAuth();
+    signInWithPopup(auth, fbProvider)
+      .then((result) => {
+        // The signed-in user info.
+        const user = result.user;
+
+        // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+        const credential = FacebookAuthProvider.credentialFromResult(result);
+        const accessToken = credential.accessToken;
+
+        // navigate to homepage
+        navigate("./homepage");
+      })
+      .catch((error) => {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // The email of the user's account used.
+        const email = error.customData.email;
+        // The AuthCredential type that was used.
+        const credential = FacebookAuthProvider.credentialFromError(error);
+
+        // ...
+      });
+  };
+
 
 
 
@@ -160,6 +190,13 @@ export default function Login() {
             />
             {/* TODO: Added Google OAuth */}
             {/* Added Meta OAuth */}
+            <Button
+              type="submit"
+              onClick={() => {
+                handleFacebookLogin();
+              }}
+              startIcon={<img src={"./Meta.svg"} alt="facebook" />}
+            />
         </Box>
       </Box>
     </div>
