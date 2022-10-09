@@ -12,7 +12,7 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { auth } from "../firebase";
 import { SystemSecurityUpdate } from "@mui/icons-material";
-import ResponsiveAppBar from "./TopBar";
+import ResponsiveAppBar from "../TopBar/TopBar";
 import { useState } from "react";
 
 function Copyright(props) {

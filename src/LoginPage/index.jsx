@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import React from "react";
 import Login from "./Login";
-import ResponsiveAppBar from "./TopBar";
+import ResponsiveAppBar from "../TopBar/TopBar";
 
 const LoginPage = () => {
   return (
