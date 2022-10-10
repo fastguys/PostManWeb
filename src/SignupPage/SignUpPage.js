@@ -11,9 +11,13 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { auth } from "../firebase";
+import { InputAdornment } from '@mui/material';
 import { SystemSecurityUpdate } from "@mui/icons-material";
 import ResponsiveAppBar from "../TopBar/TopBar";
 import { useState } from "react";
+import { height } from "@mui/system";
+import { Phone } from "@mui/icons-material";
+import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 
 function Copyright(props) {
   return (
@@ -34,14 +38,40 @@ function Copyright(props) {
 }
 
 const theme = createTheme();
-
 export default function SignUp() {
   const [NameError, setNameError] = useState(false);
   const [PhoneError, setPhoneError] = useState(false);
   const [PasswordError, setPasswordError] = useState(false);
   const [EmailError, setEmailError] = useState(false);
   const [EmailInUsed, setInUsed] = useState(false);
-    const handleSubmit = (event) => {
+  const [IncorrectCode, setIncorrectCode] = useState(false);
+  const [Phone, setPhone] = useState('+1');
+  
+  const handleClick = event => {
+    const auth = getAuth();
+    if (!window.recaptchaVerifier) {
+      window.recaptchaVerifier = new RecaptchaVerifier('reCap', {
+        'size': 'invisible',
+        'callback': (response) => {
+          // reCAPTCHA solved, allow signInWithPhoneNumber.
+        }
+      }, auth);
+    }
+    let phone_number = "+1" + Phone;
+    console.log(phone_number)
+    signInWithPhoneNumber(auth, phone_number, window.recaptchaVerifier)
+    .then((confirmationResult) => {
+      // SMS sent. Prompt user to type the code from the message, then sign the
+      // user in with confirmationResult.confirm(code).
+      window.confirmationResult = confirmationResult;
+      alert("A Code Sent Successfully to Your Phone")
+      // ...
+    }).catch((error) => {
+      // Error; SMS not sent
+      // ...
+    });
+  }
+  const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         console.log({
@@ -58,46 +88,46 @@ export default function SignUp() {
         let firstName = data.get('firstName')
         let lastName = data.get('lastName')
         let isnum = /^\d+$/.test(phone_number);
-    setNameError(false)
-    setPhoneError(false)
-    setPasswordError(false)
-    setEmailError(false)
-    setInUsed(false)
-    if (firstName.length == 0 || lastName.length == 0) {
-      setNameError(true)
-    } 
-    if (isnum == false) {
-      setPhoneError(true)
-    }
-    if (password.length < 6) {
-      setPasswordError(true)
-    } 
-    auth.createUserWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-          // Signed in
-          const user = userCredential.user;
-          user.linkWithPhoneNumber(phone_number);
-          // ...
-        })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          if (
-            errorMessage ==
-            "Firebase: The email address is already in use by another account. (auth/email-already-in-use)."
-          ) {
-              setInUsed(true)
-          } else if (errorMessage.includes("email")) {
-            setEmailError(true)
-          } 
-          if (
-            errorMessage ==
-            "Firebase: Password should be at least 6 characters (auth/weak-password)."
-          ) {
-            setPasswordError(true)
-          }
-          // ..
-        });
+        setNameError(false)
+        setPhoneError(false)
+        setPasswordError(false)
+        setEmailError(false)
+        setInUsed(false)
+        if (firstName.length == 0 || lastName.length == 0) {
+          setNameError(true)
+        } 
+        if (isnum == false) {
+          setPhoneError(true)
+        }
+        if (password.length < 6) {
+          setPasswordError(true)
+        } 
+        auth.createUserWithEmailAndPassword(email, password)
+            .then((userCredential) => {
+              // Signed in
+              const user = userCredential.user;
+              user.linkWithPhoneNumber(phone_number);
+              // ...
+            })
+            .catch((error) => {
+              const errorCode = error.code;
+              const errorMessage = error.message;
+              if (
+                errorMessage ==
+                "Firebase: The email address is already in use by another account. (auth/email-already-in-use)."
+              ) {
+                  setInUsed(true)
+              } else if (errorMessage.includes("email")) {
+                setEmailError(true)
+              } 
+              if (
+                errorMessage ==
+                "Firebase: Password should be at least 6 characters (auth/weak-password)."
+              ) {
+                setPasswordError(true)
+              }
+              // ..
+            });
   };
 
   return (
@@ -153,18 +183,7 @@ export default function SignUp() {
                     autoComplete="family-name"
                   />
                 </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    error = {PhoneError}
-                    helperText = {PhoneError ? "Invalid Phone Number" : ""}
-                    id="phone_number"
-                    label="Phone number"
-                    name="phone_number"
-                    autoComplete="tel"
-                  />
-                </Grid>
+                
                 <Grid item xs={12}>
                   <TextField
                     required
@@ -181,6 +200,52 @@ export default function SignUp() {
                   <TextField
                     required
                     fullWidth
+                    error = {PhoneError}
+                    helperText = {PhoneError ? "Invalid Phone Number" : ""}
+                    id="phone_number"
+                    label="Phone number"
+                    name="phone_number"
+                    autoComplete="tel"
+                    onChange={(e) => {
+                      setPhone(e.target.value);
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    error = {PhoneError}
+                    helperText = {PhoneError ? "Invalid Phone Number" : ""}
+                    id="validation_code"
+                    label="validation code"
+                    name="validation_code"
+                    autoComplete="tel"
+                
+                    InputProps={{endAdornment: (
+                      <InputAdornment position="end">
+                        <Button
+                        onClick={() => {
+                          handleClick();
+                        }}
+                        sx=
+                        {{ width:100,
+                          height:55,
+                          mr : -2,
+                          backgroundColor:"grey",
+                          whiteSpace: "nowrap",
+                          display: "block"
+                        }}
+                        >Send Code</Button> 
+                      </InputAdornment>
+                    )}}
+                  />
+                  
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
                     error = {PasswordError}
                     helperText = {PasswordError ? "Invalid Password:Password should be at least 6 character!" : ""}
                     name="password"
@@ -190,13 +255,9 @@ export default function SignUp() {
                     autoComplete="new-password"
                   />
                 </Grid>
-                <Grid item xs={12}>
-                  <FormControlLabel
-                    control={
-                      <Checkbox value="allowExtraEmails" color="primary" />
-                    }
-                    label="I want to receive inspiration, marketing promotions and updates via email."
-                  />
+                <Grid
+                id = "reCap"
+                >
                 </Grid>
               </Grid>
               <Button
