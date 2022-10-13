@@ -93,10 +93,10 @@ export default function SignUp() {
         setPasswordError(false)
         setEmailError(false)
         setInUsed(false)
-        if (firstName.length == 0 || lastName.length == 0) {
+        if (firstName.length === 0 || lastName.length === 0) {
           setNameError(true)
         } 
-        if (isnum == false) {
+        if (isnum === false) {
           setPhoneError(true)
         }
         if (password.length < 6) {
@@ -113,7 +113,7 @@ export default function SignUp() {
               const errorCode = error.code;
               const errorMessage = error.message;
               if (
-                errorMessage ==
+                errorMessage ===
                 "Firebase: The email address is already in use by another account. (auth/email-already-in-use)."
               ) {
                   setInUsed(true)
@@ -121,7 +121,7 @@ export default function SignUp() {
                 setEmailError(true)
               } 
               if (
-                errorMessage ==
+                errorMessage ===
                 "Firebase: Password should be at least 6 characters (auth/weak-password)."
               ) {
                 setPasswordError(true)
@@ -220,7 +220,6 @@ export default function SignUp() {
                     id="validation_code"
                     label="validation code"
                     name="validation_code"
-                    autoComplete="tel"
                 
                     InputProps={{endAdornment: (
                       <InputAdornment position="end">
