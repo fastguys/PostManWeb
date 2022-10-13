@@ -10,7 +10,7 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { auth } from "../firebase";
-import { getAuth, signInWithEmailAndPassword, signInWithPopup, OAuthProvider, FacebookAuthProvider } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, signInWithPopup, OAuthProvider, FacebookAuthProvider, GithubAuthProvider } from "firebase/auth";
 
 export default function Login() {
   const [loginError, setLoginError] = useState(false);
@@ -19,6 +19,7 @@ export default function Login() {
   const navigate = useNavigate();
   const msftProvider = new OAuthProvider('microsoft.com');
   const fbProvider = new FacebookAuthProvider();
+  const ghProvider = new GithubAuthProvider();
   const handleLoginSubmit = async (e) => {
     const auth = getAuth();
     let errorMessage = '';
@@ -80,6 +81,30 @@ export default function Login() {
         // The AuthCredential type that was used.
         const credential = FacebookAuthProvider.credentialFromError(error);
 
+        // ...
+      });
+  };
+
+  const handleGithubLogin = async (e) => {
+    const auth = getAuth();
+    signInWithPopup(auth, ghProvider)
+      .then((result) => {
+        // This gives you a GitHub Access Token. You can use it to access the GitHub API.
+        const credential = GithubAuthProvider.credentialFromResult(result);
+        const token = credential.accessToken;
+
+        // The signed-in user info.
+        const user = result.user;
+        // ...
+        navigate("./homepage");
+      }).catch((error) => {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // The email of the user's account used.
+        const email = error.customData.email;
+        // The AuthCredential type that was used.
+        const credential = GithubAuthProvider.credentialFromError(error);
         // ...
       });
   };
@@ -197,6 +222,19 @@ export default function Login() {
             startIcon={<img src={"./Meta.svg"} alt="facebook" />}
             sx={{ mx: 1, my: 1}}
           >Continue with Facebook</Button>
+        </div>
+        <div>
+          {/* Added GitHub OAuth */}
+          <Button
+            type="submit"
+            variant="outlined"
+            size="small"
+            onClick={() => {
+              handleGithubLogin();
+            }}
+            startIcon={<img src={"./Github.svg"} alt="facebook" />}
+            sx={{ mx: 1, my: 1}}
+          >Continue with the GitHub</Button>
         </div>
       </Box>
     </div>
