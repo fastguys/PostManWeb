@@ -10,7 +10,8 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { auth } from "../firebase";
-import { getAuth, signInWithEmailAndPassword, signInWithPopup, OAuthProvider, FacebookAuthProvider, GithubAuthProvider } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, signInWithPopup, OAuthProvider, FacebookAuthProvider, GithubAuthProvider, GoogleAuthProvider } from "firebase/auth";
+
 
 export default function Login() {
   const [loginError, setLoginError] = useState(false);
@@ -20,6 +21,7 @@ export default function Login() {
   const msftProvider = new OAuthProvider('microsoft.com');
   const fbProvider = new FacebookAuthProvider();
   const ghProvider = new GithubAuthProvider();
+  const ggProvider = new GoogleAuthProvider();
   const handleLoginSubmit = async (e) => {
     const auth = getAuth();
     let errorMessage = '';
@@ -84,6 +86,30 @@ export default function Login() {
         // ...
       });
   };
+
+  const handleGoogleLogin = async (e) => {
+    const auth = getAuth();
+    signInWithPopup(auth,ggProvider)
+      .then((result) => {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const token = credential.accessToken;
+        // The signed-in user info.
+        const user = result.user;
+        navigate("./homepage");
+        // ...
+      }).catch((error) => {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // The email of the user's account used.
+        const email = error.customData.email;
+        // The AuthCredential type that was used.
+        const credential = GoogleAuthProvider.credentialFromError(error);
+        // ...
+      });
+  };
+
 
   const handleGithubLogin = async (e) => {
     const auth = getAuth();
@@ -209,7 +235,17 @@ export default function Login() {
             sx={{ mx: 1, my: 1}}
           >Continue with Microsoft</Button>
         </div>
-          {/* TODO: Added Google OAuth */}
+          {/* TODO: Added Google OAuth */} 
+          <Button
+            type="submit"
+            variant="outlined"
+            size="small"
+            onClick={() => {
+              handleGoogleLogin();
+            }}
+            startIcon={<img src={"./Google.svg"} alt="google" />}
+            sx={{ mx: 1, my: 1}}
+          >Continue with   Google</Button>
         <div>
           {/* Added Meta OAuth */}
           <Button
