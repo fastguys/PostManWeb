@@ -66,6 +66,7 @@ export default function SignUp() {
                 // ...
             }).catch((error) => {
             setPhoneError(true)
+             console.log(error.message)
         });
     }
 
@@ -139,13 +140,15 @@ export default function SignUp() {
             setIncorrectCode(true)
 
         });
-        if (!NameError || !PhoneError || !PasswordError || !EmailInUsed || !IncorrectCode) {
+        if (!NameError && !PhoneError && !PasswordError && !EmailInUsed && !IncorrectCode) {
           auth.createUserWithEmailAndPassword(email, password)
           .then((userCredential) => {
               // Signed in
               const user = userCredential.user;
               // user.linkWithPhoneNumber(phone_number);
               // ...
+              send_email(email)
+              navigate("/");
           })
           .catch((error) => {
               const errorCode = error.code;
@@ -166,8 +169,6 @@ export default function SignUp() {
               }
               // ..
           });
-          send_email(email)
-            navigate("/");
         }
     };
 
