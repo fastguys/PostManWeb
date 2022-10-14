@@ -89,7 +89,46 @@ export default function SignUp() {
                 const errorMessage = error.message;
             });
     }
-    const handleSubmit = (event) => {
+    React.useEffect((email,password) => {
+        console.log(IncorrectCode + "nnn")
+        if (!IncorrectCode){
+            if (!NameError && !PhoneError && !PasswordError && !EmailInUsed && !IncorrectCode) {
+                console.log(IncorrectCode)
+             auth.createUserWithEmailAndPassword(email, password)
+             .then((userCredential) => {
+                 // Signed in
+                 const user = userCredential.user;
+                 // user.linkWithPhoneNumber(phone_number);
+                 // ...
+                 console.log("success")
+                 send_email(email)
+                 navigate("/");
+             })
+             .catch((error) => {
+                 const errorCode = error.code;
+                 const errorMessage = error.message;
+                 console.log(errorMessage)
+
+                 if (
+                     errorMessage ===
+                     "Firebase: The email address is already in use by another account. (auth/email-already-in-use)."
+                 ) {
+                     setInUsed(true)
+                 } else if (errorMessage.includes("email")) {
+                     setEmailError(true)
+                 }
+                 if (
+                     errorMessage ===
+                     "Firebase: Password should be at least 6 characters (auth/weak-password)."
+                 ) {
+                     setPasswordError(true)
+                 }
+                 // ..
+             });
+           }
+        }
+      },[IncorrectCode]);
+    const handleSubmit = async(event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         console.log({
@@ -129,47 +168,19 @@ export default function SignUp() {
         if (validation_code.length == 0) {
           setIncorrectCode(true)
         }
-        window.confirmationResult.confirm(validation_code).then((result) => {
+        let check = "";
+        await window.confirmationResult.confirm(validation_code).then((result) => {
           // User signed in successfully.
           const user = result.user;
           // ...
         }).catch((error) => {
           // User couldn't sign in (bad verification code?)
           // ...
-            setIncorrectCode(true)
+          check = error.message
+          console.log(check)
+          setIncorrectCode(true)
         });
-        console.log(IncorrectCode + "nnn")
-        if (!NameError && !PhoneError && !PasswordError && !EmailInUsed && IncorrectCode) {
-             console.log(IncorrectCode)
-          auth.createUserWithEmailAndPassword(email, password)
-          .then((userCredential) => {
-              // Signed in
-              const user = userCredential.user;
-              // user.linkWithPhoneNumber(phone_number);
-              // ...
-              send_email(email)
-              navigate("/");
-          })
-          .catch((error) => {
-              const errorCode = error.code;
-              const errorMessage = error.message;
-              if (
-                  errorMessage ===
-                  "Firebase: The email address is already in use by another account. (auth/email-already-in-use)."
-              ) {
-                  setInUsed(true)
-              } else if (errorMessage.includes("email")) {
-                  setEmailError(true)
-              }
-              if (
-                  errorMessage ===
-                  "Firebase: Password should be at least 6 characters (auth/weak-password)."
-              ) {
-                  setPasswordError(true)
-              }
-              // ..
-          });
-        }
+
     };
 
     return (
