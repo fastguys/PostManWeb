@@ -2,8 +2,7 @@ import React from "react";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
+import {useNavigate} from "react-router-dom";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -12,11 +11,8 @@ import Container from "@mui/material/Container";
 import {createTheme, ThemeProvider} from "@mui/material/styles";
 import {auth} from "../firebase";
 import {InputAdornment} from '@mui/material';
-import {SystemSecurityUpdate} from "@mui/icons-material";
 import ResponsiveAppBar from "../TopBar/TopBar";
 import {useState} from "react";
-import {height} from "@mui/system";
-import {Phone} from "@mui/icons-material";
 import {getAuth, RecaptchaVerifier, signInWithPhoneNumber, sendSignInLinkToEmail} from "firebase/auth";
 
 function Copyright(props) {
@@ -39,6 +35,7 @@ function Copyright(props) {
 
 const theme = createTheme();
 export default function SignUp() {
+    const navigate = useNavigate();
     const [NameError, setNameError] = useState(false);
     const [PhoneError, setPhoneError] = useState(false);
     const [PasswordError, setPasswordError] = useState(false);
@@ -65,10 +62,10 @@ export default function SignUp() {
                 // user in with confirmationResult.confirm(code).
                 window.confirmationResult = confirmationResult;
                 alert("A Code Sent Successfully to Your Phone")
+                setPhoneError(false)
                 // ...
             }).catch((error) => {
-            // Error; SMS not sent
-            // ...
+            setPhoneError(true)
         });
     }
 
@@ -115,7 +112,7 @@ export default function SignUp() {
         setPasswordError(false)
         setEmailError(false)
         setInUsed(false)
-        setIncorrectCode(false)
+        setIncorrectCode(true)
         if (firstName.length === 0 || lastName.length === 0) {
             setNameError(true)
         }
@@ -134,11 +131,13 @@ export default function SignUp() {
         window.confirmationResult.confirm(validation_code).then((result) => {
           // User signed in successfully.
           const user = result.user;
+          setIncorrectCode(false)
           // ...
         }).catch((error) => {
           // User couldn't sign in (bad verification code?)
           // ...
-          setIncorrectCode(true)
+            setIncorrectCode(true)
+
         });
         if (!NameError || !PhoneError || !PasswordError || !EmailInUsed || !IncorrectCode) {
           auth.createUserWithEmailAndPassword(email, password)
@@ -168,6 +167,7 @@ export default function SignUp() {
               // ..
           });
           send_email(email)
+            navigate("/");
         }
     };
 
