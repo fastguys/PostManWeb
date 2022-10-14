@@ -403,6 +403,7 @@ export default function Login() {
 
                   <TextField
                       required
+                      fullWidth
                       error={IncorrectCode}
                       helperText={IncorrectCode ? "Invalid Verification Number" : ""}
                       id="validation_code"
