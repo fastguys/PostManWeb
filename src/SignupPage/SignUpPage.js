@@ -99,7 +99,8 @@ export default function SignUp() {
             password: data.get('password'),
             phone_number: data.get('phone_number'),
             firstName: data.get('firstName'),
-            lastName: data.get('lastName')
+            lastName: data.get('lastName'),
+            validation_code: data.get('validation_code')
         });
 
         let email = data.get('email')
@@ -107,12 +108,14 @@ export default function SignUp() {
         let phone_number = data.get('phone_number')
         let firstName = data.get('firstName')
         let lastName = data.get('lastName')
+        let validation_code = data.get('validation_code')
         let isnum = /^\d+$/.test(phone_number);
         setNameError(false)
         setPhoneError(false)
         setPasswordError(false)
         setEmailError(false)
         setInUsed(false)
+        setIncorrectCode(false)
         if (firstName.length === 0 || lastName.length === 0) {
             setNameError(true)
         }
@@ -122,33 +125,50 @@ export default function SignUp() {
         if (password.length < 6) {
             setPasswordError(true)
         }
-        auth.createUserWithEmailAndPassword(email, password)
-            .then((userCredential) => {
-                // Signed in
-                const user = userCredential.user;
-                // user.linkWithPhoneNumber(phone_number);
-                // ...
-            })
-            .catch((error) => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                if (
-                    errorMessage ===
-                    "Firebase: The email address is already in use by another account. (auth/email-already-in-use)."
-                ) {
-                    setInUsed(true)
-                } else if (errorMessage.includes("email")) {
-                    setEmailError(true)
-                }
-                if (
-                    errorMessage ===
-                    "Firebase: Password should be at least 6 characters (auth/weak-password)."
-                ) {
-                    setPasswordError(true)
-                }
-                // ..
-            });
-        send_email(email)
+        if (email.length == 0) {
+          setEmailError(true)
+        }
+        if (validation_code.length == 0) {
+          setIncorrectCode(true)
+        }
+        window.confirmationResult.confirm(validation_code).then((result) => {
+          // User signed in successfully.
+          const user = result.user;
+          // ...
+        }).catch((error) => {
+          // User couldn't sign in (bad verification code?)
+          // ...
+          setIncorrectCode(true)
+        });
+        if (!NameError || !PhoneError || !PasswordError || !EmailInUsed || !IncorrectCode) {
+          auth.createUserWithEmailAndPassword(email, password)
+          .then((userCredential) => {
+              // Signed in
+              const user = userCredential.user;
+              // user.linkWithPhoneNumber(phone_number);
+              // ...
+          })
+          .catch((error) => {
+              const errorCode = error.code;
+              const errorMessage = error.message;
+              if (
+                  errorMessage ===
+                  "Firebase: The email address is already in use by another account. (auth/email-already-in-use)."
+              ) {
+                  setInUsed(true)
+              } else if (errorMessage.includes("email")) {
+                  setEmailError(true)
+              }
+              if (
+                  errorMessage ===
+                  "Firebase: Password should be at least 6 characters (auth/weak-password)."
+              ) {
+                  setPasswordError(true)
+              }
+              // ..
+          });
+          send_email(email)
+        }
     };
 
     return (
@@ -236,8 +256,8 @@ export default function SignUp() {
                                     <TextField
                                         required
                                         fullWidth
-                                        error={PhoneError}
-                                        helperText={PhoneError ? "Invalid Phone Number" : ""}
+                                        error={IncorrectCode}
+                                        helperText={IncorrectCode ? "Invalid Verification Number" : ""}
                                         id="validation_code"
                                         label="validation code"
                                         name="validation_code"
