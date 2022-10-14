@@ -133,8 +133,9 @@ export default function SignUp() {
           // User signed in successfully.
 
           const user = result.user;
+          setIncorrectCode(false)
           console.log(IncorrectCode + "nnn")
-        if (!NameError && !PhoneError && !PasswordError && !EmailInUsed && IncorrectCode) {
+        if (!NameError && !PhoneError && !PasswordError && !EmailInUsed && !IncorrectCode) {
              console.log(IncorrectCode)
           auth.createUserWithEmailAndPassword(email, password)
           .then((userCredential) => {
