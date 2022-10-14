@@ -131,14 +131,9 @@ export default function SignUp() {
         }
         window.confirmationResult.confirm(validation_code).then((result) => {
           // User signed in successfully.
+
           const user = result.user;
-          // ...
-        }).catch((error) => {
-          // User couldn't sign in (bad verification code?)
-          // ...
-            setIncorrectCode(true)
-        });
-        console.log(IncorrectCode + "nnn")
+          console.log(IncorrectCode + "nnn")
         if (!NameError && !PhoneError && !PasswordError && !EmailInUsed && IncorrectCode) {
              console.log(IncorrectCode)
           auth.createUserWithEmailAndPassword(email, password)
@@ -170,6 +165,13 @@ export default function SignUp() {
               // ..
           });
         }
+          // ...
+        }).catch((error) => {
+          // User couldn't sign in (bad verification code?)
+          // ...
+            setIncorrectCode(true)
+        });
+        
     };
 
     return (
