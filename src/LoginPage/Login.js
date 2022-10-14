@@ -62,6 +62,7 @@ export default function Login() {
                 const credential = OAuthProvider.credentialFromResult(result);
                 const accessToken = credential.accessToken;
                 const idToken = credential.idToken;
+                localStorage.setItem("authenticated", true);
                 navigate("./homepage");
             })
             .catch((error) => {
@@ -73,6 +74,7 @@ export default function Login() {
     //
     const handleFacebookLogin = async (e) => {
         const auth = getAuth();
+        console.log(auth);
         signInWithPopup(auth, fbProvider)
             .then((result) => {
                 // The signed-in user info.
@@ -81,9 +83,11 @@ export default function Login() {
                 // This gives you a Facebook Access Token. You can use it to access the Facebook API.
                 const credential = FacebookAuthProvider.credentialFromResult(result);
                 const accessToken = credential.accessToken;
-
+                localStorage.setItem("authenticated", true);
+                console.log(user);
                 // navigate to homepage
                 navigate("./homepage");
+                console.log("navigate to homepage");
             })
             .catch((error) => {
                 // Handle Errors here.
@@ -93,7 +97,7 @@ export default function Login() {
                 const email = error.customData.email;
                 // The AuthCredential type that was used.
                 const credential = FacebookAuthProvider.credentialFromError(error);
-
+                console.log(errorCode);
                 // ...
             });
     };
@@ -107,6 +111,8 @@ export default function Login() {
                 const token = credential.accessToken;
                 // The signed-in user info.
                 const user = result.user;
+                localStorage.setItem("authenticated", true);
+
                 navigate("./homepage");
                 // ...
             }).catch((error) => {
@@ -124,6 +130,7 @@ export default function Login() {
 
     const handleGithubLogin = async (e) => {
         const auth = getAuth();
+        console.log(auth);
         signInWithPopup(auth, ghProvider)
             .then((result) => {
                 // This gives you a GitHub Access Token. You can use it to access the GitHub API.
@@ -132,6 +139,8 @@ export default function Login() {
 
                 // The signed-in user info.
                 const user = result.user;
+                localStorage.setItem("authenticated", true);
+
                 // ...
                 navigate("./homepage");
             }).catch((error) => {
