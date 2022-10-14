@@ -162,7 +162,6 @@ export default function Login() {
                 const credential = OAuthProvider.credentialFromResult(result);
                 const accessToken = credential.accessToken;
                 const idToken = credential.idToken;
-                localStorage.setItem("authenticated", true);
                 navigate("./homepage");
             })
             .catch((error) => {
@@ -174,7 +173,6 @@ export default function Login() {
     //
     const handleFacebookLogin = async (e) => {
         const auth = getAuth();
-        console.log(auth);
         signInWithPopup(auth, fbProvider)
             .then((result) => {
                 // The signed-in user info.
@@ -183,11 +181,9 @@ export default function Login() {
                 // This gives you a Facebook Access Token. You can use it to access the Facebook API.
                 const credential = FacebookAuthProvider.credentialFromResult(result);
                 const accessToken = credential.accessToken;
-                localStorage.setItem("authenticated", true);
-                console.log(user);
+
                 // navigate to homepage
                 navigate("./homepage");
-                console.log("navigate to homepage");
             })
             .catch((error) => {
                 // Handle Errors here.
@@ -197,7 +193,7 @@ export default function Login() {
                 const email = error.customData.email;
                 // The AuthCredential type that was used.
                 const credential = FacebookAuthProvider.credentialFromError(error);
-                console.log(errorCode);
+
                 // ...
             });
     };
@@ -211,8 +207,6 @@ export default function Login() {
                 const token = credential.accessToken;
                 // The signed-in user info.
                 const user = result.user;
-                localStorage.setItem("authenticated", true);
-
                 navigate("./homepage");
                 // ...
             }).catch((error) => {
@@ -230,7 +224,6 @@ export default function Login() {
 
     const handleGithubLogin = async (e) => {
         const auth = getAuth();
-        console.log(auth);
         signInWithPopup(auth, ghProvider)
             .then((result) => {
                 // This gives you a GitHub Access Token. You can use it to access the GitHub API.
@@ -239,8 +232,6 @@ export default function Login() {
 
                 // The signed-in user info.
                 const user = result.user;
-                localStorage.setItem("authenticated", true);
-
                 // ...
                 navigate("./homepage");
             }).catch((error) => {
@@ -267,6 +258,7 @@ export default function Login() {
                     padding: 2,
                     borderRadius: 2,
                     border: "1px solid #eaeaea",
+                    width: "100%",
                 }}
             >
               <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
@@ -291,7 +283,6 @@ export default function Login() {
                       }}
                       sx={{mt: 1, mb: 1}}
                   />
-
                   <TextField
                       value={password}
                       required
@@ -309,18 +300,21 @@ export default function Login() {
                       }}
                       sx={{mt: 1, mb: 1}}
                   />
-                  <Button onClick={handelreset} variant="contained" sx={{ml: 3.5}}>
-                    Reset Password
-                  </Button>
+                  {/* make button in middle */}
+                  <Box sx={{display: "flex", justifyContent: "center"}}>
+                    <Button onClick={handelreset} variant="contained">
+                        Reset Password
+                    </Button>
+                  </Box>
                   {/* Buttons */}
                   <Box
                       sx={{
                           display: "flex",
                           flexDirection: "row",
                           alignItems: "center",
+                            justifyContent: "center",
                       }}
                   >
-
                       <Button
                           type="submit"
                           variant="contained"
@@ -349,56 +343,47 @@ export default function Login() {
                   </Box>
 
                   {/* Third party */}
-                  <div>
-                      {/* Added Microsoft OAuth */}
+                  <Box sx={{display: "flex", flexDirection: "row", alignItems: "center"}}>
                       <Button
                           type="submit"
-                          variant="outlined"
                           size="small"
                           onClick={() => {
                               handleMicrosoftLogin();
                           }}
                           startIcon={<img src={"./Microsoft.svg"} alt="microsoft"/>}
                           sx={{mx: 1, my: 1}}
-                      >Continue with Microsoft</Button>
-                  </div>
-                  {/* TODO: Added Google OAuth */}
+                      />
                   <Button
                       type="submit"
-                      variant="outlined"
                       size="small"
                       onClick={() => {
                           handleGoogleLogin();
                       }}
                       startIcon={<img src={"./Google.svg"} alt="google"/>}
                       sx={{mx: 1, my: 1}}
-                  >Continue with Google</Button>
-                  <div>
-                      {/* Added Meta OAuth */}
-                      <Button
-                          type="submit"
-                          variant="outlined"
-                          size="small"
-                          onClick={() => {
-                              handleFacebookLogin();
-                          }}
-                          startIcon={<img src={"./Meta.svg"} alt="facebook"/>}
-                          sx={{mx: 1, my: 1}}
-                      >Continue with Facebook</Button>
-                  </div>
-                  <div>
+                   />
+                    <Button
+                        type="submit"
+                        size="small"
+                        onClick={() => {
+                            handleFacebookLogin();
+                        }}
+                        startIcon={<img src={"./Meta.svg"} alt="facebook"/>}
+                        sx={{mx: 1, my: 1}}
+                    />
+                  
+                
                       {/* Added GitHub OAuth */}
                       <Button
                           type="submit"
-                          variant="outlined"
                           size="small"
                           onClick={() => {
                               handleGithubLogin();
                           }}
                           startIcon={<img src={"./Github.svg"} alt="facebook"/>}
                           sx={{mx: 1, my: 1}}
-                      >Continue with the GitHub</Button>
-                  </div>
+                      />
+                  </Box>
               </TabPanel>
               <TabPanel value={value} index={1}>
               <TextField
