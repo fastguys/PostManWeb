@@ -5,11 +5,12 @@ import LoginPage from './LoginPage';
 import SignUpPage from "./SignupPage/SignUpPage";
 import HomePage from "./Homepage";
 
+import "./App.css";
 
 
 function App() {
   return (
-    <div>
+    <div className="App">
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LoginPage />} />
