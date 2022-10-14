@@ -113,7 +113,7 @@ export default function SignUp() {
         setPasswordError(false)
         setEmailError(false)
         setInUsed(false)
-        setIncorrectCode(true)
+        setIncorrectCode(false)
         if (firstName.length === 0 || lastName.length === 0) {
             setNameError(true)
         }
@@ -132,15 +132,15 @@ export default function SignUp() {
         window.confirmationResult.confirm(validation_code).then((result) => {
           // User signed in successfully.
           const user = result.user;
-          setIncorrectCode(false)
           // ...
         }).catch((error) => {
           // User couldn't sign in (bad verification code?)
           // ...
             setIncorrectCode(true)
-
         });
-        if (!NameError && !PhoneError && !PasswordError && !EmailInUsed && !IncorrectCode) {
+        console.log(IncorrectCode + "nnn")
+        if (!NameError && !PhoneError && !PasswordError && !EmailInUsed && IncorrectCode) {
+             console.log(IncorrectCode)
           auth.createUserWithEmailAndPassword(email, password)
           .then((userCredential) => {
               // Signed in
@@ -189,7 +189,7 @@ export default function SignUp() {
                         <img
                             src={"/logo.svg"}
                             alt="logo"
-                            style={{width: 200, height: 185}}
+                            style={{width: 133, height: 123}}
                         />
                         <Typography component="h1" variant="h5">
                             Sign up
@@ -226,7 +226,18 @@ export default function SignUp() {
                                     />
                                 </Grid>
 
-                                <Grid item xs={12}>
+                                <Grid item xs={12} sm={6}>
+                                    <TextField
+                                        required
+                                        fullWidth
+                                        error={NameError}
+                                        id="NickName"
+                                        label="Nick Name"
+                                        name="nickname"
+                                    />
+                                </Grid>
+
+                                <Grid item xs={12} sm={6}>
                                     <TextField
                                         required
                                         fullWidth
@@ -238,7 +249,7 @@ export default function SignUp() {
                                         autoComplete="email"
                                     />
                                 </Grid>
-                                <Grid item xs={12}>
+                                <Grid item xs={12} sm={6}>
                                     <TextField
                                         required
                                         fullWidth
@@ -253,7 +264,7 @@ export default function SignUp() {
                                         }}
                                     />
                                 </Grid>
-                                <Grid item xs={12}>
+                                <Grid item xs={12} sm={6}>
                                     <TextField
                                         required
                                         fullWidth
