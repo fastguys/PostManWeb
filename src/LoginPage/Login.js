@@ -439,10 +439,11 @@ export default function Login() {
                   {/* Buttons */}
                   <Box
                       sx={{
-                          display: "flex",
-                          flexDirection: "row",
-                          alignItems: "center",
-                      }}
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "center",
+                          justifyContent: "center",
+                    }}
                   >
 
                       <Button
@@ -475,56 +476,47 @@ export default function Login() {
                       id="reCap"
                   ></Grid>             
                   {/* Third party */}
-                  <div>
-                      {/* Added Microsoft OAuth */}
+                  <Box sx={{display: "flex", flexDirection: "row", alignItems: "center"}}>
                       <Button
                           type="submit"
-                          variant="outlined"
                           size="small"
                           onClick={() => {
                               handleMicrosoftLogin();
                           }}
                           startIcon={<img src={"./Microsoft.svg"} alt="microsoft"/>}
                           sx={{mx: 1, my: 1}}
-                      >Continue with Microsoft</Button>
-                  </div>
-                  {/* TODO: Added Google OAuth */}
+                      />
                   <Button
                       type="submit"
-                      variant="outlined"
                       size="small"
                       onClick={() => {
                           handleGoogleLogin();
                       }}
                       startIcon={<img src={"./Google.svg"} alt="google"/>}
                       sx={{mx: 1, my: 1}}
-                  >Continue with Google</Button>
-                  <div>
-                      {/* Added Meta OAuth */}
-                      <Button
-                          type="submit"
-                          variant="outlined"
-                          size="small"
-                          onClick={() => {
-                              handleFacebookLogin();
-                          }}
-                          startIcon={<img src={"./Meta.svg"} alt="facebook"/>}
-                          sx={{mx: 1, my: 1}}
-                      >Continue with Facebook</Button>
-                  </div>
-                  <div>
+                   />
+                    <Button
+                        type="submit"
+                        size="small"
+                        onClick={() => {
+                            handleFacebookLogin();
+                        }}
+                        startIcon={<img src={"./Meta.svg"} alt="facebook"/>}
+                        sx={{mx: 1, my: 1}}
+                    />
+                  
+                
                       {/* Added GitHub OAuth */}
                       <Button
                           type="submit"
-                          variant="outlined"
                           size="small"
                           onClick={() => {
                               handleGithubLogin();
                           }}
                           startIcon={<img src={"./Github.svg"} alt="facebook"/>}
                           sx={{mx: 1, my: 1}}
-                      >Continue with the GitHub</Button>
-                  </div>
+                      />
+                  </Box>
               </TabPanel>
             </Box>
         </div>
