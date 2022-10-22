@@ -1,18 +1,16 @@
-import { Box } from "@mui/material";
-import React from "react";
-import Login from "./Login";
 import ResponsiveAppBar from "../TopBar/TopBar";
+import { Box } from "@mui/material";
+import Sidebar from "./sideBar";
 
-const LoginPage = () => {
+const ChatPage = () => {
   return (
-    <>
+    <div>
       <Box
         sx={{
           display: "flex",
           flexDirection: "column",
-          alignItems: "center",
           width: "100%",
-          height: "100%",
+          height: "100vh",
         }}
       >
         <ResponsiveAppBar />
@@ -25,39 +23,34 @@ const LoginPage = () => {
             height: "100%",
           }}
         >
-          {/*<Left part*/}
+          {/*Side Bar*/}
           <Box
             sx={{
-              width: "60%",
-              height: "100%",
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
+              width: "30%",
+              height: "100%",
+              backgroundColor: "#ADADAD",
+              boxSizing: "border-box",
             }}
           >
-            <Box sx={{ width: 700, height: 50, border: 1, mb: 5 }}>
-              Enter address
-            </Box>
-            <Box sx={{ width: 700, height: 400, border: 1 }} />
+            <Sidebar />
           </Box>
 
-          {/*Right part*/}
+          {/*ChatRoom*/}
           <Box
             sx={{
-              width: "40%",
-              height: "100%",
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
+              width: "70%",
+              height: "100%",
             }}
-          >
-            <Box sx={{ width: 300, height: 600, padding: 10 }}>
-              <Login />
-            </Box>
-          </Box>
+          ></Box>
         </Box>
       </Box>
-    </>
+    </div>
   );
 };
-export default LoginPage;
+export default ChatPage;
