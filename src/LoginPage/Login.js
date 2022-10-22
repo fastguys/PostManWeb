@@ -181,7 +181,7 @@ export default function Login() {
                 // This gives you a Facebook Access Token. You can use it to access the Facebook API.
                 const credential = FacebookAuthProvider.credentialFromResult(result);
                 const accessToken = credential.accessToken;
-
+                localStorage.setItem("authenticated", true);
                 // navigate to homepage
                 navigate("./homepage");
             })
@@ -207,6 +207,7 @@ export default function Login() {
                 const token = credential.accessToken;
                 // The signed-in user info.
                 const user = result.user;
+                localStorage.setItem("authenticated", true);
                 navigate("./homepage");
                 // ...
             }).catch((error) => {
@@ -233,6 +234,7 @@ export default function Login() {
                 // The signed-in user info.
                 const user = result.user;
                 // ...
+                localStorage.setItem("authenticated", true);
                 navigate("./homepage");
             }).catch((error) => {
             // Handle Errors here.
