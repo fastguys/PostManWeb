@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-// mongoose.connect('mongodb://localhost/USER')
 const userSchema = mongoose.Schema({
   firstname: {
     type: String,

@@ -26,10 +26,11 @@ import {
   signInWithPhoneNumber,
   sendPasswordResetEmail,
 } from "firebase/auth";
+import insertNewuser from "../../apis/user";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
-
+  
   return (
     <div
       role="tabpanel"
@@ -141,6 +142,7 @@ export default function Login() {
       });
   };
   const handleLoginSubmit = async (e) => {
+
     const auth = getAuth();
     let errorMessage = "";
     await signInWithEmailAndPassword(auth, email, password)
@@ -340,6 +342,14 @@ export default function Login() {
               }}
               onClick={() => {
                 handleLoginSubmit();
+                insertNewuser( {
+                  firstname: "bx",
+                  lastname: "li",
+                  nickname: "bx",
+                  email: "bx@gmail.com",
+                  password: "test",
+                  is_admin: false,
+                })
               }}
             >
               Login
@@ -370,6 +380,7 @@ export default function Login() {
               size="small"
               onClick={() => {
                 handleMicrosoftLogin();
+                
               }}
               startIcon={<img src={"./Microsoft.svg"} alt="microsoft" />}
               sx={{ mx: 1, my: 1 }}
