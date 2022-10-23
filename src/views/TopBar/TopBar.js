@@ -12,11 +12,12 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
-
+import { useNavigate } from "react-router-dom";
 const pages = [];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const settings = ['Profile','Logout'];
 
 export default function ResponsiveAppBar() {
+  const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -30,7 +31,13 @@ export default function ResponsiveAppBar() {
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
+  const OpenProfile = (e) => {
+    console.log(e);
+    navigate("/profilepage");
 
+    
+  }
+  const logout =() => {}
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
@@ -153,7 +160,7 @@ export default function ResponsiveAppBar() {
                   onClose={handleCloseUserMenu}
               >
                 {settings.map((setting) => (
-                    <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                    <MenuItem key={setting} onClick={setting === "Profile" ? OpenProfile : logout}>
                       <Typography textAlign="center">{setting}</Typography>
                     </MenuItem>
                 ))}
