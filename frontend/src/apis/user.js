@@ -1,8 +1,8 @@
-import axios from 'axios';
+import {post} from './axios';
 
 export const insertNewuser = async (payload) => { 
-  const {response} =  await axios.post("http://localhost:3001/api", payload);
-  return response;
+  console.log(payload);
+  return post("/user", {payload});
 }
 
 const apis = {

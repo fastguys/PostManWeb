@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require('cors');
 const port = process.env.PORT || 3001;
 const connectDB = require("./config/db");
-const user = require("./controllers/users/index");
+const user = require("./controllers/users");
 
 const app = express();
 connectDB();
@@ -29,7 +29,7 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-app.use('/api', user)
+app.use('/api', user.router)
 
 
 
