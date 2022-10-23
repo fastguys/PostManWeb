@@ -11,7 +11,7 @@ const LoginPage = () => {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          with: "100%",
+          width: "100%",
           height: "100%",
         }}
       >
