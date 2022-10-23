@@ -26,7 +26,7 @@ import {
   signInWithPhoneNumber,
   sendPasswordResetEmail,
 } from "firebase/auth";
-import insertNewuser from "../../apis/user";
+import {insertNewuser} from "../../apis/user";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -178,6 +178,18 @@ export default function Login() {
         // Handle error.
         console.log(error);
       });
+  };
+
+  const handleHiSubmit = async (e) => {
+    const user = {
+      firstname: "bx",
+      lastname: "li",
+      nickname: "bx",
+      email: "bx@gmail.com",
+      password: "test",
+      is_admin: false,
+    }
+    insertNewuser(user);
   };
 
   //
@@ -342,18 +354,28 @@ export default function Login() {
               }}
               onClick={() => {
                 handleLoginSubmit();
-                insertNewuser( {
-                  firstname: "bx",
-                  lastname: "li",
-                  nickname: "bx",
-                  email: "bx@gmail.com",
-                  password: "test",
-                  is_admin: false,
-                })
               }}
             >
               Login
             </Button>
+
+            <Button
+              type="submit"
+              variant="contained"
+              sx={{
+                mt: 3,
+                mb: 2,
+                mr: 2,
+                width: 100,
+                backgroundColor: "#656268",
+              }}
+              onClick={(e) => {
+                handleHiSubmit();
+              }}
+            >
+              hi
+            </Button>
+
             <Link href="./signup" sx={{ textDecoration: "none" }}>
               <Button
                 type="submit"
