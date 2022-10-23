@@ -1,7 +1,7 @@
-const { User } = require('./models/User');
+const  User = require('../../models/User');
 const router = require('express').Router();
 
-router.post("/user", async (req, res) => {
+router.post("user", async (req, res) => {
     const newUser = new User(req.body);
     try {
         const user = await newUser.save();
@@ -12,4 +12,4 @@ router.post("/user", async (req, res) => {
 }
 );
 
-module.exports = { router };
+module.exports =  router ;

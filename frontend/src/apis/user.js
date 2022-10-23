@@ -1,5 +1,3 @@
-import { get, post } from "./axios";
-
 export const insertNewuser = (payload) => { 
   return post("/user", payload);
 }
