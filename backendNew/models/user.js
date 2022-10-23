@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-// mongoose.connect('mongodb://localhost/USER')
 const userSchema = mongoose.Schema({
   firstname: {
     type: String,
@@ -11,6 +10,7 @@ const userSchema = mongoose.Schema({
   },
   nickname: {
     type: String,
+    required: true,
   },
   email: {
     type: String,
