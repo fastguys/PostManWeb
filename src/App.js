@@ -5,7 +5,7 @@ import LoginPage from './views/LoginPage';
 import SignUpPage from "./views/SignupPage/SignUpPage";
 import HomePage from "./views/Homepage";
 import ChatPage from "./views/ChatPage";
-
+import ProfilePage from "./views/Profilepage/ProfilePage"
 import "./App.css";
 
 
@@ -18,6 +18,7 @@ function App() {
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/homepage" element={<HomePage />} />
           <Route path="/chatpage" element={<ChatPage />} />
+          <Route path="/profilepage" element={<ProfilePage />} />
         </Routes>
       </BrowserRouter>
     </div>
