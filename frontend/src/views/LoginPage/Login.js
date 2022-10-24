@@ -26,10 +26,11 @@ import {
   signInWithPhoneNumber,
   sendPasswordResetEmail,
 } from "firebase/auth";
+import {insertNewuser} from "../../apis/user";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
-
+  
   return (
     <div
       role="tabpanel"
@@ -141,6 +142,7 @@ export default function Login() {
       });
   };
   const handleLoginSubmit = async (e) => {
+
     const auth = getAuth();
     let errorMessage = "";
     await signInWithEmailAndPassword(auth, email, password)
@@ -176,6 +178,19 @@ export default function Login() {
         // Handle error.
         console.log(error);
       });
+  };
+
+  const handleHiSubmit = async (e) => {
+    const user = {
+      firstname: "bx",
+      lastName: "li",
+      nickname: "bx",
+      email: "bx@gmail.com",
+      phoneNumber: "7657010909",
+      password: "test",
+      is_admin: false,
+    }
+    insertNewuser(user);
   };
 
   //
@@ -344,6 +359,24 @@ export default function Login() {
             >
               Login
             </Button>
+
+            <Button
+              type="submit"
+              variant="contained"
+              sx={{
+                mt: 3,
+                mb: 2,
+                mr: 2,
+                width: 100,
+                backgroundColor: "#656268",
+              }}
+              onClick={(e) => {
+                handleHiSubmit();
+              }}
+            >
+              hi
+            </Button>
+
             <Link href="./signup" sx={{ textDecoration: "none" }}>
               <Button
                 type="submit"
@@ -370,6 +403,7 @@ export default function Login() {
               size="small"
               onClick={() => {
                 handleMicrosoftLogin();
+                
               }}
               startIcon={<img src={"./Microsoft.svg"} alt="microsoft" />}
               sx={{ mx: 1, my: 1 }}
