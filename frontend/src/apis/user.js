@@ -1,12 +1,11 @@
-import {post} from './axios';
+import { get, post } from "./axios";
 
-export const insertNewuser = async (payload) => { 
-  console.log(payload);
-  return post("/user", {payload});
-}
+export const insertNewuser = async (payload) => {
+  return post("/user", { payload });
+};
 
 const apis = {
-  insertNewuser
-}
+  insertNewuser,
+};
 
-export default apis
+export default apis;
