@@ -20,24 +20,24 @@ const userSchema = mongoose.Schema({
   phoneNumber: {
     type: String,
   },
-  address: {
+  // address: {
+  //   type: String,
+  // },
+  // country: {
+  //   type: String,
+  // },
+  // zipCode: {
+  //   type: String,
+  // },
+  // city: {
+  //   type: String,
+  // },
+  // state: {
+  //   type: String,
+  // },
+   bio: {
     type: String,
-  },
-  country: {
-    type: String,
-  },
-  zipCode: {
-    type: String,
-  },
-  city: {
-    type: String,
-  },
-  state: {
-    type: String,
-  },
-  bio: {
-    type: String,
-    default: "Hello From Postman"
+    default: "Welcome to Fastguy!",
   },
   password: {
     type: String,

@@ -48,7 +48,6 @@ export default function SignUp() {
   const [EmailInUsed, setInUsed] = useState(false);
   const [IncorrectCode, setIncorrectCode] = useState(false);
   const [Phone, setPhone] = useState("+1");
-
   const handleClick = (event) => {
     const auth = getAuth();
     if (!window.recaptchaVerifier) {
