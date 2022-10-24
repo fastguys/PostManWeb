@@ -162,12 +162,6 @@ export default function SignUp() {
               // user.linkWithPhoneNumber(phone_number);
               // ...
               send_email(email);
-              const results = Userdb.create(
-                {
-                  "firstname": firstName
-                  
-                }
-              )
               navigate("/");
             })
             .catch((error) => {

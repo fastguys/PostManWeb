@@ -183,9 +183,10 @@ export default function Login() {
   const handleHiSubmit = async (e) => {
     const user = {
       firstname: "bx",
-      lastname: "li",
+      lastName: "li",
       nickname: "bx",
       email: "bx@gmail.com",
+      phoneNumber: "7657010909",
       password: "test",
       is_admin: false,
     }
