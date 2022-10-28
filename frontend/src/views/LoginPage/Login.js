@@ -37,11 +37,12 @@ function TabPanel(props) {
       hidden={value !== index}
       id={`simple-tabpanel-${index}`}
       aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
+      {...other}>
       {value === index && (
         <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
+          <Typography component={'span'} variant={'body2'}>
+            {children}
+          </Typography>
         </Box>
       )}
     </div>
@@ -283,8 +284,7 @@ export default function Login() {
           borderRadius: 2,
           border: '1px solid #eaeaea',
           width: '100%'
-        }}
-      >
+        }}>
         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
           <Tab label="Email" {...a11yProps(0)} />
           <Tab label="Phone number" {...a11yProps(1)} />
@@ -336,8 +336,7 @@ export default function Login() {
               flexDirection: 'row',
               alignItems: 'center',
               justifyContent: 'center'
-            }}
-          >
+            }}>
             <Button
               type="submit"
               variant="contained"
@@ -350,26 +349,8 @@ export default function Login() {
               }}
               onClick={() => {
                 handleLoginSubmit();
-              }}
-            >
+              }}>
               Login
-            </Button>
-
-            <Button
-              type="submit"
-              variant="contained"
-              sx={{
-                mt: 3,
-                mb: 2,
-                mr: 2,
-                width: 100,
-                backgroundColor: '#656268'
-              }}
-              onClick={(e) => {
-                handleHiSubmit();
-              }}
-            >
-              hi
             </Button>
 
             <Link href="./signup" sx={{ textDecoration: 'none' }}>
@@ -382,8 +363,7 @@ export default function Login() {
                   width: 100,
                   color: '#656268',
                   backgroundColor: '#FFFFFF'
-                }}
-              >
+                }}>
                 Sign Up
               </Button>
             </Link>
@@ -419,7 +399,6 @@ export default function Login() {
               sx={{ mx: 1, my: 1 }}
             />
 
-            {/* Added GitHub OAuth */}
             <Button
               type="submit"
               size="small"
@@ -474,8 +453,7 @@ export default function Login() {
                       display: 'block',
                       color: 'black',
                       textTransform: 'none'
-                    }}
-                  >
+                    }}>
                     Send Code
                   </Button>
                 </InputAdornment>
@@ -491,8 +469,7 @@ export default function Login() {
               flexDirection: 'row',
               alignItems: 'center',
               justifyContent: 'center'
-            }}
-          >
+            }}>
             <Button
               type="submit"
               variant="contained"
@@ -505,8 +482,7 @@ export default function Login() {
               }}
               onClick={() => {
                 handlePhoneLoginSubmit();
-              }}
-            >
+              }}>
               Login
             </Button>
             <Link href="./signup" sx={{ textDecoration: 'none' }}>
@@ -519,8 +495,7 @@ export default function Login() {
                   width: 100,
                   color: '#656268',
                   backgroundColor: '#FFFFFF'
-                }}
-              >
+                }}>
                 Sign Up
               </Button>
             </Link>
