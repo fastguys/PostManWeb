@@ -12,7 +12,7 @@ const HomePage = () => {
     return <Navigate to="/" replace={true} />;
   } else {
     return (
-      <div>
+      <div className="homepage">
         <ResponsiveAppBar setIsTaskTakerMode={setIsTaskTakerMode} />
         {isTaskTakerMode ? <TaskTakerPanel /> : <div>Task Poster Panel</div>}
       </div>

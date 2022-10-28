@@ -25,26 +25,3 @@
   border: 1px solid #ccc;
   border-radius: 4px;
 }
-
-input[type='text'] {
-  width: 85%;
-  padding: 12px 20px;
-  margin-top: 8px;
-  margin-bottom: 8px;
-  display: inline-block;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-}
-
-input[type='submit'] {
-  width: 15%;
-  padding: 12px 20px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-input[type='submit']:hover {
-  background-color: #ecebeb;
-}

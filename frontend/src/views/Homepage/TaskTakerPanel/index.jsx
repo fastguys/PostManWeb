@@ -2,6 +2,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import Taskfeed from './Taskfeed/index';
 import { Box } from '@mui/material';
+import './tasktakerpanel.css';
 
 const TaskTakerPanel = () => {
   const [searchLocationBox, setSearchLocationBox] = useState('');
