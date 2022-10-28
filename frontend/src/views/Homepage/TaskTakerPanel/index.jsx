@@ -35,12 +35,20 @@ const TaskTakerPanel = () => {
     {
       title: 'task1',
       description: 'task1 description',
-      location: 'task1 location'
+      location: 'task1 location',
+      isTaken: false
     },
     {
       title: 'task2',
       description: 'task2 description',
-      location: 'task2 location'
+      location: 'task2 location',
+      isTaken: false
+    },
+    {
+      title: 'task3',
+      description: 'task3 description',
+      location: 'task3 location',
+      isTaken: true
     }
   ];
 

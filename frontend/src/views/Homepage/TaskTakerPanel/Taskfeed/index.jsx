@@ -2,7 +2,6 @@ import * as React from 'react';
 import List from '@mui/material/List';
 import CollapsedTask from './CollapsedTask';
 
-
 export default function NestedList(props) {
   // this is the mock up task data for the task feed
   const taskList = props.taskList;
@@ -14,10 +13,8 @@ export default function NestedList(props) {
       aria-labelledby="nested-list-subheader"
     >
       {taskList.map((task, index) => {
-          return (
-            <CollapsedTask taskInfo={task} setTaskTaken={props.setTaskTaken}/>
-          );
-        })}
+        return <CollapsedTask taskInfo={task} setTaskTaken={props.setTaskTaken} />;
+      })}
     </List>
   );
 }
