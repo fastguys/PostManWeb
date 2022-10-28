@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-// mongoose.connect('mongodb://localhost/USER')
 const userSchema = mongoose.Schema({
   firstname: {
     type: String,
@@ -11,33 +10,33 @@ const userSchema = mongoose.Schema({
   },
   nickname: {
     type: String,
+    required: true,
   },
   email: {
     type: String,
     required: true,
-    unique: true,
   },
   phoneNumber: {
     type: String,
   },
-  address: {
+  // address: {
+  //   type: String,
+  // },
+  // country: {
+  //   type: String,
+  // },
+  // zipCode: {
+  //   type: String,
+  // },
+  // city: {
+  //   type: String,
+  // },
+  // state: {
+  //   type: String,
+  // },
+   bio: {
     type: String,
-  },
-  country: {
-    type: String,
-  },
-  zipCode: {
-    type: String,
-  },
-  city: {
-    type: String,
-  },
-  state: {
-    type: String,
-  },
-  bio: {
-    type: String,
-    default: "Hello From Postman"
+    default: "Welcome to Fastguy!",
   },
   password: {
     type: String,
