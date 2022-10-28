@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
-import ResponsiveAppBar from '../TopBar/TopBar';
+import ResponsiveAppBar from './ResponsiveAppBar';
 import TaskTakerPanel from './TaskTakerPanel/index';
 import './homepage.css';
 
 const HomePage = () => {
+  // controller for switching between task taker and task poster page
   const [isTaskTakerMode, setIsTaskTakerMode] = useState(true);
 
   if (!localStorage.getItem('authenticated')) {
@@ -12,7 +13,7 @@ const HomePage = () => {
   } else {
     return (
       <div>
-        <ResponsiveAppBar />
+        <ResponsiveAppBar setIsTaskTakerMode={setIsTaskTakerMode} />
         {isTaskTakerMode ? <TaskTakerPanel /> : <div>Task Poster Panel</div>}
       </div>
     );
