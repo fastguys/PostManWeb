@@ -1,29 +1,27 @@
 .task-taker-panel {
-    margin: 20px;
+  display: flex;
+  flex-direction: row;
+  margin: 20px;
 }
 .task-taker-panel-left {
-    width: 50%;
+  width: 50%;
+  height: 100%;
+  margin: 10px;
 }
 
-input[type=text]{
-    width: 80%;
-    padding: 12px 20px;
-    margin-top: 8px;
-    margin-bottom: 8px;
-    display: inline-block;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
+.task-taker-panel-right {
+  width: 50%;
+  height: 100%;
+  margin: 10px;
 }
 
-input[type=submit]{
-    width:15%;
-    padding: 12px 20px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    cursor: pointer;
+.task-field-panel {
+  width: 100%;
 }
 
-input[type=submit]:hover {
-    background-color: #ECEBEB;
+.task-taker-search-map-box {
+  width: 100%;
+  height: 60vh;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }

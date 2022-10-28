@@ -12,14 +12,26 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
+import SegmentedControl from 'mui-segmented-control';
 import { useNavigate } from 'react-router-dom';
 const pages = [];
 const settings = ['Profile', 'Logout'];
 
-export default function ResponsiveAppBar() {
+export default function ResponsiveAppBar(props) {
   const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const setIsTaskTakerMode = props.setIsTaskTakerMode;
+
+  const [value, setValue] = React.useState(1);
+
+  React.useEffect(() => {
+    if (value === 1) {
+      setIsTaskTakerMode(true);
+    } else {
+      setIsTaskTakerMode(false);
+    }
+  }, [value]);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -134,6 +146,24 @@ export default function ResponsiveAppBar() {
               </Button>
             ))}
           </Box>
+
+          {/* mode segmented control */}
+          <SegmentedControl
+            color="primary"
+            options={[
+              {
+                label: 'TaskTaker',
+                value: 1
+              },
+              {
+                label: 'TaskPoster',
+                value: 2
+              }
+            ]}
+            value={value}
+            onChange={setValue}
+          />
+          {/* till here */}
 
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
