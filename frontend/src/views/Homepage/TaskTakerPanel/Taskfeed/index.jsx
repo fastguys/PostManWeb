@@ -10,10 +10,9 @@ export default function NestedList(props) {
     <List
       sx={{ width: '100%', bgcolor: 'background.paper' }}
       component="nav"
-      aria-labelledby="nested-list-subheader"
-    >
+      aria-labelledby="nested-list-subheader">
       {taskList.map((task, index) => {
-        return <CollapsedTask taskInfo={task} setTaskTaken={props.setTaskTaken} />;
+        return <CollapsedTask taskInfo={task} setTaskTaken={props.setTaskTaken} key={index} />;
       })}
     </List>
   );
