@@ -12,6 +12,7 @@ const instance = axios.create({
 const axiosConfig = {
   withCredentials: true
 };
+
 export function get(url, params = {}, config = {}) {
   config = ({ ...config, params: params });
   return new Promise((resolve, reject) => {
