@@ -1,8 +1,16 @@
 import ResponsiveAppBar from '../TopBar/TopBar';
-import { Box } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import Sidebar from './sideBar';
+import { FinduserByEmail } from '../../apis/user';
 
 const ChatPage = () => {
+
+  const handleSearch = (e) => {
+    FinduserByEmail("bx@gmail.com").then((res) => {
+      console.log(res);
+    });
+  };
+  
   return (
     <div>
       <Box
@@ -47,7 +55,11 @@ const ChatPage = () => {
               width: '70%',
               height: '100%'
             }}
-          ></Box>
+          >
+            <Button>
+              <h1>Send</h1>
+            </Button>
+          </Box>
         </Box>
       </Box>
     </div>
