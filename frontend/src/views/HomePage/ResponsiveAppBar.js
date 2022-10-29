@@ -12,14 +12,26 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
+import SegmentedControl from 'mui-segmented-control';
 import { useNavigate } from 'react-router-dom';
 const pages = [];
 const settings = ['Profile', 'Logout'];
 
-export default function ResponsiveAppBar() {
+export default function ResponsiveAppBar(props) {
   const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const setIsTaskTakerMode = props.setIsTaskTakerMode;
+
+  const [value, setValue] = React.useState(1);
+
+  React.useEffect(() => {
+    if (value === 1) {
+      setIsTaskTakerMode(true);
+    } else {
+      setIsTaskTakerMode(false);
+    }
+  }, [value]);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -63,8 +75,7 @@ export default function ResponsiveAppBar() {
               letterSpacing: '.3rem',
               color: 'inherit',
               textDecoration: 'none'
-            }}
-          >
+            }}>
             PostMan
           </Typography>
 
@@ -75,8 +86,7 @@ export default function ResponsiveAppBar() {
               aria-controls="menu-appbar"
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
-              color="inherit"
-            >
+              color="inherit">
               <MenuIcon />
             </IconButton>
             <Menu
@@ -95,8 +105,7 @@ export default function ResponsiveAppBar() {
               onClose={handleCloseNavMenu}
               sx={{
                 display: { xs: 'block', md: 'none' }
-              }}
-            >
+              }}>
               {pages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
                   <Typography textAlign="center">{page}</Typography>
@@ -119,8 +128,7 @@ export default function ResponsiveAppBar() {
               letterSpacing: '.3rem',
               color: 'inherit',
               textDecoration: 'none'
-            }}
-          >
+            }}>
             PostMan
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
@@ -128,12 +136,29 @@ export default function ResponsiveAppBar() {
               <Button
                 key={page}
                 onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
+                sx={{ my: 2, color: 'white', display: 'block' }}>
                 {page}
               </Button>
             ))}
           </Box>
+
+          {/* mode segmented control */}
+          <SegmentedControl
+            color="primary"
+            options={[
+              {
+                label: 'TaskTaker',
+                value: 1
+              },
+              {
+                label: 'TaskPoster',
+                value: 2
+              }
+            ]}
+            value={value}
+            onChange={setValue}
+          />
+          {/* till here */}
 
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
@@ -155,8 +180,7 @@ export default function ResponsiveAppBar() {
                 horizontal: 'right'
               }}
               open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
+              onClose={handleCloseUserMenu}>
               {settings.map((setting) => (
                 <MenuItem key={setting} onClick={setting === 'Profile' ? OpenProfile : logout}>
                   <Typography textAlign="center">{setting}</Typography>
