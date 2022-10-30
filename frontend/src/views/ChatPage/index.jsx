@@ -1,8 +1,19 @@
 import ResponsiveAppBar from "../TopBar/TopBar";
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import Sidebar from "./sideBar";
+import Chat from "./chat";
+import { FinduserByEmail } from "../../apis/user";
+import { useState } from "react";
 
 const ChatPage = () => {
+  const [allmessages, setAllMessages] = useState([]);
+  const handleSearch = () => {
+    const email = "bx@gmail.com";
+    FinduserByEmail({ email }).then((res) => {
+      console.log(res);
+    });
+  };
+
   return (
     <div>
       <Box
@@ -47,7 +58,9 @@ const ChatPage = () => {
               width: "70%",
               height: "100%",
             }}
-          ></Box>
+          >
+            <Chat allmessages={allmessages} setAllMessages={setAllMessages} />
+          </Box>
         </Box>
       </Box>
     </div>
