@@ -1,19 +1,19 @@
-import React from "react";
-import { useState } from "react";
-import Button from "@mui/material/Button";
-import { useNavigate } from "react-router-dom";
-import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import { auth } from "../../apis/firebase";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import PropTypes from "prop-types";
-import { InputAdornment } from "@mui/material";
+import React from 'react';
+import { useState } from 'react';
+import Button from '@mui/material/Button';
+import { useNavigate } from 'react-router-dom';
+import TextField from '@mui/material/TextField';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+import Link from '@mui/material/Link';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import { auth } from '../../apis/firebase';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import PropTypes from 'prop-types';
+import { InputAdornment } from '@mui/material';
 import {
   getAuth,
   signInWithEmailAndPassword,
@@ -24,9 +24,9 @@ import {
   GoogleAuthProvider,
   RecaptchaVerifier,
   signInWithPhoneNumber,
-  sendPasswordResetEmail,
-} from "firebase/auth";
-import { insertNewuser } from "../../apis/user";
+  sendPasswordResetEmail
+} from 'firebase/auth';
+import { insertNewuser } from '../../apis/user';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -37,11 +37,10 @@ function TabPanel(props) {
       hidden={value !== index}
       id={`simple-tabpanel-${index}`}
       aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
+      {...other}>
       {value === index && (
         <Box sx={{ p: 3 }}>
-          <Typography component={"span"} variant={"body2"}>
+          <Typography component={'span'} variant={'body2'}>
             {children}
           </Typography>
         </Box>
@@ -53,33 +52,37 @@ function TabPanel(props) {
 TabPanel.propTypes = {
   children: PropTypes.node,
   index: PropTypes.number.isRequired,
-  value: PropTypes.number.isRequired,
+  value: PropTypes.number.isRequired
 };
 
 function a11yProps(index) {
   return {
     id: `simple-tab-${index}`,
-    "aria-controls": `simple-tabpanel-${index}`,
+    'aria-controls': `simple-tabpanel-${index}`
   };
 }
 export default function Login() {
   const [loginError, setLoginError] = useState(false);
   const [EmailError, setEmailError] = useState(false);
   const [authenticated, setauthenticated] = useState(
-    localStorage.getItem(localStorage.getItem("authenticated") || false)
+    localStorage.getItem(localStorage.getItem('authenticated') || false)
   );
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const navigate = useNavigate();
-  const msftProvider = new OAuthProvider("microsoft.com");
+  const msftProvider = new OAuthProvider('microsoft.com');
   const fbProvider = new FacebookAuthProvider();
   const ghProvider = new GithubAuthProvider();
   const ggProvider = new GoogleAuthProvider();
   const [value, setValue] = useState(0);
   const [IncorrectCode, setIncorrectCode] = useState(false);
   const [PhoneError, setPhoneError] = useState(false);
-  const [Phone, setPhone] = useState("+1");
-  const [validation_code, setValidationcode] = useState("");
+  const [Phone, setPhone] = useState('+1');
+  const [validation_code, setValidationcode] = useState('');
+  const handleRedirect = () => {
+    navigate('./homepage');
+    window.location.reload();
+  };
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -90,7 +93,7 @@ export default function Login() {
         // Password reset email sent!
         // ..
         setEmailError(false);
-        alert("A reset email have been sent to your email");
+        alert('A reset email have been sent to your email');
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -105,7 +108,7 @@ export default function Login() {
         // User signed in successfully.
         const user = result.user;
         setIncorrectCode(false);
-        navigate("./homepage");
+        handleRedirect();
         // ...
       })
       .catch((error) => {
@@ -118,24 +121,24 @@ export default function Login() {
     const auth = getAuth();
     if (!window.recaptchaVerifier) {
       window.recaptchaVerifier = new RecaptchaVerifier(
-        "reCap",
+        'reCap',
         {
-          size: "invisible",
+          size: 'invisible',
           callback: (response) => {
             // reCAPTCHA solved, allow signInWithPhoneNumber.
-          },
+          }
         },
         auth
       );
     }
-    let phone_number = "+1" + Phone;
+    let phone_number = '+1' + Phone;
     console.log(phone_number);
     signInWithPhoneNumber(auth, phone_number, window.recaptchaVerifier)
       .then((confirmationResult) => {
         // SMS sent. Prompt user to type the code from the message, then sign the
         // user in with confirmationResult.confirm(code).
         window.confirmationResult = confirmationResult;
-        alert("A Code Sent Successfully to Your Phone");
+        alert('A Code Sent Successfully to Your Phone');
         setPhoneError(false);
         // ...
       })
@@ -145,19 +148,19 @@ export default function Login() {
   };
   const handleLoginSubmit = async (e) => {
     const auth = getAuth();
-    let errorMessage = "";
+    let errorMessage = '';
     await signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
         setauthenticated(true);
-        localStorage.setItem("authenticated", true);
-        navigate("./homepage");
+        localStorage.setItem('authenticated', true);
+        handleRedirect();
       })
       .catch((error) => {
         const errorCode = error.code;
         errorMessage = error.message;
       });
-    if (errorMessage !== "") {
+    if (errorMessage !== '') {
       setLoginError(true);
     }
   };
@@ -173,7 +176,7 @@ export default function Login() {
         const credential = OAuthProvider.credentialFromResult(result);
         const accessToken = credential.accessToken;
         const idToken = credential.idToken;
-        navigate("./homepage");
+        handleRedirect();
       })
       .catch((error) => {
         // Handle error.
@@ -183,13 +186,13 @@ export default function Login() {
 
   const handleHiSubmit = async (e) => {
     const user = {
-      firstname: "bx",
-      lastName: "li",
-      nickname: "bx",
-      email: "bx@gmail.com",
-      phoneNumber: "7657010909",
-      password: "test",
-      is_admin: false,
+      firstname: 'bx',
+      lastName: 'li',
+      nickname: 'bx',
+      email: 'bx@gmail.com',
+      phoneNumber: '7657010909',
+      password: 'test',
+      is_admin: false
     };
     insertNewuser(user);
   };
@@ -205,9 +208,9 @@ export default function Login() {
         // This gives you a Facebook Access Token. You can use it to access the Facebook API.
         const credential = FacebookAuthProvider.credentialFromResult(result);
         const accessToken = credential.accessToken;
-        localStorage.setItem("authenticated", true);
+        localStorage.setItem('authenticated', true);
         // navigate to homepage
-        navigate("./homepage");
+        handleRedirect();
       })
       .catch((error) => {
         // Handle Errors here.
@@ -231,8 +234,8 @@ export default function Login() {
         const token = credential.accessToken;
         // The signed-in user info.
         const user = result.user;
-        localStorage.setItem("authenticated", true);
-        navigate("./homepage");
+        localStorage.setItem('authenticated', true);
+        handleRedirect();
         // ...
       })
       .catch((error) => {
@@ -258,8 +261,8 @@ export default function Login() {
         // The signed-in user info.
         const user = result.user;
         // ...
-        localStorage.setItem("authenticated", true);
-        navigate("./homepage");
+        localStorage.setItem('authenticated', true);
+        handleRedirect();
       })
       .catch((error) => {
         // Handle Errors here.
@@ -278,20 +281,15 @@ export default function Login() {
       <Box
         sx={{
           marginTop: 8,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
           padding: 2,
           borderRadius: 2,
-          border: "1px solid #eaeaea",
-          width: "100%",
-        }}
-      >
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          aria-label="basic tabs example"
-        >
+          border: '1px solid #eaeaea',
+          width: '100%'
+        }}>
+        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
           <Tab label="Email" {...a11yProps(0)} />
           <Tab label="Phone number" {...a11yProps(1)} />
         </Tabs>
@@ -301,7 +299,7 @@ export default function Login() {
             required
             fullWidth
             error={loginError || EmailError}
-            helperText={EmailError ? "Please Enter a valid email" : ""}
+            helperText={EmailError ? 'Please Enter a valid email' : ''}
             id="email"
             label="Email Address"
             name="email"
@@ -316,7 +314,7 @@ export default function Login() {
             value={password}
             required
             error={loginError}
-            helperText={loginError ? "Incorrect email or password" : ""}
+            helperText={loginError ? 'Incorrect email or password' : ''}
             fullWidth
             name="password"
             label="Password"
@@ -330,7 +328,7 @@ export default function Login() {
             sx={{ mt: 1, mb: 1 }}
           />
           {/* make button in middle */}
-          <Box sx={{ display: "flex", justifyContent: "center" }}>
+          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
             <Button onClick={handelreset} variant="contained">
               Reset Password
             </Button>
@@ -338,12 +336,11 @@ export default function Login() {
           {/* Buttons */}
           <Box
             sx={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}>
             <Button
               type="submit"
               variant="contained"
@@ -352,16 +349,15 @@ export default function Login() {
                 mb: 2,
                 mr: 2,
                 width: 100,
-                backgroundColor: "#656268",
+                backgroundColor: '#656268'
               }}
               onClick={() => {
                 handleLoginSubmit();
-              }}
-            >
+              }}>
               Login
             </Button>
 
-            <Link href="./signup" sx={{ textDecoration: "none" }}>
+            <Link href="./signup" sx={{ textDecoration: 'none' }}>
               <Button
                 type="submit"
                 variant="contained"
@@ -369,26 +365,23 @@ export default function Login() {
                   mt: 3,
                   mb: 2,
                   width: 100,
-                  color: "#656268",
-                  backgroundColor: "#FFFFFF",
-                }}
-              >
+                  color: '#656268',
+                  backgroundColor: '#FFFFFF'
+                }}>
                 Sign Up
               </Button>
             </Link>
           </Box>
 
           {/* Third party */}
-          <Box
-            sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}
-          >
+          <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
             <Button
               type="submit"
               size="small"
               onClick={() => {
                 handleMicrosoftLogin();
               }}
-              startIcon={<img src={"./Microsoft.svg"} alt="microsoft" />}
+              startIcon={<img src={'./Microsoft.svg'} alt="microsoft" />}
               sx={{ mx: 1, my: 1 }}
             />
             <Button
@@ -397,7 +390,7 @@ export default function Login() {
               onClick={() => {
                 handleGoogleLogin();
               }}
-              startIcon={<img src={"./Google.svg"} alt="google" />}
+              startIcon={<img src={'./Google.svg'} alt="google" />}
               sx={{ mx: 1, my: 1 }}
             />
             <Button
@@ -406,7 +399,7 @@ export default function Login() {
               onClick={() => {
                 handleFacebookLogin();
               }}
-              startIcon={<img src={"./Meta.svg"} alt="facebook" />}
+              startIcon={<img src={'./Meta.svg'} alt="facebook" />}
               sx={{ mx: 1, my: 1 }}
             />
 
@@ -416,7 +409,7 @@ export default function Login() {
               onClick={() => {
                 handleGithubLogin();
               }}
-              startIcon={<img src={"./Github.svg"} alt="facebook" />}
+              startIcon={<img src={'./Github.svg'} alt="facebook" />}
               sx={{ mx: 1, my: 1 }}
             />
           </Box>
@@ -426,7 +419,7 @@ export default function Login() {
             required
             fullWidth
             error={PhoneError}
-            helperText={PhoneError ? "Invalid Phone Number" : ""}
+            helperText={PhoneError ? 'Invalid Phone Number' : ''}
             id="phone_number"
             label="Phone number"
             name="phone_number"
@@ -441,7 +434,7 @@ export default function Login() {
             required
             fullWidth
             error={IncorrectCode}
-            helperText={IncorrectCode ? "Invalid Verification Number" : ""}
+            helperText={IncorrectCode ? 'Invalid Verification Number' : ''}
             id="validation_code"
             label="code"
             name="validation_code"
@@ -459,17 +452,16 @@ export default function Login() {
                       width: 100,
                       height: 55,
                       mr: -2,
-                      backgroundColor: "grey",
-                      whiteSpace: "nowrap",
-                      display: "block",
-                      color: "black",
-                      textTransform: "none",
-                    }}
-                  >
+                      backgroundColor: 'grey',
+                      whiteSpace: 'nowrap',
+                      display: 'block',
+                      color: 'black',
+                      textTransform: 'none'
+                    }}>
                     Send Code
                   </Button>
                 </InputAdornment>
-              ),
+              )
             }}
             sx={{ mt: 1, mb: 1 }}
           />
@@ -477,12 +469,11 @@ export default function Login() {
           {/* Buttons */}
           <Box
             sx={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}>
             <Button
               type="submit"
               variant="contained"
@@ -491,15 +482,14 @@ export default function Login() {
                 mb: 2,
                 mr: 2,
                 width: 100,
-                backgroundColor: "#656268",
+                backgroundColor: '#656268'
               }}
               onClick={() => {
                 handlePhoneLoginSubmit();
-              }}
-            >
+              }}>
               Login
             </Button>
-            <Link href="./signup" sx={{ textDecoration: "none" }}>
+            <Link href="./signup" sx={{ textDecoration: 'none' }}>
               <Button
                 type="submit"
                 variant="contained"
@@ -507,26 +497,23 @@ export default function Login() {
                   mt: 3,
                   mb: 2,
                   width: 100,
-                  color: "#656268",
-                  backgroundColor: "#FFFFFF",
-                }}
-              >
+                  color: '#656268',
+                  backgroundColor: '#FFFFFF'
+                }}>
                 Sign Up
               </Button>
             </Link>
           </Box>
           <Grid id="reCap"></Grid>
           {/* Third party */}
-          <Box
-            sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}
-          >
+          <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
             <Button
               type="submit"
               size="small"
               onClick={() => {
                 handleMicrosoftLogin();
               }}
-              startIcon={<img src={"./Microsoft.svg"} alt="microsoft" />}
+              startIcon={<img src={'./Microsoft.svg'} alt="microsoft" />}
               sx={{ mx: 1, my: 1 }}
             />
             <Button
@@ -535,7 +522,7 @@ export default function Login() {
               onClick={() => {
                 handleGoogleLogin();
               }}
-              startIcon={<img src={"./Google.svg"} alt="google" />}
+              startIcon={<img src={'./Google.svg'} alt="google" />}
               sx={{ mx: 1, my: 1 }}
             />
             <Button
@@ -544,7 +531,7 @@ export default function Login() {
               onClick={() => {
                 handleFacebookLogin();
               }}
-              startIcon={<img src={"./Meta.svg"} alt="facebook" />}
+              startIcon={<img src={'./Meta.svg'} alt="facebook" />}
               sx={{ mx: 1, my: 1 }}
             />
 
@@ -555,7 +542,7 @@ export default function Login() {
               onClick={() => {
                 handleGithubLogin();
               }}
-              startIcon={<img src={"./Github.svg"} alt="facebook" />}
+              startIcon={<img src={'./Github.svg'} alt="facebook" />}
               sx={{ mx: 1, my: 1 }}
             />
           </Box>
