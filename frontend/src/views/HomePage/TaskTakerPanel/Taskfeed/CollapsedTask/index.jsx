@@ -10,10 +10,12 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import IconButton from '@mui/material/IconButton';
 import TaskIcon from '@mui/icons-material/Task';
 import UnpublishedIcon from '@mui/icons-material/Unpublished';
+import ChatIcon from '@mui/icons-material/Chat';
+import SpeakerNotesOffIcon from '@mui/icons-material/SpeakerNotesOff';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import DescriptionIcon from '@mui/icons-material/Description';
-import { ListItem } from '@mui/material';
+import { ListItem, ListItemSecondaryAction } from '@mui/material';
 
 const CollapsedTask = (props) => {
   const [open, setOpen] = useState(false);
@@ -41,6 +43,19 @@ const CollapsedTask = (props) => {
     navigate('/task-progress');
   };
 
+  // controller for the task chatting button
+  const handleTaskChatClick = (e) => {
+    // check if the task is taken
+    if (taskInfo.isTaken === true) {
+      console.log('task is taken');
+      return;
+    }
+    // navigate to the task chatting page with the specific task poster
+    localStorage.setItem('chatWithPosterId', taskInfo.posterId);
+    localStorage.setItem('chatWithTaskId', taskInfo.taskId);
+    navigate('/chatpage');
+  };
+
   return (
     <React.Fragment>
       <ListItemButton onClick={handleCollapseClick}>
@@ -52,19 +67,20 @@ const CollapsedTask = (props) => {
       </ListItemButton>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-          <ListItem
-            secondaryAction={
-              <IconButton edge="end" aria-label="take" onClick={handleTaskTakeClick}>
-                {taskInfo.isTaken ? <UnpublishedIcon /> : <CheckCircleIcon />}
-              </IconButton>
-            }>
-            <ListItemButton sx={{ pl: 4 }}>
-              <ListItemIcon>
-                <DescriptionIcon />
-              </ListItemIcon>
-              <ListItemText primary={taskInfo.description} />
-            </ListItemButton>
-          </ListItem>
+          <ListItemButton sx={{ pl: 4 }}>
+            <ListItemIcon>
+              <DescriptionIcon />
+            </ListItemIcon>
+            <ListItemText primary={taskInfo.description} />
+          </ListItemButton>
+          <ListItemSecondaryAction>
+            <IconButton aria-label="chat" onClick={handleTaskChatClick}>
+              {taskInfo.isTaken ? <SpeakerNotesOffIcon /> : <ChatIcon />}
+            </IconButton>
+            <IconButton edge="end" aria-label="take" onClick={handleTaskTakeClick}>
+              {taskInfo.isTaken ? <UnpublishedIcon /> : <CheckCircleIcon />}
+            </IconButton>
+          </ListItemSecondaryAction>
         </List>
       </Collapse>
     </React.Fragment>
