@@ -38,3 +38,17 @@ export function post(url, data = {}) {
     );
   });
 }
+
+export function put(url, data = {}) {
+  return new Promise((resolve, reject) => {
+    instance.put(url, data, Object.assign(axiosConfig)).then(
+      (response) => {
+        console.log(response);
+        resolve(response.data);
+      },
+      (err) => {
+        reject(err);
+      }
+    );
+  });
+}
