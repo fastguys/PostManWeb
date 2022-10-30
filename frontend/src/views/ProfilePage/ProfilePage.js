@@ -33,10 +33,10 @@ export default function Signup() {
   const [bio, setBio] = useState("");
   const [tempbio, setTempBio] = useState(bio);
   const [updateBio, setUpdateBio] = useState(false);
-  const [alignment, setAlignment] = useState("true");
+  const [alignment, setAlignment] = useState(true);
   const [open, setOpen] = React.useState(false);
-  const handleAlignment = (event, newAlignment) => {
-    setAlignment(newAlignment);
+  const handleAlignment = async (event, newAlignment) => {
+    await setAlignment(newAlignment);
   };
   if (!localStorage.getItem("authenticated")) {
     return <Navigate to="/" replace={true} />;
@@ -253,14 +253,14 @@ export default function Signup() {
               >
                 <ToggleButton
                   sx={{ mt: 5, ml: 2, height: 30 }}
-                  value="true"
+                  value={true}
                   aria-label="Visible"
                 >
                   visible
                 </ToggleButton>
                 <ToggleButton
                   sx={{ mt: 5, height: 30 }}
-                  value="false"
+                  value={false}
                   aria-label="Not Visible"
                 >
                   Not visible
