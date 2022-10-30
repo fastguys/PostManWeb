@@ -13,7 +13,7 @@ import Typography from '@mui/material/Typography';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { Navigate } from 'react-router-dom';
-import { FinduserByEmail } from "../../apis/user";
+import { FinduserByEmail,UpdateUserNickname, UpdateUserBio} from "../../apis/user";
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -23,7 +23,7 @@ import {
   getAuth,
   sendPasswordResetEmail
 } from 'firebase/auth';
-import { FinduserByEmail, UpdateUserNickname, UpdateUserBio } from "../../apis/user";
+
 
 export default function Signup() {
   const navigate = useNavigate();
