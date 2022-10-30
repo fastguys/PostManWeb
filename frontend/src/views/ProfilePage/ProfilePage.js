@@ -175,6 +175,11 @@ export default function Signup() {
               Update Your Profile Image
             </Button>
             <Box sx={{ display: "flex", flexDirection: "row" }}>
+            <Typography variant="h5" sx={{ mt: 5 }}>
+              Email: {email}
+            </Typography>
+          </Box>
+            <Box sx={{ display: "flex", flexDirection: "row" }}>
               <Typography variant="h5" sx={{ mt: 5 }}>
                 Username:
               </Typography>
