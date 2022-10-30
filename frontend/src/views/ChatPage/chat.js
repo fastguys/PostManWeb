@@ -6,7 +6,7 @@ import { SendMessage } from "../../apis/user";
 import { io } from "socket.io-client";
 const socket = io.connect("http://localhost:3001", { reconnect: true });
 function Chat() {
-  const [message, setMessage] = useState("message");
+  const [message, setMessage] = useState("");
   const [allMessages, setAllMessages] = useState([]);
 
   const handleSend = (message) => {
