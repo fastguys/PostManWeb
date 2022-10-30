@@ -25,6 +25,27 @@ router.get("/user/:id", async (req, res) => {
   }
 });
 
+router.put("/user/nickname/:id", async (req, res) => {
+  try {
+    const user_email = req.query.payload["email"];
+    const user_nickname = req.body.payload["nickname"];
+    const user = await User.findOneAndUpdate({email: user_email}, {nickname:user_nickname});
+    console.log(user);
+    res.status(200).json(user);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+router.put("/user/bio/:id", async (req, res) => {
+  try {
+    const user_email = req.query.payload["email"];
+    const user_bio = req.body.payload["bio"];
+    const user = await User.findOneAndUpdate({email: user_email}, {bio:user_bio});
+    res.status(200).json(user);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 // messages
 router.post("/message", async (req, res) => {
   console.log(req.body.payload);

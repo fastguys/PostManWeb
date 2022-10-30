@@ -21,22 +21,17 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import {
   getAuth,
-  signInWithEmailAndPassword,
-  signInWithPopup,
-  OAuthProvider,
-  FacebookAuthProvider,
-  GithubAuthProvider,
-  GoogleAuthProvider,
-  RecaptchaVerifier,
-  signInWithPhoneNumber,
   sendPasswordResetEmail
 } from 'firebase/auth';
+import { FinduserByEmail, UpdateUserNickname, UpdateUserBio } from "../../apis/user";
 
 export default function Signup() {
   const navigate = useNavigate();
-  const [name, setName] = useState('Joseph');
+  const [name, setName] = useState('');
+  const [tempname, setTempName] = useState(name);
   const [update, setUpdate] = useState(false);
-  const [bio, setBio] = useState('hello');
+  const [bio, setBio] = useState('');
+  const [tempbio, setTempBio] = useState(bio);
   const [updateBio, setUpdateBio] = useState(false);
   const [alignment, setAlignment] = useState('true');
   const [open, setOpen] = React.useState(false);
@@ -76,6 +71,37 @@ export default function Signup() {
       localStorage.clear();
       navigate("/");
     };
+    const updateUsername = () => {
+      if (!update) {
+        setUpdate(true)
+        setTempName(name)
+      } else {
+        setUpdate(false)
+        setName(tempname)
+
+        const payload = {
+          email: localStorage.getItem('userId'),
+          nickname: tempname
+        }
+        console.log(payload)
+        UpdateUserNickname(payload)
+      }
+    }
+    const updateUserbio = () => {
+      if (!updateBio) {
+        setUpdateBio(true)
+        setTempBio(bio)
+      } else {
+        setUpdateBio(false)
+        setBio(tempbio)
+        const payload = {
+          email: localStorage.getItem('userId'),
+          bio: tempbio
+        }
+        console.log(payload)
+        UpdateUserBio(payload)
+      }
+    }
     return (
       <div>
         <ResponsiveAppBar />
@@ -123,7 +149,7 @@ export default function Signup() {
                 <TextField
                   required
                   sx={{ ml: 1, mt: 5, width: 200, height: 5 }}
-                  value={name}
+                  value={tempname}
                   InputLabelProps={{
                     style: {
                       fontSize: 14,
@@ -143,13 +169,13 @@ export default function Signup() {
                     }
                   }}
                   onChange={(e) => {
-                    setName(e.target.value);
+                    setTempName(e.target.value);
                   }}
                 />
               )}
   
               <Button
-                onClick={() => (!update ? setUpdate(true) : setUpdate(false))}
+                onClick={updateUsername}
                 variant="contained"
                 sx={{
                   ml: 2,
@@ -175,7 +201,7 @@ export default function Signup() {
                 <TextField
                   required
                   sx={{ ml: 1, mt: 5, width: 200, height: 5 }}
-                  value={bio}
+                  value={tempbio}
                   InputLabelProps={{
                     style: {
                       fontSize: 14,
@@ -195,13 +221,13 @@ export default function Signup() {
                     }
                   }}
                   onChange={(e) => {
-                    setBio(e.target.value);
+                    setTempBio(e.target.value);
                   }}
                 />
               )}
   
               <Button
-                onClick={() => (!updateBio ? setUpdateBio(true) : setUpdateBio(false))}
+                onClick={updateUserbio}
                 variant="contained"
                 sx={{
                   ml: 2,
@@ -303,4 +329,3 @@ export default function Signup() {
     );
   }
 }
-
