@@ -26,6 +26,7 @@ router.get("/user/:id", async (req, res) => {
 
 // messages
 router.post("/message", async (req, res) => {
+  console.log(req.body.payload);
   msg = req.body.payload["msg"];
   console.log(msg);
   try {

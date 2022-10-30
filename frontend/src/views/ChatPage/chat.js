@@ -1,6 +1,7 @@
 import { TextField, Box, Button } from "@mui/material";
 import { useState, useEffect } from "react";
-import Message from "./message";
+import LeftMessage from "./leftMessage";
+import RightMessage from "./rightMessage";
 import { SendMessage } from "../../apis/user";
 import { io } from "socket.io-client";
 const socket = io.connect("http://localhost:3001", { reconnect: true });
@@ -11,9 +12,9 @@ function Chat() {
   const handleSend = (message) => {
     const newMessage = {
       msg: message,
+      sender: localStorage.getItem("userId"),
     };
-
-    socket.emit("send message", message);
+    socket.emit("send message", newMessage);
     SendMessage(newMessage).then((res) => {
       console.log(res);
     });
@@ -44,9 +45,23 @@ function Chat() {
           padding: 2,
         }}
       >
-        {allMessages.map((message) => (
-          <Message message={message} key={message}/>
-        ))}
+        {allMessages.map((message) => {
+          if (message.sender === localStorage.getItem("userId")) {
+            return (
+              <LeftMessage
+                message={message.msg}
+                key={message.sender + message.msg}
+              />
+            );
+          } else {
+            return (
+              <RightMessage
+                message={message.msg}
+                key={message.sender + message.msg}
+              />
+            );
+          }
+        })}
       </Box>
 
       <TextField
@@ -80,6 +95,6 @@ function Chat() {
       ></TextField>
     </Box>
   );
-};
+}
 
 export default Chat;
