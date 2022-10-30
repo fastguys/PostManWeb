@@ -14,6 +14,9 @@ export const UpdateUserNickname = async (payload) => {
 export const UpdateUserBio = async (payload) => {
   return put("/user/bio/:id", {payload})
 };
+export const UpdateUserVisibility = async (payload) => {
+  return put("/user/visibility/:id", {payload})
+};
 export const SendMessage = async (payload) => {
   return post("/message", { payload });
 };
