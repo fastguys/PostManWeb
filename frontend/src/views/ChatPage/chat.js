@@ -4,9 +4,8 @@ import Message from "./message";
 import { SendMessage } from "../../apis/user";
 import { io } from "socket.io-client";
 
-function Chat() {
+function Chat ({ allmessages, setAllMessages })  {
   const [message, setMessage] = useState("message");
-  const [allMessages, setAllMessages] = useState([]);
 
   const handleSend = (message) => {
     const newMessage = {
@@ -16,7 +15,8 @@ function Chat() {
     socket.emit("chat message", message);
     socket.on("chat message", function (message) {
       console.log(message);
-      setAllMessages([...allMessages, message]);
+      allmessages.push(message);
+      // setAllMessages([...allmessages, message]);
     });
     SendMessage(newMessage).then((res) => {
       console.log(res);
@@ -44,7 +44,7 @@ function Chat() {
           padding: 2,
         }}
       >
-        {allMessages.map((message) => (
+        {allmessages.map((message) => (
           <Message message={message} />
         ))}
       </Box>
@@ -80,6 +80,6 @@ function Chat() {
       ></TextField>
     </Box>
   );
-}
+};
 
 export default Chat;

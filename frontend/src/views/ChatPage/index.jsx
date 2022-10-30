@@ -3,9 +3,11 @@ import { Box, Button } from "@mui/material";
 import Sidebar from "./sideBar";
 import Chat from "./chat";
 import { FinduserByEmail } from "../../apis/user";
+import { useState } from "react";
 
 
 const ChatPage = () => {
+  const [allmessages, setAllMessages] = useState([]);
   const handleSearch = () => {
     const email = "bx@gmail.com";
     FinduserByEmail({ email }).then((res) => {
@@ -58,7 +60,7 @@ const ChatPage = () => {
               height: "100%",
             }}
           >
-            <Chat />
+            <Chat allmessages={allmessages} setAllMessages={setAllMessages}/>
           </Box>
         </Box>
       </Box>

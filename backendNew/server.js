@@ -21,10 +21,8 @@ io.on("connection", (socket) => {
     socket.emit("output-messages", result);
   });
   socket.on("chat message", (msg) => {
-    const message = new Msg({ msg });
-    message.save().then(() => {
-      io.emit("chat message", msg);
-    });
+    const message = new Msg({ msg })
+    io.emit("chat message", msg);
   });
 });
 httpServer.listen(port, () => console.log(`Server running on port ${port}`));
