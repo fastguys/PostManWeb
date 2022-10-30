@@ -47,7 +47,10 @@ export default function ResponsiveAppBar(props) {
     console.log(e);
     navigate('/profilepage');
   };
-  const logout = () => {};
+  const logout = () => {
+    localStorage.clear();
+    navigate('/');
+  };
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
