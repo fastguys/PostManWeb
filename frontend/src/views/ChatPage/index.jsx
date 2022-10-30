@@ -5,7 +5,7 @@ import Chat from "./chat";
 import { FinduserByEmail } from "../../apis/user";
 
 const ChatPage = () => {
-  const handleSearch = (e) => {
+  const handleSearch = () => {
     const email = "bx@gmail.com";
     FinduserByEmail({ email }).then((res) => {
       console.log(res);
