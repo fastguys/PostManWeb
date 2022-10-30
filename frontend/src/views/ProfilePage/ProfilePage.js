@@ -13,8 +13,10 @@ import Typography from '@mui/material/Typography';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { Navigate } from 'react-router-dom';
+import { FinduserByEmail } from "../../apis/user";
+import { set } from 'mongoose';
 
-export default function Login() {
+export default function Signup() {
   const [name, setName] = useState('Joseph');
   const [update, setUpdate] = useState(false);
   const [bio, setBio] = useState('hello');
@@ -26,6 +28,12 @@ export default function Login() {
   if (!localStorage.getItem('authenticated')) {
     return <Navigate to="/" replace={true} />;
   } else{
+    let email = localStorage.getItem('userId')
+    FinduserByEmail({ email }).then((res) => {
+      console.log(res[0].nickname)
+      setName(res[0].nickname)
+      setBio(res[0].bio)
+    });
     return (
       <div>
         <ResponsiveAppBar />
