@@ -1,9 +1,9 @@
 import { TextField, Box, Button } from "@mui/material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Message from "./message";
 import { SendMessage } from "../../apis/user";
 import { io } from "socket.io-client";
-
+const socket = io.connect("http://localhost:3001", { reconnect: true });
 function Chat() {
   const [message, setMessage] = useState("message");
   const [allMessages, setAllMessages] = useState([]);
@@ -12,18 +12,18 @@ function Chat() {
     const newMessage = {
       msg: message,
     };
-    const socket = io.connect("http://localhost:3001", { reconnect: true });
-    socket.emit("chat message", message);
-    socket.on("chat message", function (message) {
-      console.log(message);
-      setAllMessages([...allMessages, message]);
-    });
+
+    socket.emit("send message", message);
     SendMessage(newMessage).then((res) => {
       console.log(res);
     });
     setMessage("");
   };
-
+  useEffect(() => {
+    socket.on("receive message", (msg) => {
+      setAllMessages([...allMessages, msg]);
+    });
+  }, [allMessages]);
   return (
     <Box
       sx={{

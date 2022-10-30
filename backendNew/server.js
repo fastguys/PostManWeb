@@ -17,14 +17,8 @@ const io = require("socket.io")(httpServer, {
   },
 });
 io.on("connection", (socket) => {
-  Msg.find().then((result) => {
-    socket.emit("output-messages", result);
-  });
-  socket.on("chat message", (msg) => {
-    const message = new Msg({ msg });
-    message.save().then(() => {
-      io.emit("chat message", msg);
-    });
+  socket.on("send message", (msg) => {
+    io.emit("receive message", msg);
   });
 });
 httpServer.listen(port, () => console.log(`Server running on port ${port}`));
