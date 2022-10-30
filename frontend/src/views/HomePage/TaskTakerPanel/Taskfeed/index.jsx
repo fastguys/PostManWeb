@@ -12,7 +12,11 @@ export default function NestedList(props) {
       component="nav"
       aria-labelledby="nested-list-subheader">
       {taskList.map((task, index) => {
-        return <CollapsedTask taskInfo={task} setTaskTaken={props.setTaskTaken} key={index} />;
+        if (task.isTaken === false) {
+          return <CollapsedTask key={index} taskInfo={task} setTaskTaken={props.setTaskTaken} />;
+        } else {
+          return null;
+        }
       })}
     </List>
   );
