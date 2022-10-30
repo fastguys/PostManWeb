@@ -14,14 +14,32 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { Navigate } from 'react-router-dom';
 import { FinduserByEmail } from "../../apis/user";
-import { set } from 'mongoose';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  OAuthProvider,
+  FacebookAuthProvider,
+  GithubAuthProvider,
+  GoogleAuthProvider,
+  RecaptchaVerifier,
+  signInWithPhoneNumber,
+  sendPasswordResetEmail
+} from 'firebase/auth';
 
 export default function Signup() {
+  const navigate = useNavigate();
   const [name, setName] = useState('Joseph');
   const [update, setUpdate] = useState(false);
   const [bio, setBio] = useState('hello');
   const [updateBio, setUpdateBio] = useState(false);
   const [alignment, setAlignment] = useState('true');
+  const [open, setOpen] = React.useState(false);
   const handleAlignment = (event, newAlignment) => {
     setAlignment(newAlignment);
   };
@@ -30,10 +48,34 @@ export default function Signup() {
   } else{
     let email = localStorage.getItem('userId')
     FinduserByEmail({ email }).then((res) => {
-      console.log(res[0].nickname)
       setName(res[0].nickname)
       setBio(res[0].bio)
     });
+    const handleClickOpen = () => {
+      setOpen(true);
+    };
+    const handleClose = () => {
+      setOpen(false);
+    };
+    const handlereset = (event) => {
+      const auth = getAuth();
+      sendPasswordResetEmail(auth, email)
+        .then(() => {
+          // Password reset email sent!
+          // ..
+          alert('A reset email have been sent to your email');
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+        });
+    };
+    const handleChange = () => {
+      handlereset()
+      setOpen(false);
+      localStorage.clear();
+      navigate("/");
+    };
     return (
       <div>
         <ResponsiveAppBar />
@@ -193,6 +235,33 @@ export default function Signup() {
             </Box>
             <Button
               variant="contained"
+              sx={{ mt: 5, height: 50, width: 350 }}
+              style={{ background: '#656268' }}
+              onClick={() => {
+                handleClickOpen();
+              }}
+              >
+              Change Your Password
+            </Button>
+            <Dialog
+                open={open}
+                keepMounted
+                onClose={handleClose}
+                aria-describedby="alert-dialog-slide-description"
+              >
+                <DialogTitle>{"Change Passwor?"}</DialogTitle>
+                <DialogContent>
+                  <DialogContentText id="alert-dialog-slide-description">
+                    You sure you want to change your password?
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleChange}>Confirm</Button>
+                  <Button onClick={handleClose}>Back</Button>
+                </DialogActions>
+            </Dialog>
+            <Button
+              variant="contained"
               sx={{
                 mt: 5,
                 height: 50,
@@ -234,3 +303,4 @@ export default function Signup() {
     );
   }
 }
+
