@@ -4,6 +4,10 @@ const msgSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  sender: {
+    type: String,
+    required: true,
+  },
 });
 
 const Msg = mongoose.model("msg", msgSchema);
