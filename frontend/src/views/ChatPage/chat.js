@@ -1,29 +1,29 @@
 import { TextField, Box, Button } from "@mui/material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Message from "./message";
 import { SendMessage } from "../../apis/user";
 import { io } from "socket.io-client";
-
-function Chat ({ allmessages, setAllMessages })  {
+const socket = io.connect("http://localhost:3001", { reconnect: true });
+function Chat() {
   const [message, setMessage] = useState("message");
+  const [allMessages, setAllMessages] = useState([]);
 
   const handleSend = (message) => {
     const newMessage = {
       msg: message,
     };
-    const socket = io.connect("http://localhost:3001", { reconnect: true });
-    socket.emit("chat message", message);
-    socket.on("chat message", function (message) {
-      console.log(message);
-      allmessages.push(message);
-      // setAllMessages([...allmessages, message]);
-    });
+
+    socket.emit("send message", message);
     SendMessage(newMessage).then((res) => {
       console.log(res);
     });
     setMessage("");
   };
-
+  useEffect(() => {
+    socket.on("receive message", (msg) => {
+      setAllMessages([...allMessages, msg]);
+    });
+  }, [allMessages]);
   return (
     <Box
       sx={{
@@ -44,7 +44,7 @@ function Chat ({ allmessages, setAllMessages })  {
           padding: 2,
         }}
       >
-        {allmessages.map((message) => (
+        {allMessages.map((message) => (
           <Message message={message} />
         ))}
       </Box>
