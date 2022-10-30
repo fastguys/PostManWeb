@@ -16,7 +16,7 @@ import DescriptionIcon from '@mui/icons-material/Description';
 import { ListItem } from '@mui/material';
 
 const CollapsedTask = (props) => {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
   const taskInfo = props.taskInfo;
@@ -57,8 +57,7 @@ const CollapsedTask = (props) => {
               <IconButton edge="end" aria-label="take" onClick={handleTaskTakeClick}>
                 {taskInfo.isTaken ? <UnpublishedIcon /> : <CheckCircleIcon />}
               </IconButton>
-            }
-          >
+            }>
             <ListItemButton sx={{ pl: 4 }}>
               <ListItemIcon>
                 <DescriptionIcon />
