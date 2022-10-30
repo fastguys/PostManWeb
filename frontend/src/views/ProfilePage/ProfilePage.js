@@ -13,8 +13,7 @@ import Typography from '@mui/material/Typography';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { Navigate } from 'react-router-dom';
-import { FinduserByEmail } from "../../apis/user";
-import { set } from 'mongoose';
+import { FinduserByEmail } from '../../apis/user';
 
 export default function Signup() {
   const [name, setName] = useState('Joseph');
@@ -27,12 +26,12 @@ export default function Signup() {
   };
   if (!localStorage.getItem('authenticated')) {
     return <Navigate to="/" replace={true} />;
-  } else{
-    let email = localStorage.getItem('userId')
+  } else {
+    let email = localStorage.getItem('userId');
     FinduserByEmail({ email }).then((res) => {
-      console.log(res[0].nickname)
-      setName(res[0].nickname)
-      setBio(res[0].bio)
+      console.log(res[0].nickname);
+      setName(res[0].nickname);
+      setBio(res[0].bio);
     });
     return (
       <div>
@@ -45,8 +44,7 @@ export default function Signup() {
               alignItems: 'center',
               width: '33%',
               height: '100vh'
-            }}
-          >
+            }}>
             <Box
               component="img"
               sx={{
@@ -55,8 +53,7 @@ export default function Signup() {
                 width: 350
               }}
               alt="Profile Photo."
-              src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&w=350&dpr=2"
-            ></Box>
+              src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&w=350&dpr=2"></Box>
             <Button
               variant="contained"
               sx={{
@@ -64,15 +61,14 @@ export default function Signup() {
                 height: 50,
                 width: 350
               }}
-              style={{ background: '#656268' }}
-            >
+              style={{ background: '#656268' }}>
               Update Your Profile Image
             </Button>
             <Box sx={{ display: 'flex', flexDirection: 'row' }}>
               <Typography variant="h5" sx={{ mt: 5 }}>
                 Username:
               </Typography>
-  
+
               {update === false ? (
                 <Typography variant="h5" sx={{ mt: 5 }}>
                   {name}
@@ -105,7 +101,7 @@ export default function Signup() {
                   }}
                 />
               )}
-  
+
               <Button
                 onClick={() => (!update ? setUpdate(true) : setUpdate(false))}
                 variant="contained"
@@ -115,8 +111,7 @@ export default function Signup() {
                   width: 10,
                   height: 30,
                   backgroundColor: '#656268'
-                }}
-              >
+                }}>
                 update
               </Button>
             </Box>
@@ -124,7 +119,7 @@ export default function Signup() {
               <Typography variant="h5" sx={{ mt: 5 }}>
                 Bio:
               </Typography>
-  
+
               {updateBio === false ? (
                 <Typography variant="h5" sx={{ mt: 5 }}>
                   {bio}
@@ -157,7 +152,7 @@ export default function Signup() {
                   }}
                 />
               )}
-  
+
               <Button
                 onClick={() => (!updateBio ? setUpdateBio(true) : setUpdateBio(false))}
                 variant="contained"
@@ -167,12 +162,11 @@ export default function Signup() {
                   width: 10,
                   height: 30,
                   backgroundColor: '#656268'
-                }}
-              >
+                }}>
                 update
               </Button>
             </Box>
-  
+
             <Box sx={{ display: 'flex', flexDirection: 'row' }}>
               <Typography variant="h5" sx={{ mt: 5 }}>
                 Profile Visibility:
@@ -181,8 +175,7 @@ export default function Signup() {
                 value={alignment}
                 exclusive
                 onChange={handleAlignment}
-                aria-label="text alignment"
-              >
+                aria-label="text alignment">
                 <ToggleButton sx={{ mt: 5, ml: 2, height: 30 }} value="true" aria-label="Visible">
                   visible
                 </ToggleButton>
@@ -198,8 +191,7 @@ export default function Signup() {
                 height: 50,
                 width: 350
               }}
-              style={{ background: '#656268' }}
-            >
+              style={{ background: '#656268' }}>
               Delete Your Account
             </Button>
           </Box>
@@ -210,8 +202,7 @@ export default function Signup() {
               alignItems: 'center',
               width: '33%',
               height: '100vh'
-            }}
-          >
+            }}>
             <Typography variant="h4" sx={{ mt: 5 }}>
               Your Posted Tasks:
             </Typography>
@@ -223,8 +214,7 @@ export default function Signup() {
               alignItems: 'center',
               width: '34%',
               height: '100vh'
-            }}
-          >
+            }}>
             <Typography variant="h4" sx={{ mt: 5 }}>
               Your Finished Tasks:
             </Typography>
