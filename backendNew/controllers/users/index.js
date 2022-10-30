@@ -64,6 +64,16 @@ router.put("/user/bio/:id", async (req, res) => {
     res.status(500).json(err);
   }
 });
+router.put("/user/visibility/:id", async (req, res) => {
+  try {
+    const user_email = req.query.payload["email"];
+    const user_visibility = req.body.payload["visibility"];
+    const user = await User.findOneAndUpdate({email: user_email}, {visibility:user_visibility});
+    res.status(200).json(user);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 // messages
 router.post("/message", async (req, res) => {
   console.log(req.body.payload);

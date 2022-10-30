@@ -18,6 +18,7 @@ import {
   UpdateUserNickname,
   UpdateUserBio,
   deleteUserByEmail,
+  UpdateUserVisibility,
 } from "../../apis/user";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -34,11 +35,16 @@ export default function Signup() {
   const [bio, setBio] = useState("");
   const [tempbio, setTempBio] = useState(bio);
   const [updateBio, setUpdateBio] = useState(false);
-  const [alignment, setAlignment] = useState("true");
+  const [alignment, setAlignment] = useState();
   const [open, setOpen] = React.useState(false);
   const [open2, setDelete] = React.useState(false);
-  const handleAlignment = (event, newAlignment) => {
+  const handleAlignment = async (event, newAlignment) => {
     setAlignment(newAlignment);
+    const payload = {
+      email: localStorage.getItem("userId"),
+      visibility: newAlignment,
+    };
+    UpdateUserVisibility(payload);
   };
   if (!localStorage.getItem("authenticated")) {
     return <Navigate to="/" replace={true} />;
@@ -47,6 +53,7 @@ export default function Signup() {
     FinduserByEmail({ email }).then((res) => {
       setName(res[0].nickname);
       setBio(res[0].bio);
+      setAlignment(res[0].visibility);
     });
     const handleClickOpen = () => {
       setOpen(true);
@@ -283,16 +290,24 @@ export default function Signup() {
                 aria-label="text alignment"
               >
                 <ToggleButton
+                 
                   sx={{ mt: 5, ml: 2, height: 30 }}
-                  value="true"
+                 
+                  value={true}
+                 
                   aria-label="Visible"
+                
                 >
                   visible
                 </ToggleButton>
                 <ToggleButton
+                 
                   sx={{ mt: 5, height: 30 }}
-                  value="false"
+                 
+                  value={false}
+                 
                   aria-label="Not Visible"
+                
                 >
                   Not visible
                 </ToggleButton>

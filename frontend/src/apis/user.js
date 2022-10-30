@@ -17,6 +17,9 @@ export const UpdateUserBio = async (payload) => {
 export const deleteUserByEmail = async (payload) => {
   return deleteFrom("/user/:id", { payload });
 };
+export const UpdateUserVisibility = async (payload) => {
+  return put("/user/visibility/:id", {payload})
+};
 export const SendMessage = async (payload) => {
   return post("/message", { payload });
 };
