@@ -108,6 +108,8 @@ export default function Login() {
         // User signed in successfully.
         const user = result.user;
         setIncorrectCode(false);
+        localStorage.setItem('authenticated', true);
+        localStorage.setItem('userId', user.phoneNumber);
         handleRedirect();
         // ...
       })
@@ -115,6 +117,7 @@ export default function Login() {
         // User couldn't sign in (bad verification code?)
         // ...
         setIncorrectCode(true);
+        console.log(error);
       });
   };
   const handleClick = (event) => {
@@ -154,6 +157,7 @@ export default function Login() {
         const user = userCredential.user;
         setauthenticated(true);
         localStorage.setItem('authenticated', true);
+        localStorage.setItem('userId', user.email);
         handleRedirect();
       })
       .catch((error) => {
@@ -176,25 +180,15 @@ export default function Login() {
         const credential = OAuthProvider.credentialFromResult(result);
         const accessToken = credential.accessToken;
         const idToken = credential.idToken;
+        const user = result.user;
+        localStorage.setItem('authenticated', true);
+        localStorage.setItem('userId', user.email);
         handleRedirect();
       })
       .catch((error) => {
         // Handle error.
         console.log(error);
       });
-  };
-
-  const handleHiSubmit = async (e) => {
-    const user = {
-      firstname: 'bx',
-      lastName: 'li',
-      nickname: 'bx',
-      email: 'bx@gmail.com',
-      phoneNumber: '7657010909',
-      password: 'test',
-      is_admin: false
-    };
-    insertNewuser(user);
   };
 
   //
@@ -209,6 +203,7 @@ export default function Login() {
         const credential = FacebookAuthProvider.credentialFromResult(result);
         const accessToken = credential.accessToken;
         localStorage.setItem('authenticated', true);
+        localStorage.setItem('userId', user.email);
         // navigate to homepage
         handleRedirect();
       })
@@ -222,6 +217,7 @@ export default function Login() {
         const credential = FacebookAuthProvider.credentialFromError(error);
 
         // ...
+        console.log(errorMessage);
       });
   };
 
@@ -235,6 +231,7 @@ export default function Login() {
         // The signed-in user info.
         const user = result.user;
         localStorage.setItem('authenticated', true);
+        localStorage.setItem('userId', user.email);
         handleRedirect();
         // ...
       })
@@ -247,6 +244,7 @@ export default function Login() {
         // The AuthCredential type that was used.
         const credential = GoogleAuthProvider.credentialFromError(error);
         // ...
+        console.log(errorMessage);
       });
   };
 
@@ -262,6 +260,7 @@ export default function Login() {
         const user = result.user;
         // ...
         localStorage.setItem('authenticated', true);
+        localStorage.setItem('userId', user.email);
         handleRedirect();
       })
       .catch((error) => {
@@ -273,6 +272,7 @@ export default function Login() {
         // The AuthCredential type that was used.
         const credential = GithubAuthProvider.credentialFromError(error);
         // ...
+        console.log(error);
       });
   };
 
