@@ -2,6 +2,7 @@ const User = require("../../models/user");
 const Message = require("../../models/message");
 const router = require("express").Router();
 
+//users
 router.post("/user", async (req, res) => {
   const newUser = new User(req.body.payload);
   try {
@@ -12,7 +13,7 @@ router.post("/user", async (req, res) => {
   }
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/user/:id", async (req, res) => {
   try {
     const user_email = req.query.payload;
     const user = await User.find({ email: user_email["email"] });
@@ -23,6 +24,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+// messages
 router.post("/message", async (req, res) => {
   msg = req.body.payload["msg"];
   console.log(msg);

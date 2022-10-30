@@ -45,7 +45,7 @@ function Chat() {
         }}
       >
         {allMessages.map((message) => (
-          <Message message={message} />
+          <Message message={message} key={message}/>
         ))}
       </Box>
 

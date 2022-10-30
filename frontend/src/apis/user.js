@@ -5,7 +5,7 @@ export const insertNewuser = async (payload) => {
 };
 
 export const FinduserByEmail = async (payload) => {
-  return get("/:id", { payload });
+  return get("/user/:id", { payload });
 };
 
 export const SendMessage = async (payload) => {

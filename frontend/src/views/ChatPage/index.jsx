@@ -5,7 +5,6 @@ import Chat from "./chat";
 import { FinduserByEmail } from "../../apis/user";
 import { useState } from "react";
 
-
 const ChatPage = () => {
   const [allmessages, setAllMessages] = useState([]);
   const handleSearch = () => {
@@ -60,7 +59,7 @@ const ChatPage = () => {
               height: "100%",
             }}
           >
-            <Chat allmessages={allmessages} setAllMessages={setAllMessages}/>
+            <Chat allmessages={allmessages} setAllMessages={setAllMessages} />
           </Box>
         </Box>
       </Box>
