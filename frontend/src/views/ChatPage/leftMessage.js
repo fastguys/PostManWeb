@@ -10,7 +10,7 @@ function LeftMessage({ message }) {
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "grey",
+        backgroundColor: "lightblue",
         borderRadius: 2,
         alignSelf: "flex-end",
         marginRight: 5,

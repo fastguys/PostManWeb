@@ -71,6 +71,11 @@ function Chat() {
         onChange={(e) => {
           setMessage(e.target.value);
         }}
+        onKeyPress={(e) => {
+          if (e.key === "Enter") {
+            handleSend(message);
+          }
+        }}
         InputProps={{
           endAdornment: (
             <Button
