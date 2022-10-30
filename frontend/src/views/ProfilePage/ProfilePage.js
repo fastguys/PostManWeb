@@ -17,6 +17,7 @@ import {
   FinduserByEmail,
   UpdateUserNickname,
   UpdateUserBio,
+  deleteUserByEmail,
   UpdateUserVisibility,
 } from "../../apis/user";
 import Dialog from "@mui/material/Dialog";
@@ -24,7 +25,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { getAuth, sendPasswordResetEmail } from "firebase/auth";
+import { getAuth, sendPasswordResetEmail, deleteUser } from "firebase/auth";
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -36,6 +37,7 @@ export default function Signup() {
   const [updateBio, setUpdateBio] = useState(false);
   const [alignment, setAlignment] = useState();
   const [open, setOpen] = React.useState(false);
+  const [open2, setDelete] = React.useState(false);
   const handleAlignment = async (event, newAlignment) => {
     setAlignment(newAlignment);
     const payload = {
@@ -56,8 +58,14 @@ export default function Signup() {
     const handleClickOpen = () => {
       setOpen(true);
     };
+    const handleClickDelete = () => {
+      setDelete(true);
+    };
     const handleClose = () => {
       setOpen(false);
+    };
+    const handleCloseDelete = () => {
+      setDelete(false);
     };
     const handlereset = (event) => {
       const auth = getAuth();
@@ -71,6 +79,29 @@ export default function Signup() {
           const errorCode = error.code;
           const errorMessage = error.message;
         });
+    };
+    const handledelete = (event) => {
+      const auth = getAuth();
+      const user = auth.currentUser;
+      const payload = {
+        email: localStorage.getItem("userId"),
+      };
+      deleteUserByEmail(payload).then((res) => {
+        console.log(res);
+      });
+
+      deleteUser(user)
+        .then(() => {
+          // User deleted.
+        })
+        .catch((error) => {
+          // An error ocurred
+          // ...
+        });
+      alert("Your account has been deleted");
+      setDelete(false);
+      localStorage.clear();
+      navigate("/");
     };
     const handleChange = () => {
       handlereset();
@@ -143,6 +174,11 @@ export default function Signup() {
             >
               Update Your Profile Image
             </Button>
+            <Box sx={{ display: "flex", flexDirection: "row" }}>
+            <Typography variant="h5" sx={{ mt: 5 }}>
+              Email: {email}
+            </Typography>
+          </Box>
             <Box sx={{ display: "flex", flexDirection: "row" }}>
               <Typography variant="h5" sx={{ mt: 5 }}>
                 Username:
@@ -259,16 +295,24 @@ export default function Signup() {
                 aria-label="text alignment"
               >
                 <ToggleButton
+                 
                   sx={{ mt: 5, ml: 2, height: 30 }}
+                 
                   value={true}
+                 
                   aria-label="Visible"
+                
                 >
                   visible
                 </ToggleButton>
                 <ToggleButton
+                 
                   sx={{ mt: 5, height: 30 }}
+                 
                   value={false}
+                 
                   aria-label="Not Visible"
+                
                 >
                   Not visible
                 </ToggleButton>
@@ -309,9 +353,29 @@ export default function Signup() {
                 width: 350,
               }}
               style={{ background: "#656268" }}
+              onClick={() => {
+                handleClickDelete();
+              }}
             >
               Delete Your Account
             </Button>
+            <Dialog
+              open={open2}
+              keepMounted
+              onClose={handleCloseDelete}
+              aria-describedby="alert-dialog-slide-description"
+            >
+              <DialogTitle>{"Delete Your Account?"}</DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-slide-description">
+                  You sure you want to delete your account from Postman?
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handledelete}>Confirm</Button>
+                <Button onClick={handleCloseDelete}>Back</Button>
+              </DialogActions>
+            </Dialog>
           </Box>
           <Box
             sx={{
