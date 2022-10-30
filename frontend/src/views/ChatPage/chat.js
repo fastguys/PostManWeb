@@ -1,12 +1,16 @@
 import { TextField, Box, Button } from "@mui/material";
 import { useState } from "react";
 import Message from "./message";
+import { SendMessage } from "../../apis/user";
 
 function Chat() {
   const [message, setMessage] = useState("message");
   const [allMessages, setAllMessages] = useState([]);
 
-  const handleSend = () => {
+  const handleSend = (message) => {
+    SendMessage({ message }).then((res) => {
+      console.log(res);
+    });
     setAllMessages([...allMessages, message]);
     setMessage("");
   };
@@ -47,7 +51,7 @@ function Chat() {
           endAdornment: (
             <Button
               onClick={() => {
-                handleSend();
+                handleSend(message);
               }}
               sx={{
                 width: 100,
