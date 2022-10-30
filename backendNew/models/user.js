@@ -34,6 +34,10 @@ const userSchema = mongoose.Schema({
   // state: {
   //   type: String,
   // },
+  Visiblity: {
+    type: Boolean,
+    default: true,
+  },
    bio: {
     type: String,
     default: "Welcome to Fastguy!",
