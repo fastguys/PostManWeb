@@ -17,6 +17,7 @@ import {
   FinduserByEmail,
   UpdateUserNickname,
   UpdateUserBio,
+  UpdateUserVisibility,
 } from "../../apis/user";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -33,10 +34,15 @@ export default function Signup() {
   const [bio, setBio] = useState("");
   const [tempbio, setTempBio] = useState(bio);
   const [updateBio, setUpdateBio] = useState(false);
-  const [alignment, setAlignment] = useState(true);
+  const [alignment, setAlignment] = useState();
   const [open, setOpen] = React.useState(false);
   const handleAlignment = async (event, newAlignment) => {
-    await setAlignment(newAlignment);
+    setAlignment(newAlignment);
+    const payload = {
+      email: localStorage.getItem("userId"),
+      visibility: newAlignment,
+    };
+    UpdateUserVisibility(payload);
   };
   if (!localStorage.getItem("authenticated")) {
     return <Navigate to="/" replace={true} />;
@@ -45,6 +51,7 @@ export default function Signup() {
     FinduserByEmail({ email }).then((res) => {
       setName(res[0].nickname);
       setBio(res[0].bio);
+      setAlignment(res[0].visibility);
     });
     const handleClickOpen = () => {
       setOpen(true);
