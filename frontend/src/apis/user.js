@@ -8,9 +8,15 @@ export const FinduserByEmail = async (payload) => {
   return get("/:id", { payload });
 };
 
+export const SendMessage = async (payload) => {
+  console.log(payload);
+  return post("/message", { payload });
+};
+
 const apis = {
   insertNewuser,
   FinduserByEmail,
+  SendMessage,
 };
 
 export default apis;

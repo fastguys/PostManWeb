@@ -1,4 +1,5 @@
-const User = require("../../models/User");
+const User = require("../../models/user");
+const Message = require("../../models/message");
 const router = require("express").Router();
 
 router.post("/user", async (req, res) => {
@@ -18,6 +19,16 @@ router.get("/:id", async (req, res) => {
     const user = await User.find({ email: user_email["email"] });
     // console.log(user);
     res.status(200).json(user);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+router.post("/message", async (req, res) => {
+  const newMassage = new Message(req.body.payload);
+  try {
+    const message = await newMassage.save();
+    res.status(200).json(message);
   } catch (err) {
     res.status(500).json(err);
   }
