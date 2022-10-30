@@ -2,6 +2,7 @@ const User = require("../../models/user");
 const Message = require("../../models/message");
 const router = require("express").Router();
 
+
 //users
 router.post("/user", async (req, res) => {
   const newUser = new User(req.body.payload);
