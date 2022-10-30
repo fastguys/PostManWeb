@@ -19,7 +19,7 @@ import {
   signInWithPhoneNumber,
   sendSignInLinkToEmail
 } from 'firebase/auth';
-
+import { insertNewuser } from '../../apis/user';
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -102,7 +102,8 @@ export default function SignUp() {
       phone_number: data.get('phone_number'),
       firstName: data.get('firstName'),
       lastName: data.get('lastName'),
-      validation_code: data.get('validation_code')
+      validation_code: data.get('validation_code'),
+      nickname:data.get('nickname')
     });
 
     let email = data.get('email');
@@ -112,6 +113,7 @@ export default function SignUp() {
     let lastName = data.get('lastName');
     let validation_code = data.get('validation_code');
     let isnum = /^\d+$/.test(phone_number);
+    let nickname = data.get('nickname')
     setNameError(false);
     setPhoneError(false);
     setPasswordError(false);
@@ -151,6 +153,16 @@ export default function SignUp() {
               // user.linkWithPhoneNumber(phone_number);
               // ...
               send_email(email);
+              const userInput = {
+                firstname: firstName,
+                lastName: lastName,
+                nickname: nickname,
+                email: email,
+                phoneNumber: phone_number,
+                password: password,
+                is_admin: false,
+              }
+              insertNewuser(userInput)
               navigate('/');
             })
             .catch((error) => {
