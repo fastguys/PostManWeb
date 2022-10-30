@@ -9,7 +9,6 @@ export const FinduserByEmail = async (payload) => {
 };
 
 export const SendMessage = async (payload) => {
-  console.log(payload);
   return post("/message", { payload });
 };
 

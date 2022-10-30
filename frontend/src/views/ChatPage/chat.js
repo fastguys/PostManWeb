@@ -8,7 +8,10 @@ function Chat() {
   const [allMessages, setAllMessages] = useState([]);
 
   const handleSend = (message) => {
-    SendMessage({ message }).then((res) => {
+    const newMessage = {
+      msg: message,
+    }
+    SendMessage(newMessage).then((res) => {
       console.log(res);
     });
     setAllMessages([...allMessages, message]);
