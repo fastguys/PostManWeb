@@ -2,6 +2,7 @@ import { TextField, Box, Button } from "@mui/material";
 import { useState } from "react";
 import Message from "./message";
 import { SendMessage } from "../../apis/user";
+import { io } from "socket.io-client";
 
 function Chat() {
   const [message, setMessage] = useState("message");
@@ -10,11 +11,16 @@ function Chat() {
   const handleSend = (message) => {
     const newMessage = {
       msg: message,
-    }
+    };
+    const socket = io.connect("http://localhost:3001", { reconnect: true });
+    socket.emit("chat message", message);
+    socket.on("chat message", function (message) {
+      console.log(message);
+      setAllMessages([...allMessages, message]);
+    });
     SendMessage(newMessage).then((res) => {
       console.log(res);
     });
-    setAllMessages([...allMessages, message]);
     setMessage("");
   };
 

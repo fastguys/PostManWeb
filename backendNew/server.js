@@ -3,10 +3,31 @@ const cors = require("cors");
 const port = process.env.PORT || 3001;
 const connectDB = require("./config/db");
 const user = require("./controllers/users");
+const { createServer } = require("http");
+const { Server } = require("socket.io");
+const Msg = require("./models/message");
 
 const app = express();
+const httpServer = createServer(app);
 connectDB();
-app.listen(port, () => console.log(`Server running on port ${port}`));
+// socket.io
+const io = require("socket.io")(httpServer, {
+  cors: {
+    origin: "http://localhost:3000",
+  },
+});
+io.on("connection", (socket) => {
+  Msg.find().then((result) => {
+    socket.emit("output-messages", result);
+  });
+  socket.on("chat message", (msg) => {
+    const message = new Msg({ msg });
+    message.save().then(() => {
+      io.emit("chat message", msg);
+    });
+  });
+});
+httpServer.listen(port, () => console.log(`Server running on port ${port}`));
 
 app.use(
   cors({

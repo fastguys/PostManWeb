@@ -4,6 +4,7 @@ import Sidebar from "./sideBar";
 import Chat from "./chat";
 import { FinduserByEmail } from "../../apis/user";
 
+
 const ChatPage = () => {
   const handleSearch = () => {
     const email = "bx@gmail.com";

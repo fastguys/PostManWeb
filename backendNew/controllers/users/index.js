@@ -24,6 +24,8 @@ router.get("/:id", async (req, res) => {
 });
 
 router.post("/message", async (req, res) => {
+  msg = req.body.payload["msg"];
+  console.log(msg);
   try {
     const newMassage = new Message(req.body.payload);
     const message = await newMassage.save();
