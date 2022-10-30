@@ -32,24 +32,49 @@ const TaskTakerPanel = () => {
 
   // this is the mock up task data for the task feed
   // TODO: need to fetch the task data from the backend
+  // TODO: need to add the
   const taskList = [
     {
       title: 'task1',
       description: 'task1 description',
-      location: 'task1 location',
-      isTaken: false
+      location: '(x, y)',
+      isTaken: false,
+      taskId: 1,
+      senderInfo: '{}',
+      receiverInfo: '{}',
+      posterId: 'posterId1',
+      takerId: 'takerId1',
+      timeRemaining: 'timeRemaining1',
+      status: 'status1',
+      confirmCode: 'confirmCode1'
     },
     {
       title: 'task2',
       description: 'task2 description',
-      location: 'task2 location',
-      isTaken: false
+      location: '(x, y)',
+      isTaken: false,
+      taskId: 1,
+      senderInfo: '{}',
+      receiverInfo: '{}',
+      posterId: 'posterId2',
+      takerId: 'takerId2',
+      timeRemaining: 'timeRemaining2',
+      status: 'status2',
+      confirmCode: 'confirmCode2'
     },
     {
       title: 'task3',
       description: 'task3 description',
-      location: 'task3 location',
-      isTaken: true
+      location: '(x, y)',
+      isTaken: true,
+      taskId: 1,
+      senderInfo: '{}',
+      receiverInfo: '{}',
+      posterId: 'posterId3',
+      takerId: 'takerId3',
+      timeRemaining: 'timeRemaining3',
+      status: 'status3',
+      confirmCode: 'confirmCode3'
     }
   ];
 

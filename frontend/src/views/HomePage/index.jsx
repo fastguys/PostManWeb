@@ -8,7 +8,7 @@ const HomePage = () => {
   // controller for switching between task taker and task poster page
   const [isTaskTakerMode, setIsTaskTakerMode] = useState(true);
 
-  // refresh this page when user enter the page
+  // refresh this page
 
   if (!localStorage.getItem('authenticated')) {
     return <Navigate to="/" replace={true} />;
