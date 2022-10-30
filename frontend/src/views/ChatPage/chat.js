@@ -46,7 +46,6 @@ function Chat() {
         }}
       >
         {allMessages.map((message) => {
-          console.log(localStorage.getItem("userId"));
           if (message.sender === localStorage.getItem("userId")) {
             return (
               <LeftMessage

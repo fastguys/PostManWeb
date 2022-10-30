@@ -1,6 +1,6 @@
 import { Box } from "@mui/system";
 
-function LeftMessage({ message }) {
+function RightMessage({ message }) {
   return (
     <Box
       sx={{
@@ -12,6 +12,7 @@ function LeftMessage({ message }) {
         alignItems: "center",
         backgroundColor: "grey",
         borderRadius: 2,
+        alignSelf: "flex-start",
         marginLeft: 5,
       }}
     >
@@ -20,4 +21,4 @@ function LeftMessage({ message }) {
   );
 }
 
-export default LeftMessage;
+export default RightMessage;
