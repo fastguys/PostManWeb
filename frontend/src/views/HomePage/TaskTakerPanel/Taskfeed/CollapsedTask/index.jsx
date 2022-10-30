@@ -42,7 +42,7 @@ const CollapsedTask = (props) => {
   };
 
   return (
-    <>
+    <React.Fragment>
       <ListItemButton onClick={handleCollapseClick}>
         <ListItemIcon>
           <TaskIcon />
@@ -67,7 +67,7 @@ const CollapsedTask = (props) => {
           </ListItem>
         </List>
       </Collapse>
-    </>
+    </React.Fragment>
   );
 };
 
