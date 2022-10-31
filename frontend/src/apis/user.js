@@ -29,10 +29,11 @@ const SendMessage = async (payload) => {
 };
 
 // task requests
-const GetTask = async (payload) => {
-  return get('/task/:id');
+const GetTask = async (id) => {
+  console.log(id);
+  return get('/task/' + id);
 };
-const GetTaskList = async (payload) => {
+const GetTaskList = async () => {
   return get('/task-list');
 };
 
@@ -40,8 +41,8 @@ const PostTask = async (payload) => {
   return post('/task', { payload });
 };
 
-const UpdateTask = async (payload) => {
-  return put('/task/:id', { payload });
+const UpdateTask = async (id, payload) => {
+  return put('/task/' + id, { payload });
 };
 
 const apis = {

@@ -96,7 +96,9 @@ router.post("/message", async (req, res) => {
 router.get("/task/:id", async (req, res) => {
   try {
     const id = req.params.id;
+    console.log(id);
     const task = await Task.find({ _id: id });
+    console.log(task);
     res.status(200).json(task);
   } catch (err) {
     console.log(err);
