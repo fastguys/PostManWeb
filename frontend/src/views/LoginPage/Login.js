@@ -26,7 +26,6 @@ import {
   signInWithPhoneNumber,
   sendPasswordResetEmail
 } from 'firebase/auth';
-import { insertNewuser } from '../../apis/user';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;

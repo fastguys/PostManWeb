@@ -39,9 +39,8 @@ const TaskTakerPanel = () => {
       description: 'task1 description',
       location: '(x, y)',
       isTaken: false,
-      taskId: 1,
-      senderInfo: '{}',
-      receiverInfo: '{}',
+      senderInfo: {},
+      receiverInfo: {},
       posterId: 'posterId1',
       takerId: 'takerId1',
       timeRemaining: 'timeRemaining1',
@@ -53,9 +52,8 @@ const TaskTakerPanel = () => {
       description: 'task2 description',
       location: '(x, y)',
       isTaken: false,
-      taskId: 1,
-      senderInfo: '{}',
-      receiverInfo: '{}',
+      senderInfo: {},
+      receiverInfo: {},
       posterId: 'posterId2',
       takerId: 'takerId2',
       timeRemaining: 'timeRemaining2',
@@ -67,9 +65,8 @@ const TaskTakerPanel = () => {
       description: 'task3 description',
       location: '(x, y)',
       isTaken: true,
-      taskId: 1,
-      senderInfo: '{}',
-      receiverInfo: '{}',
+      senderInfo: {},
+      receiverInfo: {},
       posterId: 'posterId3',
       takerId: 'takerId3',
       timeRemaining: 'timeRemaining3',
@@ -77,6 +74,8 @@ const TaskTakerPanel = () => {
       confirmCode: 'confirmCode3'
     }
   ];
+
+  // useEffect(() => {}, [taskTaken]);
 
   // handle the task taken
   useEffect(() => {

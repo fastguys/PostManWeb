@@ -13,26 +13,127 @@ import Typography from '@mui/material/Typography';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { Navigate } from 'react-router-dom';
-import { FinduserByEmail } from '../../apis/user';
+import apis from '../../apis/user';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import { getAuth, sendPasswordResetEmail, deleteUser } from 'firebase/auth';
 
 export default function Signup() {
-  const [name, setName] = useState('Joseph');
+  const navigate = useNavigate();
+  const [name, setName] = useState('');
+  const [tempname, setTempName] = useState(name);
   const [update, setUpdate] = useState(false);
-  const [bio, setBio] = useState('hello');
+  const [bio, setBio] = useState('');
+  const [tempbio, setTempBio] = useState(bio);
   const [updateBio, setUpdateBio] = useState(false);
-  const [alignment, setAlignment] = useState('true');
-  const handleAlignment = (event, newAlignment) => {
+  const [alignment, setAlignment] = useState();
+  const [open, setOpen] = React.useState(false);
+  const [open2, setDelete] = React.useState(false);
+  const handleAlignment = async (event, newAlignment) => {
     setAlignment(newAlignment);
+    const payload = {
+      email: localStorage.getItem('userId'),
+      visibility: newAlignment
+    };
+    apis.UpdateUserVisibility(payload);
   };
   if (!localStorage.getItem('authenticated')) {
     return <Navigate to="/" replace={true} />;
   } else {
     let email = localStorage.getItem('userId');
-    FinduserByEmail({ email }).then((res) => {
-      console.log(res[0].nickname);
+    apis.FinduserByEmail({ email }).then((res) => {
       setName(res[0].nickname);
       setBio(res[0].bio);
+      setAlignment(res[0].visibility);
     });
+    const handleClickOpen = () => {
+      setOpen(true);
+    };
+    const handleClickDelete = () => {
+      setDelete(true);
+    };
+    const handleClose = () => {
+      setOpen(false);
+    };
+    const handleCloseDelete = () => {
+      setDelete(false);
+    };
+    const handlereset = (event) => {
+      const auth = getAuth();
+      sendPasswordResetEmail(auth, email)
+        .then(() => {
+          // Password reset email sent!
+          // ..
+          alert('A reset email have been sent to your email');
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+        });
+    };
+    const handledelete = (event) => {
+      const auth = getAuth();
+      const user = auth.currentUser;
+      const payload = {
+        email: localStorage.getItem('userId')
+      };
+      apis.deleteUserByEmail(payload).then((res) => {
+        console.log(res);
+      });
+
+      deleteUser(user)
+        .then(() => {
+          // User deleted.
+        })
+        .catch((error) => {
+          // An error ocurred
+          // ...
+        });
+      alert('Your account has been deleted');
+      setDelete(false);
+      localStorage.clear();
+      navigate('/');
+    };
+    const handleChange = () => {
+      handlereset();
+      setOpen(false);
+      localStorage.clear();
+      navigate('/');
+    };
+    const updateUsername = () => {
+      if (!update) {
+        setUpdate(true);
+        setTempName(name);
+      } else {
+        setUpdate(false);
+        setName(tempname);
+
+        const payload = {
+          email: localStorage.getItem('userId'),
+          nickname: tempname
+        };
+        console.log(payload);
+        apis.UpdateUserNickname(payload);
+      }
+    };
+    const updateUserbio = () => {
+      if (!updateBio) {
+        setUpdateBio(true);
+        setTempBio(bio);
+      } else {
+        setUpdateBio(false);
+        setBio(tempbio);
+        const payload = {
+          email: localStorage.getItem('userId'),
+          bio: tempbio
+        };
+        console.log(payload);
+        apis.UpdateUserBio(payload);
+      }
+    };
     return (
       <div>
         <ResponsiveAppBar />
@@ -66,6 +167,11 @@ export default function Signup() {
             </Button>
             <Box sx={{ display: 'flex', flexDirection: 'row' }}>
               <Typography variant="h5" sx={{ mt: 5 }}>
+                Email: {email}
+              </Typography>
+            </Box>
+            <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+              <Typography variant="h5" sx={{ mt: 5 }}>
                 Username:
               </Typography>
 
@@ -77,7 +183,7 @@ export default function Signup() {
                 <TextField
                   required
                   sx={{ ml: 1, mt: 5, width: 200, height: 5 }}
-                  value={name}
+                  value={tempname}
                   InputLabelProps={{
                     style: {
                       fontSize: 14,
@@ -97,13 +203,13 @@ export default function Signup() {
                     }
                   }}
                   onChange={(e) => {
-                    setName(e.target.value);
+                    setTempName(e.target.value);
                   }}
                 />
               )}
 
               <Button
-                onClick={() => (!update ? setUpdate(true) : setUpdate(false))}
+                onClick={updateUsername}
                 variant="contained"
                 sx={{
                   ml: 2,
@@ -128,7 +234,7 @@ export default function Signup() {
                 <TextField
                   required
                   sx={{ ml: 1, mt: 5, width: 200, height: 5 }}
-                  value={bio}
+                  value={tempbio}
                   InputLabelProps={{
                     style: {
                       fontSize: 14,
@@ -148,13 +254,13 @@ export default function Signup() {
                     }
                   }}
                   onChange={(e) => {
-                    setBio(e.target.value);
+                    setTempBio(e.target.value);
                   }}
                 />
               )}
 
               <Button
-                onClick={() => (!updateBio ? setUpdateBio(true) : setUpdateBio(false))}
+                onClick={updateUserbio}
                 variant="contained"
                 sx={{
                   ml: 2,
@@ -176,14 +282,39 @@ export default function Signup() {
                 exclusive
                 onChange={handleAlignment}
                 aria-label="text alignment">
-                <ToggleButton sx={{ mt: 5, ml: 2, height: 30 }} value="true" aria-label="Visible">
+                <ToggleButton sx={{ mt: 5, ml: 2, height: 30 }} value={true} aria-label="Visible">
                   visible
                 </ToggleButton>
-                <ToggleButton sx={{ mt: 5, height: 30 }} value="false" aria-label="Not Visible">
+                <ToggleButton sx={{ mt: 5, height: 30 }} value={false} aria-label="Not Visible">
                   Not visible
                 </ToggleButton>
               </ToggleButtonGroup>
             </Box>
+            <Button
+              variant="contained"
+              sx={{ mt: 5, height: 50, width: 350 }}
+              style={{ background: '#656268' }}
+              onClick={() => {
+                handleClickOpen();
+              }}>
+              Change Your Password
+            </Button>
+            <Dialog
+              open={open}
+              keepMounted
+              onClose={handleClose}
+              aria-describedby="alert-dialog-slide-description">
+              <DialogTitle>{'Change Passwor?'}</DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-slide-description">
+                  You sure you want to change your password?
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleChange}>Confirm</Button>
+                <Button onClick={handleClose}>Back</Button>
+              </DialogActions>
+            </Dialog>
             <Button
               variant="contained"
               sx={{
@@ -191,9 +322,28 @@ export default function Signup() {
                 height: 50,
                 width: 350
               }}
-              style={{ background: '#656268' }}>
+              style={{ background: '#656268' }}
+              onClick={() => {
+                handleClickDelete();
+              }}>
               Delete Your Account
             </Button>
+            <Dialog
+              open={open2}
+              keepMounted
+              onClose={handleCloseDelete}
+              aria-describedby="alert-dialog-slide-description">
+              <DialogTitle>{'Delete Your Account?'}</DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-slide-description">
+                  You sure you want to delete your account from Postman?
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handledelete}>Confirm</Button>
+                <Button onClick={handleCloseDelete}>Back</Button>
+              </DialogActions>
+            </Dialog>
           </Box>
           <Box
             sx={{
