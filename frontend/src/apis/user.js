@@ -1,4 +1,4 @@
-import { get, post, put } from './axios';
+import { deleteFrom, get, post, put } from './axios';
 
 // user requests
 const insertNewuser = async (payload) => {
@@ -14,6 +14,13 @@ const UpdateUserNickname = async (payload) => {
 };
 const UpdateUserBio = async (payload) => {
   return put('/user/bio/:id', { payload });
+};
+
+const deleteUserByEmail = async (payload) => {
+  return deleteFrom('/user/:id', { payload });
+};
+const UpdateUserVisibility = async (payload) => {
+  return put('/user/visibility/:id', { payload });
 };
 
 // message requests
@@ -46,7 +53,9 @@ const apis = {
   GetTask,
   GetTaskList,
   PostTask,
-  UpdateTask
+  UpdateTask,
+  deleteUserByEmail,
+  UpdateUserVisibility
 };
 
 export default apis;

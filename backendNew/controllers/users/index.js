@@ -25,6 +25,19 @@ router.get("/user/:id", async (req, res) => {
   }
 });
 
+router.delete("/user/:id", async (req, res) => {
+  console.log(req.query.payload);
+  try {
+    const user_email = req.query.payload;
+    console.log(user_email);
+    await User.deleteOne({ email: user_email["email"] });
+    // console.log(user);
+    res.send("User deleted");
+  } catch (err) {
+    res.send("User not deleted");
+  }
+});
+
 router.put("/user/nickname/:id", async (req, res) => {
   try {
     const user_email = req.query.payload["email"];
@@ -46,6 +59,19 @@ router.put("/user/bio/:id", async (req, res) => {
     const user = await User.findOneAndUpdate(
       { email: user_email },
       { bio: user_bio }
+    );
+    res.status(200).json(user);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+router.put("/user/visibility/:id", async (req, res) => {
+  try {
+    const user_email = req.query.payload["email"];
+    const user_visibility = req.body.payload["visibility"];
+    const user = await User.findOneAndUpdate(
+      { email: user_email },
+      { visibility: user_visibility }
     );
     res.status(200).json(user);
   } catch (err) {
