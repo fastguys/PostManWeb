@@ -16,6 +16,7 @@ import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import DescriptionIcon from '@mui/icons-material/Description';
 import { ListItem, ListItemSecondaryAction } from '@mui/material';
+import apis from '../../../../../apis/user';
 
 const CollapsedTask = (props) => {
   const [open, setOpen] = useState(false);
@@ -37,7 +38,13 @@ const CollapsedTask = (props) => {
     }
     // set the task taken
     taskInfo.isTaken = true;
+    taskInfo.takerId = localStorage.getItem('userId');
+    taskInfo.status = 'taken';
     // TODO: update the status in the database
+    apis.UpdateTask(taskInfo._id, taskInfo).then((res) => {
+      console.log('res', res);
+    });
+
     props.setTaskTaken((taskTaken) => [...taskTaken, taskInfo]);
     // redirect to task progress page
     navigate('/task-progress');

@@ -12,7 +12,8 @@ export default function NestedList(props) {
       component="nav"
       aria-labelledby="nested-list-subheader">
       {taskList.map((task, index) => {
-        if (task.isTaken === false) {
+        if (task.isTaken === false && task.posterId !== localStorage.getItem('userId')) {
+          // ignore the taken task and the task posted by the current user
           return <CollapsedTask key={index} taskInfo={task} setTaskTaken={props.setTaskTaken} />;
         } else {
           return null;

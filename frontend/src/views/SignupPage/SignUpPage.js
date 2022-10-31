@@ -129,10 +129,10 @@ export default function SignUp() {
     if (password.length < 6) {
       setPasswordError(true);
     }
-    if (email.length == 0) {
+    if (email.length === 0) {
       setEmailError(true);
     }
-    if (validation_code.length == 0) {
+    if (validation_code.length === 0) {
       setIncorrectCode(true);
     }
     window.confirmationResult
