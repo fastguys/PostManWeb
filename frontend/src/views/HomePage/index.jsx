@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import ResponsiveAppBar from './ResponsiveAppBar';
 import TaskTakerPanel from './TaskTakerPanel/index';
+import TaskPosterPanel from './TaskPosterPanel/index';
 import './homepage.css';
 
 const HomePage = () => {
@@ -11,11 +12,10 @@ const HomePage = () => {
   if (!localStorage.getItem('authenticated')) {
     return <Navigate to="/" replace={true} />;
   } else {
-    console.log('user id is ' + localStorage.getItem('userId'));
     return (
       <div className="homepage">
         <ResponsiveAppBar setIsTaskTakerMode={setIsTaskTakerMode} />
-        {isTaskTakerMode ? <TaskTakerPanel /> : <div>Task Poster Panel</div>}
+        {isTaskTakerMode ? <TaskTakerPanel /> : <TaskPosterPanel />}
       </div>
     );
   }

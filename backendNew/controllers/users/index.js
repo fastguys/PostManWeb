@@ -133,6 +133,7 @@ router.get("/task-list", async (req, res) => {
 }*/
 router.post("/task", async (req, res) => {
   try {
+    console.log(req.body.payload);
     const newTask = new Task(req.body.payload);
     const task = await newTask.save();
     res.status(200).json(task);
