@@ -46,7 +46,19 @@ router.put("/user/nickname/:id", async (req, res) => {
       { email: user_email },
       { nickname: user_nickname }
     );
-    console.log(user);
+    res.status(200).json(user);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+router.put("/user/ImageUrl/:id", async (req, res) => {
+  try {
+    const user_email = req.query.payload["email"];
+    const user_ImageUrl = req.body.payload["ImageUrl"];
+    const user = await User.findOneAndUpdate(
+      { email: user_email },
+      { ImageUrl: user_ImageUrl }
+    );
     res.status(200).json(user);
   } catch (err) {
     res.status(500).json(err);
