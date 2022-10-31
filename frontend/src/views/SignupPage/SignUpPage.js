@@ -19,7 +19,7 @@ import {
   signInWithPhoneNumber,
   sendSignInLinkToEmail
 } from 'firebase/auth';
-import { insertNewuser } from '../../apis/user';
+import apis from '../../apis/user';
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -103,7 +103,7 @@ export default function SignUp() {
       firstName: data.get('firstName'),
       lastName: data.get('lastName'),
       validation_code: data.get('validation_code'),
-      nickname:data.get('nickname')
+      nickname: data.get('nickname')
     });
 
     let email = data.get('email');
@@ -113,7 +113,7 @@ export default function SignUp() {
     let lastName = data.get('lastName');
     let validation_code = data.get('validation_code');
     let isnum = /^\d+$/.test(phone_number);
-    let nickname = data.get('nickname')
+    let nickname = data.get('nickname');
     setNameError(false);
     setPhoneError(false);
     setPasswordError(false);
@@ -160,9 +160,9 @@ export default function SignUp() {
                 email: email,
                 phoneNumber: phone_number,
                 password: password,
-                is_admin: false,
-              }
-              insertNewuser(userInput)
+                is_admin: false
+              };
+              apis.insertNewuser(userInput);
               navigate('/');
             })
             .catch((error) => {
@@ -206,8 +206,7 @@ export default function SignUp() {
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center'
-            }}
-          >
+            }}>
             <img src={'/logo.svg'} alt="logo" style={{ width: 133, height: 123 }} />
             <Typography component="h1" variant="h5">
               Sign up
@@ -308,8 +307,7 @@ export default function SignUp() {
                               display: 'block',
                               color: 'black',
                               textTransform: 'none'
-                            }}
-                          >
+                            }}>
                             Send Code
                           </Button>
                         </InputAdornment>
@@ -341,8 +339,7 @@ export default function SignUp() {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
-                style={{ background: '#656268' }}
-              >
+                style={{ background: '#656268' }}>
                 Sign Up
               </Button>
               <Grid container justifyContent="flex-end">

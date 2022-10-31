@@ -1,7 +1,7 @@
 const User = require("../../models/user");
 const Message = require("../../models/message");
+const Task = require("../../models/task");
 const router = require("express").Router();
-
 
 //users
 router.post("/user", async (req, res) => {
@@ -29,7 +29,10 @@ router.put("/user/nickname/:id", async (req, res) => {
   try {
     const user_email = req.query.payload["email"];
     const user_nickname = req.body.payload["nickname"];
-    const user = await User.findOneAndUpdate({email: user_email}, {nickname:user_nickname});
+    const user = await User.findOneAndUpdate(
+      { email: user_email },
+      { nickname: user_nickname }
+    );
     console.log(user);
     res.status(200).json(user);
   } catch (err) {
@@ -40,7 +43,10 @@ router.put("/user/bio/:id", async (req, res) => {
   try {
     const user_email = req.query.payload["email"];
     const user_bio = req.body.payload["bio"];
-    const user = await User.findOneAndUpdate({email: user_email}, {bio:user_bio});
+    const user = await User.findOneAndUpdate(
+      { email: user_email },
+      { bio: user_bio }
+    );
     res.status(200).json(user);
   } catch (err) {
     res.status(500).json(err);
@@ -55,6 +61,64 @@ router.post("/message", async (req, res) => {
     const newMassage = new Message(req.body.payload);
     const message = await newMassage.save();
     res.status(200).json(message);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+// tasks
+// get APIs
+router.get("/task/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const task = await Task.find({ _id: id });
+    res.status(200).json(task);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+});
+router.get("/task-list", async (req, res) => {
+  try {
+    const tasks = await Task.find();
+    res.status(200).json(tasks);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+// post APIs
+/*testing JSON body: 
+{
+    "payload": {
+        "title": "task1",
+        "description": "task1 description",
+        "location": {"type": "Point", "coordinates": [100,100]},
+        "isTaken": false,
+        "taskId": "uuidv4",
+        "senderInfo": {},
+        "receiverInfo": {},
+        "posterId": "posterId1",
+        "takerId": "takerId1",
+        "timeRemaining": "timeRemaining1",
+        "status": "status1",
+        "confirmCode": "1234"
+    }
+}*/
+router.post("/task", async (req, res) => {
+  try {
+    const newTask = new Task(req.body.payload);
+    const task = await newTask.save();
+    res.status(200).json(task);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+// put APIs
+router.put("/task/:id", async (req, res) => {
+  try {
+    const task = await Task.findByIdAndUpdate(req.params.id, {
+      $set: req.body.payload,
+    });
+    res.status(200).json(task);
   } catch (err) {
     res.status(500).json(err);
   }

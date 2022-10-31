@@ -23,15 +23,18 @@ const taskSchema = mongoose.Schema(
       required: true,
     },
     location: {
-      type: String,
-      required: true,
+      type: {
+        type: String, // Don't do `{ location: { type: String } }`
+        enum: ["Point"], // 'location.type' must be 'Point'
+        required: true,
+      },
+      coordinates: {
+        type: [Number],
+        required: true,
+      },
     },
     isTaken: {
       type: Boolean,
-      required: true,
-    },
-    taskId: {
-      type: Number,
       required: true,
     },
     senderInfo: {
