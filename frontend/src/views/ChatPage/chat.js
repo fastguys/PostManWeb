@@ -10,6 +10,7 @@ function Chat() {
   const taskId = useLocation();
   const searchParams = new URLSearchParams(taskId.search);
   console.log(searchParams.get("taskId"));
+  console.log(apis.GetTask(searchParams.get("taskId")));
   const [message, setMessage] = useState("message");
   const [allMessages, setAllMessages] = useState([]);
   const [image, setImage] = useState(null);
