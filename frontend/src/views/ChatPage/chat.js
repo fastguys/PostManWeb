@@ -62,7 +62,7 @@ function Chat() {
               <LeftMessage
                 message={message.msg}
                 image={pic}
-                key={message.sender + message.msg}
+                key={message._id}
               />
             );
           } else {
@@ -70,7 +70,7 @@ function Chat() {
               <RightMessage
                 message={message.msg}
                 image={pic}
-                key={message.sender + message.msg}
+                key={message._id}
               />
             );
           }
@@ -94,7 +94,6 @@ function Chat() {
             <Button
               onClick={() => {
                 handleSend(message);
-
               }}
               sx={{
                 width: 100,
