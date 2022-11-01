@@ -83,9 +83,10 @@ export default function Login() {
   const [PhoneError, setPhoneError] = useState(false);
   const [Phone, setPhone] = useState("+1");
   const [validation_code, setValidationcode] = useState("");
- 
+
   const handleRedirect = () => {
     navigate("./homepage");
+    window.location.reload();
   };
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -170,15 +171,17 @@ export default function Login() {
         setauthenticated(true);
         localStorage.setItem("authenticated", true);
         localStorage.setItem("userId", user.email);
-        apis
+        try{
+          apis
           .FinduserByEmail({ email })
           .then((res) => {
             dispatch(setImage(res[0].ImageUrl));
             return res;
-          })
-          .then(() => {
-            handleRedirect();
           });
+        }catch(e){
+          console.log(e);
+        }
+        handleRedirect();
       })
       .catch((error) => {
         const errorCode = error.code;

@@ -14,16 +14,16 @@ function App() {
   return (
     <div className="App">
       <Provider store={store}>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<LoginPage />} />
-            <Route path="/signup" element={<SignUpPage />} />
-            <Route path="/homepage" element={<HomePage />} />
-            <Route path="/task-progress" element={<ProgressPage />} />
-            <Route path="/chatpage" element={<ChatPage />} />
-            <Route path="/profilepage" element={<ProfilePage />} />
-          </Routes>
-        </BrowserRouter>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<LoginPage />} />
+              <Route path="/signup" element={<SignUpPage />} />
+              <Route path="/homepage" element={<HomePage />} />
+              <Route path="/task-progress" element={<ProgressPage />} />
+              <Route path="/chatpage" element={<ChatPage />} />
+              <Route path="/profilepage" element={<ProfilePage />} />
+            </Routes>
+          </BrowserRouter>
       </Provider>
     </div>
   );

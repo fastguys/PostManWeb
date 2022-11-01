@@ -2,6 +2,8 @@ const express = require("express");
 const cors = require("cors");
 const port = process.env.PORT || 3001;
 const connectDB = require("./config/db");
+const session = require('express-session');
+const MongoStore = require('connect-mongo');
 const user = require("./controllers/users");
 const { createServer } = require("http");
 const { Server } = require("socket.io");
@@ -19,6 +21,9 @@ const io = require("socket.io")(httpServer, {
 io.on("connection", (socket) => {
   socket.on("send message", (msg) => {
     io.emit("receive message", msg);
+  });
+  Msg.find().then((result) => {
+    socket.emit("history message", result);
   });
 });
 httpServer.listen(port, () => console.log(`Server running on port ${port}`));

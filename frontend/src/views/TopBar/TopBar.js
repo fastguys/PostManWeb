@@ -71,7 +71,10 @@ export default function ResponsiveAppBar() {
               color: "inherit",
               textDecoration: "none",
             }}
-            onClick={() => navigate("/homepage")}
+            onClick={() => {
+              navigate("/homepage");
+              window.location.reload();
+            }}
           >
             PostMan
           </Typography>
