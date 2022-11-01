@@ -27,12 +27,13 @@ function Chat() {
     setMessage("");
   };
   useEffect(() => {
+    // socket.on("history message", (msg) => {
+    //   setAllMessages(msg);
+    // });
     socket.on("receive message", (msg) => {
       setAllMessages([...allMessages, msg]);
     });
-    socket.on("history message", (msg) => {
-      setAllMessages(msg);
-    });
+ 
   }, [allMessages]);
   return (
     <Box
@@ -61,7 +62,7 @@ function Chat() {
               <LeftMessage
                 message={message.msg}
                 image={pic}
-                key={message.sender + message.msg}
+                key={message._id}
               />
             );
           } else {
@@ -69,7 +70,7 @@ function Chat() {
               <RightMessage
                 message={message.msg}
                 image={pic}
-                key={message.sender + message.msg}
+                key={message._id}
               />
             );
           }
@@ -93,7 +94,6 @@ function Chat() {
             <Button
               onClick={() => {
                 handleSend(message);
-
               }}
               sx={{
                 width: 100,

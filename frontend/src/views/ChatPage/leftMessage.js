@@ -6,9 +6,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 
-function LeftMessage({ message }) {
-  const image = useSelector((state) => state.chat.image);
-
+function LeftMessage({ message, image }) {
   return (
     <List
       sx={{
@@ -32,7 +30,7 @@ function LeftMessage({ message }) {
         <ListItemAvatar sx={{ alignItems: "flex-start", my: 0.5 }}>
           <Avatar
             alt="Remy Sharp"
-            src={image ? image : "/static/images/avatar/2.jpg"}
+            src={image}
           />
         </ListItemAvatar>
       </ListItem>
