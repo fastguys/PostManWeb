@@ -14,6 +14,7 @@ import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import SegmentedControl from "mui-segmented-control";
 import { useNavigate } from "react-router-dom";
+import apis from "../../apis/user";
 const pages = [];
 const settings = ["Profile", "Logout"];
 
@@ -24,7 +25,11 @@ export default function ResponsiveAppBar(props) {
   const setIsTaskTakerMode = props.setIsTaskTakerMode;
 
   const [value, setValue] = React.useState(1);
-
+  const [image, setImage] = React.useState(null);
+  let email = localStorage.getItem("userId");
+  apis.FinduserByEmail({ email }).then((res) => {
+    setImage(res[0].ImageUrl);
+  });
   React.useEffect(() => {
     if (value === 1) {
       setIsTaskTakerMode(true);
@@ -171,7 +176,10 @@ export default function ResponsiveAppBar(props) {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar
+                  alt="Remy Sharp"
+                  src={image ? image : "/static/images/avatar/2.jpg"}
+                />
               </IconButton>
             </Tooltip>
             <Menu
