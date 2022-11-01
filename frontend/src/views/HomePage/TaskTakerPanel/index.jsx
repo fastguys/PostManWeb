@@ -2,6 +2,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import Taskfeed from './Taskfeed/index';
 import { Box } from '@mui/material';
+import apis from '../../../apis/user';
 import './tasktakerpanel.css';
 
 const TaskTakerPanel = () => {
@@ -9,6 +10,8 @@ const TaskTakerPanel = () => {
   const [searchLocation, setSearchLocation] = useState('');
 
   const [taskTaken, setTaskTaken] = useState([]);
+  const [taskList, setTaskList] = useState([]);
+  const [fetchTask, setFetchTask] = useState(false);
   // handle the search location box change
   const handleChange = (event) => {
     setSearchLocationBox(event.target.value);
@@ -31,52 +34,57 @@ const TaskTakerPanel = () => {
   }, [searchLocation]);
 
   // this is the mock up task data for the task feed
-  // TODO: need to fetch the task data from the backend
-  // TODO: need to add the
-  const taskList = [
-    {
-      title: 'task1',
-      description: 'task1 description',
-      location: '(x, y)',
-      isTaken: false,
-      taskId: 1,
-      senderInfo: '{}',
-      receiverInfo: '{}',
-      posterId: 'posterId1',
-      takerId: 'takerId1',
-      timeRemaining: 'timeRemaining1',
-      status: 'status1',
-      confirmCode: 'confirmCode1'
-    },
-    {
-      title: 'task2',
-      description: 'task2 description',
-      location: '(x, y)',
-      isTaken: false,
-      taskId: 1,
-      senderInfo: '{}',
-      receiverInfo: '{}',
-      posterId: 'posterId2',
-      takerId: 'takerId2',
-      timeRemaining: 'timeRemaining2',
-      status: 'status2',
-      confirmCode: 'confirmCode2'
-    },
-    {
-      title: 'task3',
-      description: 'task3 description',
-      location: '(x, y)',
-      isTaken: true,
-      taskId: 1,
-      senderInfo: '{}',
-      receiverInfo: '{}',
-      posterId: 'posterId3',
-      takerId: 'takerId3',
-      timeRemaining: 'timeRemaining3',
-      status: 'status3',
-      confirmCode: 'confirmCode3'
-    }
-  ];
+  if (!fetchTask) {
+    setFetchTask(true);
+    apis.GetTaskList().then((list) => {
+      console.log(list);
+      setTaskList(list);
+    });
+  }
+
+  // const taskList = [
+  //   {
+  //     title: 'task1',
+  //     description: 'task1 description',
+  //     location: '(x, y)',
+  //     isTaken: false,
+  //     senderInfo: {},
+  //     receiverInfo: {},
+  //     posterId: 'posterId1',
+  //     takerId: 'takerId1',
+  //     timeRemaining: 'timeRemaining1',
+  //     status: 'status1',
+  //     confirmCode: 'confirmCode1'
+  //   },
+  //   {
+  //     title: 'task2',
+  //     description: 'task2 description',
+  //     location: '(x, y)',
+  //     isTaken: false,
+  //     senderInfo: {},
+  //     receiverInfo: {},
+  //     posterId: 'posterId2',
+  //     takerId: 'takerId2',
+  //     timeRemaining: 'timeRemaining2',
+  //     status: 'status2',
+  //     confirmCode: 'confirmCode2'
+  //   },
+  //   {
+  //     title: 'task3',
+  //     description: 'task3 description',
+  //     location: '(x, y)',
+  //     isTaken: true,
+  //     senderInfo: {},
+  //     receiverInfo: {},
+  //     posterId: 'posterId3',
+  //     takerId: 'takerId3',
+  //     timeRemaining: 'timeRemaining3',
+  //     status: 'status3',
+  //     confirmCode: 'confirmCode3'
+  //   }
+  // ];
+
+  // useEffect(() => {}, [taskTaken]);
 
   // handle the task taken
   useEffect(() => {

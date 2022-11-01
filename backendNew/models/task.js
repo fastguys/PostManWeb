@@ -2,9 +2,8 @@ const mongoose = require("mongoose");
 // make schema for task
 // title: 'task1',
 // description: 'task1 description',
-// location: '(x, y)',
+// location: {type: 'Point', coordinates: [100,100]},
 // isTaken: false,
-// taskId: 1,
 // senderInfo: '{}',
 // receiverInfo: '{}',
 // posterId: 'posterId1',
@@ -23,15 +22,18 @@ const taskSchema = mongoose.Schema(
       required: true,
     },
     location: {
-      type: String,
-      required: true,
+      type: {
+        type: String, // Don't do `{ location: { type: String } }`
+        enum: ["Point"], // 'location.type' must be 'Point'
+        required: true,
+      },
+      coordinates: {
+        type: [Number],
+        required: true,
+      },
     },
     isTaken: {
       type: Boolean,
-      required: true,
-    },
-    taskId: {
-      type: Number,
       required: true,
     },
     senderInfo: {
