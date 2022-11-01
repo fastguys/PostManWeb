@@ -17,7 +17,8 @@ import {
   getAuth,
   RecaptchaVerifier,
   signInWithPhoneNumber,
-  sendSignInLinkToEmail
+  sendSignInLinkToEmail,
+  updatePhoneNumber
 } from 'firebase/auth';
 import apis from '../../apis/user';
 function Copyright(props) {
@@ -140,7 +141,6 @@ export default function SignUp() {
       .then((result) => {
         // User signed in successfully.
 
-        const user = result.user;
         setIncorrectCode(false);
         if (!NameError && !PhoneError && !PasswordError && !EmailInUsed && !IncorrectCode) {
           console.log(IncorrectCode);
@@ -162,6 +162,13 @@ export default function SignUp() {
                 is_admin: false
               };
               apis.insertNewuser(userInput);
+              // user.updatePhoneNumber(phone_number).then(() => {
+              //   // Email updated!
+              //   // ...
+              // }).catch((error) => {
+              //   // An error occurred
+              //   // ...
+              // });
               navigate('/');
             })
             .catch((error) => {
