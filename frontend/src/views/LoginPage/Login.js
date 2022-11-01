@@ -83,9 +83,10 @@ export default function Login() {
   const [PhoneError, setPhoneError] = useState(false);
   const [Phone, setPhone] = useState("+1");
   const [validation_code, setValidationcode] = useState("");
- 
+
   const handleRedirect = () => {
     navigate("./homepage");
+    window.location.reload();
   };
   const handleChange = (event, newValue) => {
     setValue(newValue);
