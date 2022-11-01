@@ -6,14 +6,12 @@ export const chatSlice = createSlice({
     image: "a",
   },
   reducers: {
-    setImage: (state, action) => { 
+    setImage: (state, action) => {
       state.image = action.payload;
-    }
-  }
+    },
+  },
 });
 
-export const {
-  setImage
-} = chatSlice.actions;
+export const { setImage } = chatSlice.actions;
 
 export default chatSlice.reducer;
