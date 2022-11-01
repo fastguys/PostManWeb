@@ -1,17 +1,17 @@
 import ResponsiveAppBar from '../TopBar/TopBar';
-import { Box, Button } from '@mui/material';
+import { Box } from '@mui/material';
 import Sidebar from './sideBar';
 import Chat from './chat';
 import apis from '../../apis/user';
-import { useState } from 'react';
+
 
 const ChatPage = () => {
-  const handleSearch = () => {
-    const email = 'bx@gmail.com';
-    apis.FinduserByEmail({ email }).then((res) => {
-      console.log(res);
-    });
-  };
+  // const handleSearch = () => {
+  //   const email = 'bx@gmail.com';
+  //   apis.FinduserByEmail({ email }).then((res) => {
+  //     console.log(res);
+  //   });
+  // };
 
   return (
     <div>
