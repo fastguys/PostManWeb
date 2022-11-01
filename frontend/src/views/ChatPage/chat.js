@@ -4,7 +4,7 @@ import LeftMessage from "./leftMessage";
 import RightMessage from "./rightMessage";
 import apis from "../../apis/user";
 import { io } from "socket.io-client";
-
+import { useLocation } from "react-router-dom";
 const socket = io.connect("http://localhost:3001", { reconnect: true });
 function Chat() {
   const taskId = useLocation();

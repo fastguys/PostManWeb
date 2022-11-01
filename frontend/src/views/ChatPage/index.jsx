@@ -3,7 +3,7 @@ import { Box, Button } from "@mui/material";
 import Sidebar from "./sideBar";
 import Chat from "./chat";
 import apis from "../../apis/user";
-import { useLocation } from "react-router-dom";
+
 const ChatPage = () => {
   return (
     <div>
