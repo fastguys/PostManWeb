@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 export const chatSlice = createSlice({
   name: "chat",
   initialState: {
-    image: "",
+    image: "a",
   },
   reducers: {
     setImage: (state, action) => { 
@@ -13,6 +13,7 @@ export const chatSlice = createSlice({
 });
 
 export const {
-  setImage,
+  setImage
 } = chatSlice.actions;
+
 export default chatSlice.reducer;

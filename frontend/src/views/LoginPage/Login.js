@@ -13,9 +13,9 @@ import { auth } from "../../apis/firebase";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import PropTypes from "prop-types";
-import { InputAdornment } from "@mui/material";
+import { imageListItemClasses, InputAdornment } from "@mui/material";
 import { setImage } from "../../stores/chat";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import apis from "../../apis/user";
 import {
   getAuth,
@@ -66,7 +66,6 @@ function a11yProps(index) {
 }
 export default function Login() {
   const dispatch = useDispatch();
-
   const [loginError, setLoginError] = useState(false);
   const [EmailError, setEmailError] = useState(false);
   const [authenticated, setauthenticated] = useState(
@@ -84,10 +83,9 @@ export default function Login() {
   const [PhoneError, setPhoneError] = useState(false);
   const [Phone, setPhone] = useState("+1");
   const [validation_code, setValidationcode] = useState("");
-
+ 
   const handleRedirect = () => {
     navigate("./homepage");
-    window.location.reload();
   };
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -155,6 +153,7 @@ export default function Login() {
         setPhoneError(true);
       });
   };
+  const pic = useSelector((state) => state.chat.image);
   const handleLoginSubmit = async (e) => {
     const auth = getAuth();
     let errorMessage = "";
@@ -164,10 +163,15 @@ export default function Login() {
         setauthenticated(true);
         localStorage.setItem("authenticated", true);
         localStorage.setItem("userId", user.email);
-        apis.FinduserByEmail({ email }).then((res) => {
-          dispatch(setImage(res[0].ImageUrl));
-        });
-        handleRedirect();
+        apis
+          .FinduserByEmail({ email })
+          .then((res) => {
+            dispatch(setImage(res[0].ImageUrl));
+            return res;
+          })
+          .then(() => {
+            handleRedirect();
+          });
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -372,7 +376,6 @@ export default function Login() {
             >
               Login
             </Button>
-
             <Link href="./signup" sx={{ textDecoration: "none" }}>
               <Button
                 type="submit"
