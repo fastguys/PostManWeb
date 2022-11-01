@@ -1,31 +1,32 @@
-import React from 'react';
+import React from "react";
 import { useState } from "react";
 import { FaStar } from "react-icons/fa";
+import ResponsiveAppBar from "../TopBar/TopBar";
 
 const ProgressPage = () => {
   const colors = {
     orange: "#FFBA5A",
-    grey: "#a9a9a9"
-    
+    grey: "#a9a9a9",
   };
 
   const [currentValue, setCurrentValue] = useState(0);
   const [hoverValue, setHoverValue] = useState(undefined);
-  const stars = Array(5).fill(0)
+  const stars = Array(5).fill(0);
 
-  const handleClick = value => {
-    setCurrentValue(value)
-  }
+  const handleClick = (value) => {
+    setCurrentValue(value);
+  };
 
-  const handleMouseOver = newHoverValue => {
-    setHoverValue(newHoverValue)
+  const handleMouseOver = (newHoverValue) => {
+    setHoverValue(newHoverValue);
   };
 
   const handleMouseLeave = () => {
-    setHoverValue(undefined)
-  }
+    setHoverValue(undefined);
+  };
   return (
     <div style={styles.container}>
+      <ResponsiveAppBar />
       <h2> Rate your Orders </h2>
       <div style={styles.stars}>
         {stars.map((_, index) => {
@@ -36,26 +37,22 @@ const ProgressPage = () => {
               onClick={() => handleClick(index + 1)}
               onMouseOver={() => handleMouseOver(index + 1)}
               onMouseLeave={handleMouseLeave}
-              color={(hoverValue || currentValue) > index ? colors.orange : colors.grey}
+              color={
+                (hoverValue || currentValue) > index
+                  ? colors.orange
+                  : colors.grey
+              }
               style={{
                 marginRight: 10,
-                cursor: "pointer"
+                cursor: "pointer",
               }}
             />
-          )
+          );
         })}
       </div>
-      <textarea
-        placeholder="What's your experience?"
-        style={styles.textarea}
-      />
+      <textarea placeholder="What's your experience?" style={styles.textarea} />
 
-      <button
-        style={styles.button}
-      >
-        Submit
-      </button>
-      
+      <button style={styles.button}>Submit</button>
     </div>
   );
 };
@@ -64,7 +61,7 @@ const styles = {
   container: {
     display: "flex",
     flexDirection: "column",
-    alignItems: "center"
+    alignItems: "center",
   },
   stars: {
     display: "flex",
@@ -76,16 +73,14 @@ const styles = {
     padding: 10,
     margin: "20px 0",
     minHeight: 100,
-    width: 300
+    width: 300,
   },
   button: {
     border: "1px solid #a9a9a9",
     borderRadius: 5,
     width: 300,
     padding: 10,
-  }
-
+  },
 };
-
 
 export default ProgressPage;

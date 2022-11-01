@@ -8,7 +8,11 @@ const socket = io.connect('http://localhost:3001', { reconnect: true });
 function Chat() {
   const [message, setMessage] = useState('message');
   const [allMessages, setAllMessages] = useState([]);
-
+  const [image, setImage] = useState(null);
+  let email = localStorage.getItem("userId");
+  apis.FinduserByEmail({ email }).then((res) => {
+    setImage(res[0].ImageUrl);
+  });
   const handleSend = (message) => {
     const newMessage = {
       msg: message,
@@ -45,9 +49,9 @@ function Chat() {
         }}>
         {allMessages.map((message) => {
           if (message.sender === localStorage.getItem('userId')) {
-            return <LeftMessage message={message.msg} key={message.sender + message.msg} />;
+            return <LeftMessage message={message.msg} image={image} key={message.sender + message.msg} />;
           } else {
-            return <RightMessage message={message.msg} key={message.sender + message.msg} />;
+            return <RightMessage message={message.msg} image={image} key={message.sender + message.msg} />;
           }
         })}
       </Box>
