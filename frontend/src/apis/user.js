@@ -8,6 +8,9 @@ const insertNewuser = async (payload) => {
 const FinduserByEmail = async (payload) => {
   return get("/user/:id", { payload });
 };
+const FinduserByPhone = async (payload) => {
+  return get("/user/phoneNumber/:id", { payload });
+};
 
 const UpdateUserNickname = async (payload) => {
   return put("/user/nickname/:id", { payload });
@@ -62,7 +65,8 @@ const apis = {
   UpdateTask,
   deleteUserByEmail,
   UpdateUserVisibility,
-  UpdateEmail
+  UpdateEmail,
+  FinduserByPhone,
 };
 
 export default apis;

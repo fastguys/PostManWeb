@@ -24,6 +24,17 @@ router.get("/user/:id", async (req, res) => {
     res.status(500).json(err);
   }
 });
+router.get("/user/phoneNumber/:id", async (req, res) => {
+  try {
+    const user_phone = req.query.payload;
+    console.log(user_phone);
+    const user = await User.find({ phoneNumber: user_phone["phone"] });
+    console.log(user)
+    res.status(200).json(user);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 
 router.delete("/user/:id", async (req, res) => {
   console.log(req.query.payload);

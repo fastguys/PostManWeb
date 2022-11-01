@@ -162,13 +162,14 @@ export default function SignUp() {
                 is_admin: false
               };
               apis.insertNewuser(userInput);
-              // user.updatePhoneNumber(phone_number).then(() => {
-              //   // Email updated!
-              //   // ...
-              // }).catch((error) => {
-              //   // An error occurred
-              //   // ...
-              // });
+              console.log(user.email);
+              updatePhoneNumber(userCredential.use,phone_number).then(() => {
+                // Email updated!
+                // ...
+              }).catch((error) => {
+                // An error occurred
+                // ...
+              });
               navigate('/');
             })
             .catch((error) => {
