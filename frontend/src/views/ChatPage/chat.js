@@ -1,15 +1,19 @@
-import { TextField, Box, Button } from '@mui/material';
-import { useState, useEffect } from 'react';
-import LeftMessage from './leftMessage';
-import RightMessage from './rightMessage';
-import apis from '../../apis/user';
-import { io } from 'socket.io-client';
-import { useSelector } from 'react-redux';
-const socket = io.connect('http://localhost:3001', { reconnect: true });
-
-const Chat = () =>{
+import { TextField, Box, Button } from "@mui/material";
+import { useState, useEffect } from "react";
+import LeftMessage from "./leftMessage";
+import { useSelector } from "react-redux";
+import RightMessage from "./rightMessage";
+import apis from "../../apis/user";
+import { io } from "socket.io-client";
+import { useLocation } from "react-router-dom";
+const socket = io.connect("http://localhost:3001", { reconnect: true });
+function Chat() {
   const pic = useSelector((state) => state.chat.image);
-  const [message, setMessage] = useState("");
+  const taskId = useLocation();
+  const searchParams = new URLSearchParams(taskId.search);
+  console.log(searchParams.get("taskId"));
+  console.log(apis.GetTask(searchParams.get("taskId")));
+  const [message, setMessage] = useState("message");
   const [allMessages, setAllMessages] = useState([]);
   const handleSend = (message) => {
     const newMessage = {
@@ -25,6 +29,9 @@ const Chat = () =>{
   useEffect(() => {
     socket.on("receive message", (msg) => {
       setAllMessages([...allMessages, msg]);
+    });
+    socket.on("history message", (msg) => {
+      setAllMessages(msg);
     });
   }, [allMessages]);
   return (
