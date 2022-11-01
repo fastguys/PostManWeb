@@ -20,10 +20,13 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { getAuth, sendPasswordResetEmail, deleteUser } from "firebase/auth";
+import { getAuth, sendPasswordResetEmail, deleteUser, updateEmail,updateProfile} from "firebase/auth";
 import { Avatar } from "@mui/material";
+import { setImage } from "../../stores/chat";
+import { useDispatch } from "react-redux";
 
 export default function Signup() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const [imageURL, setImageURL] = useState(null);
@@ -35,6 +38,16 @@ export default function Signup() {
   const [alignment, setAlignment] = useState();
   const [open, setOpen] = React.useState(false);
   const [open2, setDelete] = React.useState(false);
+  const [emailChange, setEmailChange] = React.useState(false);
+  const [newemail, setEmail] = React.useState("");
+  const handleEmailChange = () => {
+    setEmailChange(true);
+  };
+
+  const handleEmailClose = () => {
+    setEmailChange(false);
+  };
+
   const handleAlignment = async (event, newAlignment) => {
     setAlignment(newAlignment);
     const payload = {
@@ -66,6 +79,21 @@ export default function Signup() {
     };
     const handleCloseDelete = () => {
       setDelete(false);
+    };
+    const handlechangeEmail = () => {
+      const auth = getAuth();
+      const payload = {
+        email: localStorage.getItem("userId"),
+        Newemail: newemail
+      };
+      apis.UpdateEmail(payload).then((res) => {
+        setEmail(newemail);
+      });
+      updateEmail(auth.currentUser, newemail)
+      alert("Your Email has been Changed");
+      setEmailChange(false);
+      localStorage.clear();
+      navigate("/");
     };
     const handlereset = (event) => {
       const auth = getAuth();
@@ -149,9 +177,17 @@ export default function Signup() {
           email: localStorage.getItem("userId"),
           ImageUrl: reader.result.toString(),
         };
-        apis.UpdateUserImageUrl(payload).then((res) => {
-          setImageURL(reader.result.toString());
-        });
+        apis
+          .UpdateUserImageUrl(payload)
+          .then((res) => {
+            setImageURL(reader.result.toString());
+            return res;
+          })
+          .then((res) => {
+            apis.FinduserByEmail({ email }).then((res) => {
+              dispatch(setImage(res[0].ImageUrl));
+            });
+          });
       };
       reader.readAsDataURL(file);
     };
@@ -353,6 +389,44 @@ export default function Signup() {
                 <Button onClick={handleClose}>Back</Button>
               </DialogActions>
             </Dialog>
+
+            <Button
+              variant="contained"
+              sx={{ mt: 5, height: 50, width: 350 }}
+              style={{ background: "#656268" }}
+              onClick={() => {
+                handleEmailChange();
+              }} 
+            >
+              Change Your Email
+            </Button>
+            <Dialog open={emailChange} onClose={handleEmailClose}>
+              <DialogTitle>Change Email</DialogTitle>
+              <DialogContent>
+                <DialogContentText>
+                  Please enter your new email address
+                </DialogContentText>
+                <TextField
+                  autoFocus
+                  margin="dense"
+                  id="email"
+                  label="Email Address"
+                  type="email"
+                  fullWidth
+                  variant="standard"
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                  }}
+                />
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handlechangeEmail}>Confirm</Button>
+                <Button onClick={handleEmailClose}>Cancel</Button>
+              </DialogActions>
+            </Dialog> 
+
+
+            
             <Button
               variant="contained"
               sx={{

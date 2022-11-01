@@ -15,7 +15,9 @@ const UpdateUserNickname = async (payload) => {
 const UpdateUserBio = async (payload) => {
   return put("/user/bio/:id", { payload });
 };
-
+const UpdateEmail = async (payload) => {
+  return put("/user/email/:id", { payload });
+};
 const deleteUserByEmail = async (payload) => {
   return deleteFrom("/user/:id", { payload });
 };
@@ -60,6 +62,7 @@ const apis = {
   UpdateTask,
   deleteUserByEmail,
   UpdateUserVisibility,
+  UpdateEmail
 };
 
 export default apis;

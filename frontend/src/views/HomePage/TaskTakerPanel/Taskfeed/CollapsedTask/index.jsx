@@ -57,10 +57,10 @@ const CollapsedTask = (props) => {
       console.log("task is taken");
       return;
     }
-    // navigate to the task chatting page with the specific task poster
-    localStorage.setItem("chatWithPosterId", taskInfo.posterId);
-    localStorage.setItem("chatWithTaskId", taskInfo.taskId);
-    navigate("/chatpage");
+    navigate({
+      pathname: "/chatpage",
+      search: `?taskId=${taskInfo._id}`,
+    });
   };
 
   return (
