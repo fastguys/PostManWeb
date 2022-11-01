@@ -48,7 +48,7 @@ export default function Signup() {
   const [open2, setDelete] = React.useState(false);
   const [emailChange, setEmailChange] = React.useState(false);
   const [newemail, setEmail] = React.useState("");
-  const [loading, setLoading] = React.useState(false);
+  const [rating, setRating] = useState(5);
   const handleEmailChange = () => {
     setEmailChange(true);
   };
@@ -75,6 +75,7 @@ export default function Signup() {
       setBio(res[0].bio);
       setAlignment(res[0].visibility);
       setImageURL(res[0].ImageUrl);
+      setRating(res[0].rating);
     });
     const handleClickOpen = () => {
       setOpen(true);
@@ -180,38 +181,31 @@ export default function Signup() {
     const fileselectedHandler = (event) => {
       const file = event.target.files[0];
       let overSize = false;
-      if (file.size > 1024 * 1024) {
+      if (file.size > 1024 * 512) {
         overSize = true;
       }
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const payload = {
-          email: localStorage.getItem("userId"),
-          ImageUrl: reader.result.toString(),
-        };
-        apis
-          .UpdateUserImageUrl(payload)
-          .then((res) => {
-            if (overSize) {
-              setImageURL(null);
-            } else {
-              setImageURL(reader.result.toString());
-            }
-            return res;
-          })
-          .then((res) => {
-            apis.FinduserByEmail({ email }).then((res) => {
-              dispatch(setImage(res[0].ImageUrl));
-              if (overSize) {
-                setImageURL(reader.result.toString());
-                setLoading(true);
-              }
-            });
-          });
-      };
-      reader.readAsDataURL(file);
       if (overSize) {
-        setLoading(false);
+        alert("Image size should not exceed 512KB");
+      } else {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          const payload = {
+            email: localStorage.getItem("userId"),
+            ImageUrl: reader.result.toString(),
+          };
+          apis
+            .UpdateUserImageUrl(payload)
+            .then((res) => {
+              setImageURL(reader.result.toString());
+              return res;
+            })
+            .then((res) => {
+              apis.FinduserByEmail({ email }).then((res) => {
+                dispatch(setImage(res[0].ImageUrl));
+              });
+            });
+        };
+        reader.readAsDataURL(file);
       }
     };
     return (
@@ -235,9 +229,7 @@ export default function Signup() {
               }}
               alt="Profile Photo."
               src={imageURL}
-            >
-              {!loading && <CircularProgress />}
-            </Avatar>
+            ></Avatar>
 
             <Button
               variant="contained"
@@ -361,7 +353,11 @@ export default function Signup() {
                 update
               </Button>
             </Box>
-
+            <Box sx={{ display: "flex", flexDirection: "row" }}>
+              <Typography variant="h5" sx={{ mt: 5 }}>
+                Rating: {rating}
+              </Typography>
+            </Box>
             <Box sx={{ display: "flex", flexDirection: "row" }}>
               <Typography variant="h5" sx={{ mt: 5 }}>
                 Profile Visibility:

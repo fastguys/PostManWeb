@@ -61,6 +61,14 @@ const userSchema = mongoose.Schema(
       type: Number,
       default: 5,
     },
+    totalrating: {
+      type: Number,
+      default: 5,
+    },
+    ratingcount: {
+      type: Number,
+      default: 1,
+    },
   },
   {
     timestamps: true,
