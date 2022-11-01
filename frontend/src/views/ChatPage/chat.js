@@ -1,18 +1,16 @@
-import { TextField, Box, Button } from "@mui/material";
-import { useState, useEffect } from "react";
-import LeftMessage from "./leftMessage";
-import RightMessage from "./rightMessage";
-import apis from "../../apis/user";
-import { io } from "socket.io-client";
-const socket = io.connect("http://localhost:3001", { reconnect: true });
-function Chat() {
-  const [message, setMessage] = useState("message");
+import { TextField, Box, Button } from '@mui/material';
+import { useState, useEffect } from 'react';
+import LeftMessage from './leftMessage';
+import RightMessage from './rightMessage';
+import apis from '../../apis/user';
+import { io } from 'socket.io-client';
+import { useSelector } from 'react-redux';
+const socket = io.connect('http://localhost:3001', { reconnect: true });
+
+const Chat = () =>{
+  const pic = useSelector((state) => state.chat.image);
+  const [message, setMessage] = useState("");
   const [allMessages, setAllMessages] = useState([]);
-  const [image, setImage] = useState(null);
-  let email = localStorage.getItem("userId");
-  apis.FinduserByEmail({ email }).then((res) => {
-    setImage(res[0].ImageUrl);
-  });
   const handleSend = (message) => {
     const newMessage = {
       msg: message,
@@ -88,6 +86,7 @@ function Chat() {
             <Button
               onClick={() => {
                 handleSend(message);
+
               }}
               sx={{
                 width: 100,

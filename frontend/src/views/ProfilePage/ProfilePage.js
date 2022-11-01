@@ -22,8 +22,11 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { getAuth, sendPasswordResetEmail, deleteUser, updateEmail} from "firebase/auth";
 import { Avatar } from "@mui/material";
+import { setImage } from "../../stores/chat";
+import { useDispatch } from "react-redux";
 
 export default function Signup() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const [imageURL, setImageURL] = useState(null);
@@ -183,9 +186,17 @@ export default function Signup() {
           email: localStorage.getItem("userId"),
           ImageUrl: reader.result.toString(),
         };
-        apis.UpdateUserImageUrl(payload).then((res) => {
-          setImageURL(reader.result.toString());
-        });
+        apis
+          .UpdateUserImageUrl(payload)
+          .then((res) => {
+            setImageURL(reader.result.toString());
+            return res;
+          })
+          .then((res) => {
+            apis.FinduserByEmail({ email }).then((res) => {
+              dispatch(setImage(res[0].ImageUrl));
+            });
+          });
       };
       reader.readAsDataURL(file);
     };
