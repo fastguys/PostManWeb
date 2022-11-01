@@ -53,7 +53,7 @@ const Chat = () =>{
             return (
               <LeftMessage
                 message={message.msg}
-                image={image}
+                image={pic}
                 key={message.sender + message.msg}
               />
             );
@@ -61,7 +61,7 @@ const Chat = () =>{
             return (
               <RightMessage
                 message={message.msg}
-                image={image}
+                image={pic}
                 key={message.sender + message.msg}
               />
             );
