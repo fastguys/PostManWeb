@@ -22,13 +22,10 @@ export default function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [image, setImage] = React.useState(null);
-  // console.log(localStorage);
-  // let email = localStorage.getItem("userId");
-  // apis.FinduserByEmail({ email }).then((res) => {
-  //   setImage(res.data.imageUrl);
-  //   console.log(res.data);
-  // });
-  // console.log(image);
+  let email = localStorage.getItem("userId");
+  apis.FinduserByEmail({ email }).then((res) => {
+    setImage(res[0].ImageUrl);
+  });
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
