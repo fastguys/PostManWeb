@@ -142,7 +142,6 @@ export default function SignUp() {
 
         const user = result.user;
         setIncorrectCode(false);
-        console.log(IncorrectCode + 'nnn');
         if (!NameError && !PhoneError && !PasswordError && !EmailInUsed && !IncorrectCode) {
           console.log(IncorrectCode);
           auth

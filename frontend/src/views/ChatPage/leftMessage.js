@@ -1,4 +1,5 @@
 import { Box } from "@mui/system";
+
 import { useSelector } from "react-redux";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
@@ -7,6 +8,7 @@ import Avatar from "@mui/material/Avatar";
 
 function LeftMessage({ message }) {
   const image = useSelector((state) => state.chat.image);
+
   return (
     <List
       sx={{
