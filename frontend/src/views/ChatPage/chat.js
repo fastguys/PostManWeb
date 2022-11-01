@@ -27,12 +27,13 @@ function Chat() {
     setMessage("");
   };
   useEffect(() => {
+    // socket.on("history message", (msg) => {
+    //   setAllMessages(msg);
+    // });
     socket.on("receive message", (msg) => {
       setAllMessages([...allMessages, msg]);
     });
-    socket.on("history message", (msg) => {
-      setAllMessages(msg);
-    });
+ 
   }, [allMessages]);
   return (
     <Box
