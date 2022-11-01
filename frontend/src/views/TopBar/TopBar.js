@@ -62,7 +62,6 @@ export default function ResponsiveAppBar() {
             variant="h6"
             noWrap
             component="a"
-            href="/homepage"
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
@@ -72,6 +71,7 @@ export default function ResponsiveAppBar() {
               color: "inherit",
               textDecoration: "none",
             }}
+            onClick={() => navigate("/homepage")}
           >
             PostMan
           </Typography>
