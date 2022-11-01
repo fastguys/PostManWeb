@@ -164,15 +164,17 @@ export default function Login() {
         setauthenticated(true);
         localStorage.setItem("authenticated", true);
         localStorage.setItem("userId", user.email);
-        apis
+        try{
+          apis
           .FinduserByEmail({ email })
           .then((res) => {
             dispatch(setImage(res[0].ImageUrl));
             return res;
-          })
-          .then(() => {
-            handleRedirect();
           });
+        }catch(e){
+          console.log(e);
+        }
+        handleRedirect();
       })
       .catch((error) => {
         const errorCode = error.code;
