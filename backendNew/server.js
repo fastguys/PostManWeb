@@ -20,6 +20,9 @@ io.on("connection", (socket) => {
   socket.on("send message", (msg) => {
     io.emit("receive message", msg);
   });
+  Msg.find().then((result) => {
+    socket.emit("history message", result);
+  });
 });
 httpServer.listen(port, () => console.log(`Server running on port ${port}`));
 

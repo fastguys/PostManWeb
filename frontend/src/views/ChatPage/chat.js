@@ -4,8 +4,12 @@ import LeftMessage from "./leftMessage";
 import RightMessage from "./rightMessage";
 import apis from "../../apis/user";
 import { io } from "socket.io-client";
+
 const socket = io.connect("http://localhost:3001", { reconnect: true });
 function Chat() {
+  const taskId = useLocation();
+  const searchParams = new URLSearchParams(taskId.search);
+  console.log(searchParams.get("taskId"));
   const [message, setMessage] = useState("message");
   const [allMessages, setAllMessages] = useState([]);
   const [image, setImage] = useState(null);
@@ -27,6 +31,9 @@ function Chat() {
   useEffect(() => {
     socket.on("receive message", (msg) => {
       setAllMessages([...allMessages, msg]);
+    });
+    socket.on("history message", (msg) => {
+      setAllMessages(msg);
     });
   }, [allMessages]);
   return (
@@ -56,7 +63,7 @@ function Chat() {
               <LeftMessage
                 message={message.msg}
                 image={image}
-                key={message.sender + message.msg}
+                key={Date.now() + Math.random() + message.msg}
               />
             );
           } else {
@@ -64,7 +71,7 @@ function Chat() {
               <RightMessage
                 message={message.msg}
                 image={image}
-                key={message.sender + message.msg}
+                key={Date.now() + Math.random() + message.msg}
               />
             );
           }
