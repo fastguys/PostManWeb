@@ -49,6 +49,7 @@ export default function Signup() {
     let email = localStorage.getItem("userId");
     apis.FinduserByEmail({ email }).then((res) => {
       console.log(res[0]);
+      setTimeout(() => {}, 1000);
       setName(res[0].nickname);
       setBio(res[0].bio);
       setAlignment(res[0].visibility);
@@ -114,14 +115,15 @@ export default function Signup() {
         setTempName(name);
       } else {
         setUpdate(false);
-        setName(tempname);
 
         const payload = {
           email: localStorage.getItem("userId"),
           nickname: tempname,
         };
         console.log(payload);
-        apis.UpdateUserNickname(payload);
+        apis.UpdateUserNickname(payload).then((res) => {
+          setName(tempname);
+        });
       }
     };
     const updateUserbio = () => {
@@ -147,8 +149,9 @@ export default function Signup() {
           email: localStorage.getItem("userId"),
           ImageUrl: reader.result.toString(),
         };
-        apis.UpdateUserImageUrl(payload);
-        setImageURL(reader.result.toString());
+        apis.UpdateUserImageUrl(payload).then((res) => {
+          setImageURL(reader.result.toString());
+        });
       };
       reader.readAsDataURL(file);
     };
