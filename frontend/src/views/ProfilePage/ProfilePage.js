@@ -20,7 +20,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { getAuth, sendPasswordResetEmail, deleteUser, updateEmail} from "firebase/auth";
+import { getAuth, sendPasswordResetEmail, deleteUser, updateEmail,updateProfile} from "firebase/auth";
 import { Avatar } from "@mui/material";
 
 export default function Signup() {
@@ -78,10 +78,7 @@ export default function Signup() {
       setDelete(false);
     };
     const handlechangeEmail = () => {
-      console.log(newemail);
-      console.log(localStorage.getItem("userId"));
       const auth = getAuth();
-      const user = auth.currentUser;
       const payload = {
         email: localStorage.getItem("userId"),
         Newemail: newemail
@@ -89,13 +86,7 @@ export default function Signup() {
       apis.UpdateEmail(payload).then((res) => {
         setEmail(newemail);
       });
-      updateEmail(auth.currentUser, newemail).then(() => {
-        // Email updated!
-        // ...
-      }).catch((error) => {
-        // An error occurred
-        // ...
-      });
+      updateEmail(auth.currentUser, newemail)
       alert("Your Email has been Changed");
       setEmailChange(false);
       localStorage.clear();
