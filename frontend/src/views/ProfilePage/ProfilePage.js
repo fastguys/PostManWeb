@@ -20,10 +20,18 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { getAuth, sendPasswordResetEmail, deleteUser, updateEmail,updateProfile} from "firebase/auth";
+import {
+  getAuth,
+  sendPasswordResetEmail,
+  deleteUser,
+  updateEmail,
+  updateProfile,
+} from "firebase/auth";
 import { Avatar } from "@mui/material";
 import { setImage } from "../../stores/chat";
 import { useDispatch } from "react-redux";
+import CircularProgress from "@mui/material/CircularProgress";
+import Backdrop from "@mui/material/Backdrop";
 
 export default function Signup() {
   const dispatch = useDispatch();
@@ -40,6 +48,7 @@ export default function Signup() {
   const [open2, setDelete] = React.useState(false);
   const [emailChange, setEmailChange] = React.useState(false);
   const [newemail, setEmail] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
   const handleEmailChange = () => {
     setEmailChange(true);
   };
@@ -61,7 +70,6 @@ export default function Signup() {
   } else {
     let email = localStorage.getItem("userId");
     apis.FinduserByEmail({ email }).then((res) => {
-      console.log(res[0]);
       setTimeout(() => {}, 1000);
       setName(res[0].nickname);
       setBio(res[0].bio);
@@ -84,12 +92,12 @@ export default function Signup() {
       const auth = getAuth();
       const payload = {
         email: localStorage.getItem("userId"),
-        Newemail: newemail
+        Newemail: newemail,
       };
       apis.UpdateEmail(payload).then((res) => {
         setEmail(newemail);
       });
-      updateEmail(auth.currentUser, newemail)
+      updateEmail(auth.currentUser, newemail);
       alert("Your Email has been Changed");
       setEmailChange(false);
       localStorage.clear();
@@ -171,6 +179,10 @@ export default function Signup() {
     };
     const fileselectedHandler = (event) => {
       const file = event.target.files[0];
+      let overSize = false;
+      if (file.size > 1024 * 1024) {
+        overSize = true;
+      }
       const reader = new FileReader();
       reader.onloadend = () => {
         const payload = {
@@ -180,16 +192,27 @@ export default function Signup() {
         apis
           .UpdateUserImageUrl(payload)
           .then((res) => {
-            setImageURL(reader.result.toString());
+            if (overSize) {
+              setImageURL(null);
+            } else {
+              setImageURL(reader.result.toString());
+            }
             return res;
           })
           .then((res) => {
             apis.FinduserByEmail({ email }).then((res) => {
               dispatch(setImage(res[0].ImageUrl));
+              if (overSize) {
+                setImageURL(reader.result.toString());
+                setLoading(true);
+              }
             });
           });
       };
       reader.readAsDataURL(file);
+      if (overSize) {
+        setLoading(false);
+      }
     };
     return (
       <div>
@@ -212,7 +235,10 @@ export default function Signup() {
               }}
               alt="Profile Photo."
               src={imageURL}
-            ></Avatar>
+            >
+              {!loading && <CircularProgress />}
+            </Avatar>
+
             <Button
               variant="contained"
               component="label"
@@ -396,7 +422,7 @@ export default function Signup() {
               style={{ background: "#656268" }}
               onClick={() => {
                 handleEmailChange();
-              }} 
+              }}
             >
               Change Your Email
             </Button>
@@ -423,10 +449,8 @@ export default function Signup() {
                 <Button onClick={handlechangeEmail}>Confirm</Button>
                 <Button onClick={handleEmailClose}>Cancel</Button>
               </DialogActions>
-            </Dialog> 
+            </Dialog>
 
-
-            
             <Button
               variant="contained"
               sx={{
