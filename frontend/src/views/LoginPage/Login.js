@@ -114,9 +114,16 @@ export default function Login() {
         const user = result.user;
         setIncorrectCode(false);
         localStorage.setItem("authenticated", true);
-        localStorage.setItem("userId", user.phoneNumber);
+        const payload = {
+          phone: Phone
+        };
+        apis.FinduserByPhone(payload).then((res) => {
+          console.log(res);
+          localStorage.setItem("userId", res[0].email);
+        });
+        
         handleRedirect();
-        // ...
+        //...
       })
       .catch((error) => {
         // User couldn't sign in (bad verification code?)
