@@ -118,11 +118,11 @@ export default function Login() {
           phone: Phone,
         };
         apis.FinduserByPhone(payload).then((res) => {
-          console.log(res);
           localStorage.setItem("userId", res[0].email);
+          console.log(localStorage.getItem("userId"));
+        }).then(()=>{
+          handleRedirect();
         });
-
-        handleRedirect();
         //...
       })
       .catch((error) => {
