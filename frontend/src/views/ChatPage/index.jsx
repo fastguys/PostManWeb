@@ -4,21 +4,32 @@ import Sidebar from "./sideBar";
 import Chat from "./chat";
 import apis from "../../apis/user";
 import { useState, useEffect } from "react";
+import { setUsers } from "../../stores/chat";
+import { useDispatch } from "react-redux";
+
 
 const ChatPage = () => {
+  const dispatch = useDispatch();
   const [user, setUser] = useState(null);
+  useEffect(() => {
   apis.GetallUser().then((res) => {
     const n = res.length;
     let temp = [];
     for (let i = 0; i < n; i++) {
-      temp.push({
-        name: res[i].firstname,
-        id: res[i]._id,
-        image: res[i].imageUrl,
-      });
+      if (res[i].email !== localStorage.getItem("userId")) {
+        temp.push({
+          name: res[i].firstname,
+          id: res[i].email,
+          image: res[i].ImageUrl,
+        });
+      };
     }
     setUser(temp);
+    console.log(temp);
+    dispatch(setUsers(temp));
   });
+}, []);
+
 
   return (
     <div>
