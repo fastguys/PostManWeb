@@ -11,29 +11,36 @@ function Chat() {
   const pic = useSelector((state) => state.chat.image);
   const taskId = useLocation();
   const searchParams = new URLSearchParams(taskId.search);
-  console.log(searchParams.get("taskId"));
-  console.log(apis.GetTask(searchParams.get("taskId")));
   const [message, setMessage] = useState("message");
   const [allMessages, setAllMessages] = useState([]);
+  const [posterId, setPosterId] = useState("");
+  useEffect(() => {
+    apis.GetTask(searchParams.get("taskId")).then((res) => {
+      setPosterId(res[0].posterId);
+    });
+    console.log(posterId);
+  }, [posterId]);
   const handleSend = (message) => {
     const newMessage = {
       msg: message,
       sender: localStorage.getItem("userId"),
+      receiver: posterId,
+      taskId: searchParams.get("taskId"),
     };
-    socket.emit("send message", newMessage);
+    socket.emit("send_message", newMessage);
     apis.SendMessage(newMessage).then((res) => {
       console.log(res);
     });
     setMessage("");
   };
+  socket.emit("join_room", searchParams.get("taskId"));
   useEffect(() => {
-    // socket.on("history message", (msg) => {
-    //   setAllMessages(msg);
-    // });
-    socket.on("receive message", (msg) => {
+    socket.on("history_message", (msg) => {
+      setAllMessages(msg);
+    });
+    socket.on("receive_message", (msg) => {
       setAllMessages([...allMessages, msg]);
     });
- 
   }, [allMessages]);
   return (
     <Box
