@@ -1,5 +1,6 @@
 import { TextField, Box, Button } from "@mui/material";
 import { useState, useEffect } from "react";
+import { useRef } from "react";
 import LeftMessage from "./leftMessage";
 import { useSelector } from "react-redux";
 import RightMessage from "./rightMessage";
@@ -9,10 +10,6 @@ import { useLocation } from "react-router-dom";
 const socket = io.connect("http://localhost:3001", { reconnect: true });
 function Chat() {
   const pic = useSelector((state) => state.chat.image);
-  const taskId = useLocation();
-  const searchParams = new URLSearchParams(taskId.search);
-  console.log(searchParams.get("taskId"));
-  console.log(apis.GetTask(searchParams.get("taskId")));
   const [message, setMessage] = useState("message");
   const [allMessages, setAllMessages] = useState([]);
   const handleSend = (message) => {
@@ -26,15 +23,16 @@ function Chat() {
     });
     setMessage("");
   };
+
   useEffect(() => {
-    // socket.on("history message", (msg) => {
-    //   setAllMessages(msg);
-    // });
+    setMessage("");
+    socket.on("history message", (msg) => {
+      setAllMessages(msg);
+    });
     socket.on("receive message", (msg) => {
       setAllMessages([...allMessages, msg]);
     });
- 
-  }, [allMessages]);
+  }, [allMessages, message]);
   return (
     <Box
       sx={{
@@ -56,21 +54,21 @@ function Chat() {
           padding: 2,
         }}
       >
-        {allMessages.map((message) => {
-          if (message.sender === localStorage.getItem("userId")) {
+        {allMessages.map((item) => {
+          if (item.sender === localStorage.getItem("userId")) {
             return (
               <LeftMessage
-                message={message.msg}
+                message={item.msg}
                 image={pic}
-                key={message._id}
+                key={item._id}
               />
             );
           } else {
             return (
               <RightMessage
-                message={message.msg}
+                message={item.msg}
                 image={pic}
-                key={message._id}
+                key={item._id}
               />
             );
           }
