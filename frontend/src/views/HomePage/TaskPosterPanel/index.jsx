@@ -144,7 +144,7 @@ const TaskPosterPanel = () => {
               placeholder="Please enter receiver's telephone."
               onChange={(e) => setReceiverTele(e.target.value)}
             />
-            {submitted && !taskName ? <div className='failed-message'>Error: task name can't be empty</div> : null}
+            {submitted && !receiverTele ? <div className='failed-message'>Error: task name can't be empty</div> : null}
             <button className ="post_button" type="submit" onClick={handleSubmit}>
               Post Task
             </button>
