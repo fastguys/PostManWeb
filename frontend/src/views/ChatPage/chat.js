@@ -17,7 +17,7 @@ function Chat() {
   const otherUserName = useSelector((state) => state.chat.otherUserName);
   const taskId = useLocation();
   const searchParams = new URLSearchParams(taskId.search);
-  const [message, setMessage] = useState("message");
+  const [message, setMessage] = useState("");
   const [allMessages, setAllMessages] = useState([]);
   const [posterId, setPosterId] = useState(otherUserName);
   const bot = useRef(null)
@@ -94,14 +94,14 @@ function Chat() {
           padding: 2,
         }}
       >
-        {allMessages.map((item) => {
+        {allMessages.map((item, index) => {
           if(item.sender === localStorage.getItem("userId") && item.receiver === otherUserName){
             return (
-              <LeftMessage message={item.msg} image={pic} key={item._id} />
+              <LeftMessage message={item.msg} image={pic} key={index} />
             );
           } else if (item.receiver === localStorage.getItem("userId") && item.sender === otherUserName) {
             return (
-              <RightMessage message={item.msg} image={otherUser} key={item._id} />
+              <RightMessage message={item.msg} image={otherUser} key={index} />
             );
           }
           
