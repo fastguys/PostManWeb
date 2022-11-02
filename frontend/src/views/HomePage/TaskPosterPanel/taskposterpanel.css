@@ -69,15 +69,3 @@ button {
   border: 1px solid #ccc;
   border-radius: 4px;
 }
-
-.task-taker-panel-left {
-  width: 50%;
-  height: 100%;
-  margin: 10px;
-}
-
-.task-taker-panel-right {
-  width: 50%;
-  height: 100%;
-  margin: 10px;
-}
