@@ -119,9 +119,10 @@ export default function Login() {
         };
         apis.FinduserByPhone(payload).then((res) => {
           localStorage.setItem("userId", res[0].email);
+          console.log(localStorage.getItem("userId"));
+        }).then(()=>{
+          handleRedirect();
         });
-        console.log(localStorage.getItem("userId"));
-        handleRedirect();
         //...
       })
       .catch((error) => {
