@@ -1,30 +1,61 @@
 import { TextField, Box, Button } from "@mui/material";
 import { useState, useEffect } from "react";
+import { useRef } from "react";
 import LeftMessage from "./leftMessage";
 import { useSelector } from "react-redux";
 import RightMessage from "./rightMessage";
 import apis from "../../apis/user";
 import { io } from "socket.io-client";
 import { useLocation } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setOtherUser } from "../../stores/chat";
+import { setOtherUserName } from "../../stores/chat";
 const socket = io.connect("http://localhost:3001", { reconnect: true });
 function Chat() {
   const pic = useSelector((state) => state.chat.image);
+  const otherUser = useSelector((state) => state.chat.otherUser);
+  const otherUserName = useSelector((state) => state.chat.otherUserName);
   const taskId = useLocation();
   const searchParams = new URLSearchParams(taskId.search);
   const [message, setMessage] = useState("message");
   const [allMessages, setAllMessages] = useState([]);
-  const [posterId, setPosterId] = useState("");
+  const [posterId, setPosterId] = useState(otherUserName);
+  const bot = useRef(null)
   useEffect(() => {
-    apis.GetTask(searchParams.get("taskId")).then((res) => {
-      setPosterId(res[0].posterId);
-    });
-    console.log(posterId);
-  }, [posterId]);
+    if (bot.current) {
+      bot.current.scrollIntoView(
+        {
+          behavior: 'smooth',
+          block: 'end',
+          inline: 'nearest'
+        })
+    }
+  },
+  [allMessages])
+  // useEffect(() => {
+  //   apis
+  //     .GetTask(searchParams.get("taskId"))
+  //     .then((res) => {
+  //       setPosterId();
+  //       let email = {email: res[0].posterId};
+  //       dispatch(setOtherUserName(res[0].posterId));
+  //       apis.FinduserByEmail(email).then((res2) => {
+  //         dispatch(setOtherUser(res2[0].ImageUrl));
+  //       });
+  //     })
+  //     console.log(otherUserName);
+  // }, [posterId]);
+
+  useEffect(() => {
+    setPosterId(otherUserName);
+    console.log(otherUserName);
+  }, [posterId, otherUserName]);
+
   const handleSend = (message) => {
     const newMessage = {
       msg: message,
       sender: localStorage.getItem("userId"),
-      receiver: posterId,
+      receiver: otherUserName,
       taskId: searchParams.get("taskId"),
     };
     socket.emit("send_message", newMessage);
@@ -63,25 +94,19 @@ function Chat() {
           padding: 2,
         }}
       >
-        {allMessages.map((message) => {
-          if (message.sender === localStorage.getItem("userId")) {
+        {allMessages.map((item) => {
+          if(item.sender === localStorage.getItem("userId") && item.receiver === otherUserName){
             return (
-              <LeftMessage
-                message={message.msg}
-                image={pic}
-                key={message._id}
-              />
+              <LeftMessage message={item.msg} image={pic} key={item._id} />
             );
-          } else {
+          } else if (item.receiver === localStorage.getItem("userId") && item.sender === otherUserName) {
             return (
-              <RightMessage
-                message={message.msg}
-                image={pic}
-                key={message._id}
-              />
+              <RightMessage message={item.msg} image={otherUser} key={item._id} />
             );
           }
+          
         })}
+        <div ref={bot}></div>
       </Box>
 
       <TextField
