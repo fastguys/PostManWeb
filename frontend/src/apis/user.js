@@ -4,7 +4,9 @@ import { deleteFrom, get, post, put } from "./axios";
 const insertNewuser = async (payload) => {
   return post("/user", { payload });
 };
-
+const GetallUser = async (payload) => {
+  return get("/user/allUser", { payload });
+};
 const FinduserByEmail = async (payload) => {
   return get("/user/:id", { payload });
 };
@@ -53,6 +55,7 @@ const UpdateTask = async (id, payload) => {
 };
 
 const apis = {
+  GetallUser,
   insertNewuser,
   FinduserByEmail,
   UpdateUserNickname,

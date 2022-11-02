@@ -13,12 +13,19 @@ router.post("/user", async (req, res) => {
     res.status(500).json(err);
   }
 });
+router.get("/user/allUser", async (req, res) => {
+  try {
+    const user = await User.find();
+    res.status(200).json(user);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 
 router.get("/user/:id", async (req, res) => {
   try {
     const user_email = req.query.payload;
     const user = await User.find({ email: user_email["email"] });
-    console.log("Find",user);
     res.status(200).json(user);
   } catch (err) {
     res.status(500).json(err);
