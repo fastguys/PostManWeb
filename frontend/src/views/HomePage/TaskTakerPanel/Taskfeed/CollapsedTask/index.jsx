@@ -61,6 +61,7 @@ const CollapsedTask = (props) => {
       pathname: "/chatpage",
       search: `?taskId=${taskInfo._id}`,
     });
+    window.location.reload();
   };
 
   return (
