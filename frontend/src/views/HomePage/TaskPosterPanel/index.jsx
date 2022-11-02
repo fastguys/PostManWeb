@@ -122,7 +122,7 @@ const TaskPosterPanel = () => {
               type="integer"
               value={receiverAddress1}
               placeholder="Please enter receiver's address1"
-              onChange={(e) => receiverAddress1(e.target.value)}
+              onChange={(e) => setReceiverAddress1(e.target.value)}
             />
             {submitted && !senderAddress1 ? <div className='failed-message'>Error: sender's address1 cant be empty</div> : null}
             <input className ="form-field"
