@@ -43,12 +43,7 @@ input {
   background: #f2f2f2;
 }
 
-.error {
-  border-style: solid;
-  border: 2px solid #ffa4a4;
-}
-
-button {
+.post_button {
   width: 100%;
   height: 50px;
   padding: 10px;
