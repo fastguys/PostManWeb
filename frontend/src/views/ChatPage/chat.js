@@ -20,18 +20,16 @@ function Chat() {
   const [message, setMessage] = useState("");
   const [allMessages, setAllMessages] = useState([]);
   const [posterId, setPosterId] = useState(otherUserName);
-  const bot = useRef(null)
+  const bot = useRef(null);
   useEffect(() => {
     if (bot.current) {
-      bot.current.scrollIntoView(
-        {
-          behavior: 'smooth',
-          block: 'end',
-          inline: 'nearest'
-        })
+      bot.current.scrollIntoView({
+        behavior: "smooth",
+        block: "end",
+        inline: "nearest",
+      });
     }
-  },
-  [allMessages])
+  }, [allMessages]);
   // useEffect(() => {
   //   apis
   //     .GetTask(searchParams.get("taskId"))
@@ -95,16 +93,25 @@ function Chat() {
         }}
       >
         {allMessages.map((item, index) => {
-          if(item.sender === localStorage.getItem("userId") && item.receiver === otherUserName){
+          if (
+            item.sender === localStorage.getItem("userId") &&
+            item.receiver === otherUserName
+          ) {
+            console.log(otherUserName);
+            return <LeftMessage message={item.msg} image={pic} key={index} />;
+          } else if (
+            item.receiver === localStorage.getItem("userId") &&
+            item.sender === otherUserName
+          ) {
             return (
-              <LeftMessage message={item.msg} image={pic} key={index} />
-            );
-          } else if (item.receiver === localStorage.getItem("userId") && item.sender === otherUserName) {
-            return (
-              <RightMessage message={item.msg} image={otherUser} key={index} />
+              <RightMessage
+                message={item.msg}
+                image={otherUser}
+                email={otherUserName}
+                key={index}
+              />
             );
           }
-          
         })}
         <div ref={bot}></div>
       </Box>
