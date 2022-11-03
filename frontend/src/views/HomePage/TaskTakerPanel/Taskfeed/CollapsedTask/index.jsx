@@ -47,7 +47,11 @@ const CollapsedTask = (props) => {
 
     props.setTaskTaken((taskTaken) => [...taskTaken, taskInfo]);
     // redirect to task progress page
-    navigate("/task-progress");
+    console.log(taskInfo);
+    navigate({
+      pathname: "/task-progress",
+      search: `?taskPoster=${taskInfo.posterId}`,
+    });
   };
 
   // controller for the task chatting button

@@ -32,7 +32,7 @@ function RightMessage({ message, image, email }) {
         setRating(res[0].rating);
         setOpen(true);
       } else {
-        alert("This user is not visible");
+        alert("You do not have the permission to view this user's profile");
       }
     });
   };
@@ -117,16 +117,16 @@ function RightMessage({ message, image, email }) {
           <DialogContent>
             <Avatar
               sx={{
-                ml: 10,
-                height: 100,
-                width: 100,
+                ml: 8,
+                height: 150,
+                width: 150,
                 alignItems: "center",
               }}
               alt="Profile Photo."
               src={imageURL}
             ></Avatar>
             <Typography variant="h5" sx={{ mt: 5 }}>
-              Name: {name}
+              NickName: {name}
             </Typography>
             <Typography variant="h5" sx={{ mt: 5 }}>
               Email: {email}
@@ -135,7 +135,7 @@ function RightMessage({ message, image, email }) {
               Bio: {bio}
             </Typography>
             <Typography variant="h5" sx={{ mt: 5 }}>
-              Rating: {rating}
+              Rating: {Math.round(rating * 100) / 100}
             </Typography>
           </DialogContent>
           <DialogActions>

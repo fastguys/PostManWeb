@@ -2,8 +2,13 @@ import React from "react";
 import { useState } from "react";
 import { FaStar } from "react-icons/fa";
 import ResponsiveAppBar from "../TopBar/TopBar";
+import { useLocation } from "react-router-dom";
+import apis from "../../apis/user";
+import { useNavigate } from "react-router-dom";
 
 const ProgressPage = () => {
+  const navigate = useNavigate();
+  const route = useLocation();
   const colors = {
     orange: "#FFBA5A",
     grey: "#a9a9a9",
@@ -20,7 +25,38 @@ const ProgressPage = () => {
   const handleMouseOver = (newHoverValue) => {
     setHoverValue(newHoverValue);
   };
-
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const posterId = route.search.split("=")[1];
+    console.log(posterId);
+    apis.FinduserByEmail({ email: posterId }).then((res) => {
+      const rating = res[0].rating;
+      const total = res[0].totalrating;
+      const count = res[0].ratingcount;
+      const newRating = (total + currentValue) / (count + 1);
+      const newTotal = total + currentValue;
+      const newCount = count + 1;
+      const ratingpayload = {
+        email: posterId,
+        rating: newRating,
+      };
+      apis.UpdateRating(ratingpayload).then((res) => {
+        const totalpayload = {
+          email: posterId,
+          totalrating: newTotal,
+        };
+        apis.UpdateTotalRating(totalpayload).then((res) => {
+          const countpayload = {
+            email: posterId,
+            ratingcount: newCount,
+          };
+          apis.UpdateRatingCount(countpayload).then((res) => {
+            navigate("/homepage"); 
+          });
+        });
+      });
+    });
+  };
   const handleMouseLeave = () => {
     setHoverValue(undefined);
   };
@@ -52,7 +88,9 @@ const ProgressPage = () => {
       </div>
       <textarea placeholder="What's your experience?" style={styles.textarea} />
 
-      <button style={styles.button}>Submit</button>
+      <button style={styles.button} onClick={handleSubmit}>
+        Submit
+      </button>
     </div>
   );
 };

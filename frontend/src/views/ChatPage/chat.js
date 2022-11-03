@@ -16,6 +16,7 @@ function Chat() {
   const otherUser = useSelector((state) => state.chat.otherUser);
   const otherUserName = useSelector((state) => state.chat.otherUserName);
   const taskId = useLocation();
+  console.log(taskId);
   const searchParams = new URLSearchParams(taskId.search);
   const [message, setMessage] = useState("");
   const [allMessages, setAllMessages] = useState([]);
