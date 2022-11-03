@@ -23,6 +23,15 @@ const UpdateUserBio = async (payload) => {
 const UpdateEmail = async (payload) => {
   return put("/user/email/:id", { payload });
 };
+const UpdateRating = async (payload) => {
+  return put("/user/rating/:id", { payload });
+};
+const UpdateTotalRating = async (payload) => {
+  return put("/user/totalrating/:id", { payload });
+};
+const UpdateRatingCount = async (payload) => {
+  return put("/user/ratingcount/:id", { payload });
+};
 const deleteUserByEmail = async (payload) => {
   return deleteFrom("/user/:id", { payload });
 };
@@ -61,6 +70,9 @@ const apis = {
   UpdateUserNickname,
   UpdateUserBio,
   SendMessage,
+  UpdateRating,
+  UpdateTotalRating,
+  UpdateRatingCount,
   GetTask,
   GetTaskList,
   PostTask,
