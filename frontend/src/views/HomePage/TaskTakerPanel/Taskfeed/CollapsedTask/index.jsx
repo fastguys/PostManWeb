@@ -50,7 +50,7 @@ const CollapsedTask = (props) => {
     console.log(taskInfo);
     navigate({
       pathname: '/task-progress',
-      search: `?taskId=${taskInfo._id}`
+      search: `?taskId=${taskInfo._id}` 
     });
   };
 
@@ -63,7 +63,7 @@ const CollapsedTask = (props) => {
     }
     navigate({
       pathname: '/chatpage',
-      search: `?taskId=${taskInfo._id}`
+      search: `?taskId=${taskInfo._id}&taskPoster=${taskInfo.posterId}`
     });
     window.location.reload();
   };
