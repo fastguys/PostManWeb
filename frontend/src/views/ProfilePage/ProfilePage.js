@@ -116,6 +116,7 @@ export default function Signup() {
           });
           localStorage.clear();
           navigate("/");
+          window.location.reload();
         }
       });
   };
