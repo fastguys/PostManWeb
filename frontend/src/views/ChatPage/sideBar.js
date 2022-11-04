@@ -7,12 +7,24 @@ import { Avatar } from "@mui/material";
 import { setOtherUserName } from "../../stores/chat";
 import { setOtherUser } from "../../stores/chat";
 import { useDispatch } from "react-redux";
-
+import { useLocation } from "react-router-dom";
 const Sidebar = () => {
   const dispatch = useDispatch();
+  const route = useLocation();
   const [color, setColor] = useState("white");
   const otherUserName = useSelector((state) => state.chat.otherUserName);
   const allUsers = useSelector((state) => state.chat.users);
+  const searchParams = new URLSearchParams(route.search);
+  const email = searchParams.get("taskPoster");
+  console.log(email);
+  useEffect(() => {
+    apis.FinduserByEmail({ email: email }).then((res) => {
+      dispatch(setOtherUserName(res[0].email));
+      dispatch(setOtherUser(res[0].ImageUrl));
+    });
+  }, [email]);
+  // dispatch(setOtherUserName(user.id));
+  // dispatch(setOtherUser(user.image));
   return (
     <Box
       sx={{
@@ -42,7 +54,6 @@ const Sidebar = () => {
         </Box>
         <MenuList sx={{ padding: 2 }}>
           {allUsers.map((user, index) => (
-
             <MenuItem
               key={index}
               sx={{
@@ -60,8 +71,6 @@ const Sidebar = () => {
               <Avatar alt="Remy Sharp" src={user.image} sx={{ mr: 5 }} />
               <Typography variant="h6">{user.name}</Typography>
             </MenuItem>
-
-            
           ))}
         </MenuList>
       </Paper>
