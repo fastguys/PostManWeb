@@ -18,7 +18,7 @@ const ChatPage = () => {
     for (let i = 0; i < n; i++) {
       if (res[i].email !== localStorage.getItem("userId")) {
         temp.push({
-          name: res[i].firstname,
+          name: res[i].nickname,
           id: res[i].email,
           image: res[i].ImageUrl,
         });
