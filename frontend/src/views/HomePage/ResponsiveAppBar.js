@@ -60,6 +60,7 @@ export default function ResponsiveAppBar(props) {
   };
   const gotoChat = () => {
     navigate("/chatpage");
+    window.location.reload();
   };
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
