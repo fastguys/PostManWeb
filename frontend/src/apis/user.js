@@ -25,6 +25,7 @@ const UpdateEmail = async (payload) => {
 };
 const UpdatephoneNumber = async (payload) => {
   return put("/user/phoneNumber/:id", { payload });
+};
 const UpdateRating = async (payload) => {
   return put("/user/rating/:id", { payload });
 };
