@@ -340,7 +340,7 @@ export default function Signup() {
             </Box>
             <Box sx={{ display: "flex", flexDirection: "row" }}>
               <Typography variant="h5" sx={{ mt: 5 }}>
-                Username:
+                Nickname:
               </Typography>
 
               {update === false ? (
