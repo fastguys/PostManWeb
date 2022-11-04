@@ -115,14 +115,14 @@ export default function Login() {
         setIncorrectCode(false);
         localStorage.setItem("authenticated", true);
         const payload = {
-          phone: Phone
+          phone: Phone,
         };
         apis.FinduserByPhone(payload).then((res) => {
-          console.log(res);
           localStorage.setItem("userId", res[0].email);
+          console.log(localStorage.getItem("userId"));
+        }).then(()=>{
+          handleRedirect();
         });
-        
-        handleRedirect();
         //...
       })
       .catch((error) => {
@@ -171,17 +171,15 @@ export default function Login() {
         setauthenticated(true);
         localStorage.setItem("authenticated", true);
         localStorage.setItem("userId", user.email);
-        try{
-          apis
+
+        apis
           .FinduserByEmail({ email })
           .then((res) => {
             dispatch(setImage(res[0].ImageUrl));
-            return res;
+          })
+          .then(() => {
+            handleRedirect();
           });
-        }catch(e){
-          console.log(e);
-        }
-        handleRedirect();
       })
       .catch((error) => {
         const errorCode = error.code;

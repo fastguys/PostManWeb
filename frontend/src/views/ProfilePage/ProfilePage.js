@@ -26,13 +26,16 @@ import {
   deleteUser,
   updateEmail,
   updateProfile,
+  updatePhoneNumber,
+  RecaptchaVerifier,
+  signInWithPhoneNumber,
+  PhoneAuthProvider,
 } from "firebase/auth";
 import { Avatar } from "@mui/material";
 import { setImage } from "../../stores/chat";
 import { useDispatch } from "react-redux";
 import CircularProgress from "@mui/material/CircularProgress";
 import Backdrop from "@mui/material/Backdrop";
-
 export default function Signup() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -47,8 +50,73 @@ export default function Signup() {
   const [open, setOpen] = React.useState(false);
   const [open2, setDelete] = React.useState(false);
   const [emailChange, setEmailChange] = React.useState(false);
+  const [Phoneopen, setPhoneopen] = React.useState(false);
+  const [newPhone, setNewPhone] = React.useState("");
   const [newemail, setEmail] = React.useState("");
   const [rating, setRating] = useState(5);
+  const updateProfilePhoneNumber= () => {
+    const auth = getAuth();
+    //country code plus your phone number excluding leading 0 if exists.
+    //you could provide a prompt/modal or other field in your UX to replace this phone number.
+  
+    // let phoneNumber = "+441234567890"; //testing number, ideally you should set this in your firebase auth settings
+    // var verificationCode = "123456";
+  
+    // Turn off phone auth app verification.
+    // firebase.auth().settings.appVerificationDisabledForTesting = true;
+  
+    // This will render a fake reCAPTCHA as appVerificationDisabledForTesting is true.
+    // This will resolve after rendering without app verification.
+    if (!window.recaptchaVerifier) {
+      window.recaptchaVerifier = new RecaptchaVerifier(
+        'reCap',
+        {
+          size: 'invisible',
+          callback: (response) => {
+            // reCAPTCHA solved, allow signInWithPhoneNumber.
+          }
+        },
+        auth
+      );
+    }
+    let phone_number = '+1' + newPhone;
+    signInWithPhoneNumber(auth, phone_number, window.recaptchaVerifier)
+      .then((confirmationResult) => {
+        // SMS sent. Prompt user to type the code from the message, then sign the
+        // user in with confirmationResult.confirm(code).
+        window.confirmationResult = confirmationResult;
+        // ...
+      })
+      .catch((error) => {
+        console.log(error.message);
+      }).then(() => {
+        let verificationCode = window.prompt('Please enter the verification ' +
+        'code that was sent to your mobile device.');
+        if (verificationCode) {
+        window.confirmationResult
+        .confirm(verificationCode)
+        .then((result) => {
+          // User signed in successfully.
+          // ...
+        })
+        .catch((error) => {
+          // User couldn't sign in (bad verification code?)
+          // ...
+        });
+        const payload = {
+          email: localStorage.getItem("userId"),
+          phoneNumber: newPhone,
+        };
+        apis.UpdatephoneNumber(payload).then((res) => {
+        alert("Your Phone Number has been Changed");
+        handlephoneClose();
+        });
+        localStorage.clear();
+        navigate("/");
+        }
+      });
+  
+  };
   const handleEmailChange = () => {
     setEmailChange(true);
   };
@@ -56,7 +124,16 @@ export default function Signup() {
   const handleEmailClose = () => {
     setEmailChange(false);
   };
-
+  const handlePhoneopen = () => {
+    setPhoneopen(true);
+  }
+  const handlephoneClose = () => {
+    setPhoneopen(false);
+  }
+  const handlePhoneChange = () => {
+    console.log(newPhone)
+    updateProfilePhoneNumber();
+  }
   const handleAlignment = async (event, newAlignment) => {
     setAlignment(newAlignment);
     const payload = {
@@ -355,7 +432,7 @@ export default function Signup() {
             </Box>
             <Box sx={{ display: "flex", flexDirection: "row" }}>
               <Typography variant="h5" sx={{ mt: 5 }}>
-                Rating: {rating}
+                Rating: {Math.round(rating * 100) / 100}
               </Typography>
             </Box>
             <Box sx={{ display: "flex", flexDirection: "row" }}>
@@ -400,7 +477,7 @@ export default function Signup() {
               onClose={handleClose}
               aria-describedby="alert-dialog-slide-description"
             >
-              <DialogTitle>{"Change Passwor?"}</DialogTitle>
+              <DialogTitle>{"Change Password?"}</DialogTitle>
               <DialogContent>
                 <DialogContentText id="alert-dialog-slide-description">
                   You sure you want to change your password?
@@ -412,6 +489,46 @@ export default function Signup() {
               </DialogActions>
             </Dialog>
 
+            <Button
+              variant="contained"
+              sx={{ mt: 5, height: 50, width: 350 }}
+              style={{ background: "#656268" }}
+              onClick={() => {
+                setPhoneopen(true);
+              }}
+            >
+              Change Your Phone Number
+            </Button>
+            <Dialog
+              open={Phoneopen}
+              keepMounted
+              onClose={handlephoneClose}
+              aria-describedby="alert-dialog-slide-description"
+            >
+              <DialogTitle>{"Change Phone Number?"}</DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-slide-description">
+                  You sure you want to change your Phone number?
+                </DialogContentText>
+                <TextField
+                  autoFocus
+                  margin="dense"
+                  id="phonenumber"
+                  label="Phone Number"
+                  type="phonenumber"
+                  fullWidth
+                  variant="standard"
+                  onChange={(e) => {
+                    setNewPhone(e.target.value);
+                  }}
+                  />
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handlePhoneChange}>Confirm</Button>
+                <Button onClick={handlephoneClose}>Back</Button>
+              </DialogActions>
+            </Dialog>
+            <Grid id="reCap"></Grid>
             <Button
               variant="contained"
               sx={{ mt: 5, height: 50, width: 350 }}

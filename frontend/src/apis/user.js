@@ -4,7 +4,9 @@ import { deleteFrom, get, post, put } from "./axios";
 const insertNewuser = async (payload) => {
   return post("/user", { payload });
 };
-
+const GetallUser = async (payload) => {
+  return get("/user/allUser", { payload });
+};
 const FinduserByEmail = async (payload) => {
   return get("/user/:id", { payload });
 };
@@ -20,6 +22,18 @@ const UpdateUserBio = async (payload) => {
 };
 const UpdateEmail = async (payload) => {
   return put("/user/email/:id", { payload });
+};
+const UpdatephoneNumber = async (payload) => {
+  return put("/user/phoneNumber/:id", { payload });
+};
+const UpdateRating = async (payload) => {
+  return put("/user/rating/:id", { payload });
+};
+const UpdateTotalRating = async (payload) => {
+  return put("/user/totalrating/:id", { payload });
+};
+const UpdateRatingCount = async (payload) => {
+  return put("/user/ratingcount/:id", { payload });
 };
 const deleteUserByEmail = async (payload) => {
   return deleteFrom("/user/:id", { payload });
@@ -53,11 +67,15 @@ const UpdateTask = async (id, payload) => {
 };
 
 const apis = {
+  GetallUser,
   insertNewuser,
   FinduserByEmail,
   UpdateUserNickname,
   UpdateUserBio,
   SendMessage,
+  UpdateRating,
+  UpdateTotalRating,
+  UpdateRatingCount,
   GetTask,
   GetTaskList,
   PostTask,
@@ -67,6 +85,7 @@ const apis = {
   UpdateUserVisibility,
   UpdateEmail,
   FinduserByPhone,
+  UpdatephoneNumber,
 };
 
 export default apis;

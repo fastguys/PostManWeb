@@ -1,6 +1,5 @@
 import { Box } from "@mui/system";
 
-import { useSelector } from "react-redux";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
