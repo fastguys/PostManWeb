@@ -16,22 +16,21 @@ function Chat() {
   const otherUser = useSelector((state) => state.chat.otherUser);
   const otherUserName = useSelector((state) => state.chat.otherUserName);
   const taskId = useLocation();
+  console.log(taskId);
   const searchParams = new URLSearchParams(taskId.search);
-  const [message, setMessage] = useState("message");
+  const [message, setMessage] = useState("");
   const [allMessages, setAllMessages] = useState([]);
   const [posterId, setPosterId] = useState(otherUserName);
-  const bot = useRef(null)
+  const bot = useRef(null);
   useEffect(() => {
     if (bot.current) {
-      bot.current.scrollIntoView(
-        {
-          behavior: 'smooth',
-          block: 'end',
-          inline: 'nearest'
-        })
+      bot.current.scrollIntoView({
+        behavior: "smooth",
+        block: "end",
+        inline: "nearest",
+      });
     }
-  },
-  [allMessages])
+  }, [allMessages]);
   // useEffect(() => {
   //   apis
   //     .GetTask(searchParams.get("taskId"))
@@ -94,17 +93,26 @@ function Chat() {
           padding: 2,
         }}
       >
-        {allMessages.map((item) => {
-          if(item.sender === localStorage.getItem("userId") && item.receiver === otherUserName){
+        {allMessages.map((item, index) => {
+          if (
+            item.sender === localStorage.getItem("userId") &&
+            item.receiver === otherUserName
+          ) {
+            console.log(otherUserName);
+            return <LeftMessage message={item.msg} image={pic} key={index} />;
+          } else if (
+            item.receiver === localStorage.getItem("userId") &&
+            item.sender === otherUserName
+          ) {
             return (
-              <LeftMessage message={item.msg} image={pic} key={item._id} />
-            );
-          } else if (item.receiver === localStorage.getItem("userId") && item.sender === otherUserName) {
-            return (
-              <RightMessage message={item.msg} image={otherUser} key={item._id} />
+              <RightMessage
+                message={item.msg}
+                image={otherUser}
+                email={otherUserName}
+                key={index}
+              />
             );
           }
-          
         })}
         <div ref={bot}></div>
       </Box>

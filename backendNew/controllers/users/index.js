@@ -97,6 +97,45 @@ router.put("/user/ImageUrl/:id", async (req, res) => {
     res.status(500).json(err);
   }
 });
+router.put("/user/rating/:id", async (req, res) => {
+  try {
+    const user_email = req.query.payload["email"];
+    const user_rating = req.body.payload["rating"];
+    const user = await User.findOneAndUpdate(
+      { email: user_email },
+      { rating: user_rating }
+    );
+    res.status(200).json(user);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+router.put("/user/totalrating/:id", async (req, res) => {
+  try {
+    const user_email = req.query.payload["email"];
+    const user_totalrating = req.body.payload["totalrating"];
+    const user = await User.findOneAndUpdate(
+      { email: user_email },
+      { totalrating: user_totalrating }
+    );
+    res.status(200).json(user);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+router.put("/user/ratingcount/:id", async (req, res) => {
+  try {
+    const user_email = req.query.payload["email"];
+    const user_ratingcount = req.body.payload["ratingcount"];
+    const user = await User.findOneAndUpdate(
+      { email: user_email },
+      { ratingcount: user_ratingcount }
+    );
+    res.status(200).json(user);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 router.put("/user/bio/:id", async (req, res) => {
   try {
     const user_email = req.query.payload["email"];
