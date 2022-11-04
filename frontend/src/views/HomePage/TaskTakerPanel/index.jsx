@@ -96,7 +96,7 @@ const TaskTakerPanel = () => {
   return (
     <div className="task-taker-panel">
       <div className="task-taker-panel-left">
-        <div className="task-taker-title">
+        <div className="task-field-title">
           <div>Task Taker Page</div>
         </div>
         <div className="task-taker-search-bar">
