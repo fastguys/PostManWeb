@@ -23,6 +23,9 @@ const UpdateUserBio = async (payload) => {
 const UpdateEmail = async (payload) => {
   return put("/user/email/:id", { payload });
 };
+const UpdatephoneNumber = async (payload) => {
+  return put("/user/phoneNumber/:id", { payload });
+};
 const UpdateRating = async (payload) => {
   return put("/user/rating/:id", { payload });
 };
@@ -82,6 +85,7 @@ const apis = {
   UpdateUserVisibility,
   UpdateEmail,
   FinduserByPhone,
+  UpdatephoneNumber,
 };
 
 export default apis;

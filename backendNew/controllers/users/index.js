@@ -69,6 +69,21 @@ router.put("/user/nickname/:id", async (req, res) => {
     res.status(500).json(err);
   }
 });
+
+router.put("/user/phoneNumber/:id", async (req, res) => {
+  try {
+    const user_email = req.query.payload["email"];
+    const user_phoneNumber = req.body.payload["phoneNumber"];
+    const user = await User.findOneAndUpdate(
+      { email: user_email },
+      { phoneNumber: user_phoneNumber }
+    );
+    res.status(200).json(user);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 router.put("/user/ImageUrl/:id", async (req, res) => {
   try {
     const user_email = req.query.payload["email"];
