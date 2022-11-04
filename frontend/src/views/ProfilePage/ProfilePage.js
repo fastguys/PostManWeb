@@ -54,32 +54,32 @@ export default function Signup() {
   const [newPhone, setNewPhone] = React.useState("");
   const [newemail, setEmail] = React.useState("");
   const [rating, setRating] = useState(5);
-  const updateProfilePhoneNumber= () => {
+  const updateProfilePhoneNumber = () => {
     const auth = getAuth();
     //country code plus your phone number excluding leading 0 if exists.
     //you could provide a prompt/modal or other field in your UX to replace this phone number.
-  
+
     // let phoneNumber = "+441234567890"; //testing number, ideally you should set this in your firebase auth settings
     // var verificationCode = "123456";
-  
+
     // Turn off phone auth app verification.
     // firebase.auth().settings.appVerificationDisabledForTesting = true;
-  
+
     // This will render a fake reCAPTCHA as appVerificationDisabledForTesting is true.
     // This will resolve after rendering without app verification.
     if (!window.recaptchaVerifier) {
       window.recaptchaVerifier = new RecaptchaVerifier(
-        'reCap',
+        "reCap",
         {
-          size: 'invisible',
+          size: "invisible",
           callback: (response) => {
             // reCAPTCHA solved, allow signInWithPhoneNumber.
-          }
+          },
         },
         auth
       );
     }
-    let phone_number = '+1' + newPhone;
+    let phone_number = "+1" + newPhone;
     signInWithPhoneNumber(auth, phone_number, window.recaptchaVerifier)
       .then((confirmationResult) => {
         // SMS sent. Prompt user to type the code from the message, then sign the
@@ -89,33 +89,35 @@ export default function Signup() {
       })
       .catch((error) => {
         console.log(error.message);
-      }).then(() => {
-        let verificationCode = window.prompt('Please enter the verification ' +
-        'code that was sent to your mobile device.');
+      })
+      .then(() => {
+        let verificationCode = window.prompt(
+          "Please enter the verification " +
+            "code that was sent to your mobile device."
+        );
         if (verificationCode) {
-        window.confirmationResult
-        .confirm(verificationCode)
-        .then((result) => {
-          // User signed in successfully.
-          // ...
-        })
-        .catch((error) => {
-          // User couldn't sign in (bad verification code?)
-          // ...
-        });
-        const payload = {
-          email: localStorage.getItem("userId"),
-          phoneNumber: newPhone,
-        };
-        apis.UpdatephoneNumber(payload).then((res) => {
-        alert("Your Phone Number has been Changed");
-        handlephoneClose();
-        });
-        localStorage.clear();
-        navigate("/");
+          window.confirmationResult
+            .confirm(verificationCode)
+            .then((result) => {
+              // User signed in successfully.
+              // ...
+            })
+            .catch((error) => {
+              // User couldn't sign in (bad verification code?)
+              // ...
+            });
+          const payload = {
+            email: localStorage.getItem("userId"),
+            phoneNumber: newPhone,
+          };
+          apis.UpdatephoneNumber(payload).then((res) => {
+            alert("Your Phone Number has been Changed");
+            handlephoneClose();
+          });
+          localStorage.clear();
+          navigate("/");
         }
       });
-  
   };
   const handleEmailChange = () => {
     setEmailChange(true);
@@ -126,14 +128,14 @@ export default function Signup() {
   };
   const handlePhoneopen = () => {
     setPhoneopen(true);
-  }
+  };
   const handlephoneClose = () => {
     setPhoneopen(false);
-  }
+  };
   const handlePhoneChange = () => {
-    console.log(newPhone)
+    console.log(newPhone);
     updateProfilePhoneNumber();
-  }
+  };
   const handleAlignment = async (event, newAlignment) => {
     setAlignment(newAlignment);
     const payload = {
@@ -175,11 +177,20 @@ export default function Signup() {
       apis.UpdateEmail(payload).then((res) => {
         setEmail(newemail);
       });
-      updateEmail(auth.currentUser, newemail);
-      alert("Your Email has been Changed");
-      setEmailChange(false);
-      localStorage.clear();
-      navigate("/");
+      updateEmail(auth.currentUser, newemail)
+        .then(() => {
+          // Email updated!
+          // ...
+          alert("Your Email has been Changed");
+          setEmailChange(false);
+          localStorage.clear();
+          navigate("/");
+        })
+        .catch((error) => {
+          // An error occurred
+          // ...
+          console.log(error.message);
+        });
     };
     const handlereset = (event) => {
       const auth = getAuth();
@@ -521,7 +532,7 @@ export default function Signup() {
                   onChange={(e) => {
                     setNewPhone(e.target.value);
                   }}
-                  />
+                />
               </DialogContent>
               <DialogActions>
                 <Button onClick={handlePhoneChange}>Confirm</Button>
