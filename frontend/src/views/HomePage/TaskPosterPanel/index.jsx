@@ -27,6 +27,8 @@ const TaskPosterPanel = () => {
     setConfirmCode('');
     setSenderAddress1('');
     setSenderAddress2('');
+    setReceiverAddress1('');
+    setReceiverAddress2('');
     setSenderTele('');
     setReceiverTele('');
   };
