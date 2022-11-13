@@ -16,10 +16,10 @@
 }
 
 .form {
+
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
-  padding: 10px;
+  justify-content: center;
 }
 
 .success-message {
