@@ -127,9 +127,9 @@ const TaskPosterPanel = () => {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          width: "360px",
+          width: "400px",
           border: 1,
-          mt:5
+          mt: 5,
         }}
       >
         <h2>RECEIVER'S INFO</h2>
@@ -225,67 +225,71 @@ const TaskPosterPanel = () => {
           </button>
         </form>
       </Box>
-
-      <div className="task-taker-panel-right">
-        <div className="task-field-panel">
-          <h2>SENDER'S INFO</h2>
-          <div className="form-container">
-            <Box sx={{ width: 300, height: 200, border: 1 }} />
-            <form className="form" onSubmit={handleSubmit}>
-              {submitted && valid ? (
-                <div className="success-message">Successfully Posted!</div>
-              ) : null}
-              <input
-                className="form-field"
-                type="text"
-                value={senderName}
-                placeholder="Please enter sender's name"
-                onChange={(e) => setSenderName(e.target.value)}
-              />
-              {submitted && !senderName ? (
-                <div className="failed-message">
-                  Error: task name can't be empty
-                </div>
-              ) : null}
-              <input
-                className="form-field"
-                type="integer"
-                value={senderAddress1}
-                placeholder="Please enter sender's address1"
-                onChange={(e) => setSenderAddress1(e.target.value)}
-              />
-              {submitted && !senderAddress1 ? (
-                <div className="failed-message">
-                  Error: sender's address1 cant be empty
-                </div>
-              ) : null}
-              <input
-                className="form-field"
-                type="integer"
-                value={senderAddress2}
-                placeholder="Please enter sender's address2"
-                onChange={(e) => setSenderAddress2(e.target.value)}
-              />
-              {submitted && !senderAddress2 ? (
-                <div className="failed-message">
-                  Error: sender's address2 cant be empty
-                </div>
-              ) : null}
-              <input
-                className="form-field"
-                value={senderTele}
-                placeholder="Please enter sender's telephone"
-                onChange={(e) => setSenderTele(e.target.value)}
-              />
-              {submitted && !receiverTele ? (
-                <div className="failed-message">
-                  Error: sender's telephone cant be empty
-                </div>
-              ) : null}
-            </form>
-          </div>
-        </div>
-      </div>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          width: "400px",
+          border: 1,
+          mt: 5,
+        }}
+      >
+        <h2>SENDER'S INFO</h2>
+        <Box sx={{ width: 300, height: 200, border: 1 }} />
+        <form className="form" onSubmit={handleSubmit}>
+          {submitted && valid ? (
+            <div className="success-message">Successfully Posted!</div>
+          ) : null}
+          <input
+            className="form-field"
+            type="text"
+            value={senderName}
+            placeholder="Please enter sender's name"
+            onChange={(e) => setSenderName(e.target.value)}
+          />
+          {submitted && !senderName ? (
+            <div className="failed-message">
+              Error: task name can't be empty
+            </div>
+          ) : null}
+          <input
+            className="form-field"
+            type="integer"
+            value={senderAddress1}
+            placeholder="Please enter sender's address1"
+            onChange={(e) => setSenderAddress1(e.target.value)}
+          />
+          {submitted && !senderAddress1 ? (
+            <div className="failed-message">
+              Error: sender's address1 cant be empty
+            </div>
+          ) : null}
+          <input
+            className="form-field"
+            type="integer"
+            value={senderAddress2}
+            placeholder="Please enter sender's address2"
+            onChange={(e) => setSenderAddress2(e.target.value)}
+          />
+          {submitted && !senderAddress2 ? (
+            <div className="failed-message">
+              Error: sender's address2 cant be empty
+            </div>
+          ) : null}
+          <input
+            className="form-field"
+            value={senderTele}
+            placeholder="Please enter sender's telephone"
+            onChange={(e) => setSenderTele(e.target.value)}
+          />
+          {submitted && !receiverTele ? (
+            <div className="failed-message">
+              Error: sender's telephone cant be empty
+            </div>
+          ) : null}
+        </form>
+      </Box>
     </Box>
   );
 };
