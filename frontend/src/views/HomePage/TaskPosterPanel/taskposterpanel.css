@@ -1,6 +1,11 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:300);
 
-
+.task-taker-panel-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 .form-container {
   position: absolute;
   width: 360px;
