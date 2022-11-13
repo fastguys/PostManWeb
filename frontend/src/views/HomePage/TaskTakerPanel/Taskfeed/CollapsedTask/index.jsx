@@ -15,6 +15,8 @@ import SpeakerNotesOffIcon from '@mui/icons-material/SpeakerNotesOff';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import DescriptionIcon from '@mui/icons-material/Description';
+import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
+import HourglassDisabledIcon from '@mui/icons-material/HourglassDisabled';
 import { ListItem, ListItemSecondaryAction } from '@mui/material';
 import apis from '../../../../../apis/user';
 
@@ -50,7 +52,7 @@ const CollapsedTask = (props) => {
     console.log(taskInfo);
     navigate({
       pathname: '/task-progress',
-      search: `?taskId=${taskInfo._id}` 
+      search: `?taskId=${taskInfo._id}`
     });
   };
 
@@ -66,6 +68,19 @@ const CollapsedTask = (props) => {
       search: `?taskId=${taskInfo._id}&taskPoster=${taskInfo.posterId}`
     });
     window.location.reload();
+  };
+
+  // controller for the task progress button
+  const handleTaskProgressClick = (e) => {
+    // check if the task is not taken
+    if (taskInfo.isTaken === false) {
+      console.log('task is not taken');
+      return;
+    }
+    navigate({
+      pathname: '/task-progress',
+      search: `?taskId=${taskInfo._id}`
+    });
   };
 
   return (
@@ -91,6 +106,9 @@ const CollapsedTask = (props) => {
             </IconButton>
             <IconButton edge="end" aria-label="take" onClick={handleTaskTakeClick}>
               {taskInfo.isTaken ? <UnpublishedIcon /> : <CheckCircleIcon />}
+            </IconButton>
+            <IconButton aria-label="progress" onClick={handleTaskProgressClick}>
+              {taskInfo.isTaken ? <HourglassBottomIcon /> : <HourglassDisabledIcon />}
             </IconButton>
           </ListItemSecondaryAction>
         </List>

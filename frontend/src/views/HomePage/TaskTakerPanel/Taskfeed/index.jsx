@@ -17,6 +17,8 @@ export default function NestedList(props) {
           if (task.isTaken === false && task.posterId !== localStorage.getItem('userId')) {
             // ignore the taken task and the task posted by the current user
             return <CollapsedTask key={index} taskInfo={task} setTaskTaken={props.setTaskTaken} />;
+          } else if (task.takerId === localStorage.getItem('userId')) {
+            return <CollapsedTask key={index} taskInfo={task} setTaskTaken={props.setTaskTaken} />
           } else {
             return null;
           }
