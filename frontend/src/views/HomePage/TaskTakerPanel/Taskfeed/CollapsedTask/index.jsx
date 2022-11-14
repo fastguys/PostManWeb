@@ -19,6 +19,7 @@ import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
 import HourglassDisabledIcon from '@mui/icons-material/HourglassDisabled';
 import { ListItem, ListItemSecondaryAction } from '@mui/material';
 import apis from '../../../../../apis/user';
+import emailjs from "@emailjs/browser";
 
 const CollapsedTask = (props) => {
   const [open, setOpen] = useState(false);
@@ -30,7 +31,37 @@ const CollapsedTask = (props) => {
   const handleCollapseClick = () => {
     setOpen(!open);
   };
-
+  const sendemail = (input) => {
+    let email = localStorage.getItem("userId");
+    apis.FinduserByEmail({ email }).then((res) => {
+      let nickname = res[0].nickname;
+      let bio = res[0].bio;
+      let phone = res[0].phoneNumber;
+      const templateParams = {
+        to_name: input.senderInfo.name,
+        id: input.title,
+        nickname: nickname,
+        bio: bio,
+        phone: phone,
+        User_email: input.posterId,
+      };
+      emailjs
+      .send(
+        "service_wvvskxm",
+        "template_gvukolw",
+        templateParams,
+        "6TQG4qyO0kxVbL4GQ"
+      )
+      .then(
+        (result) => {
+          console.log(result.text);
+        },
+        (error) => {
+          console.log(error.text);
+        }
+      );
+    });
+  };
   // controller for the task button
   const handleTaskTakeClick = (e) => {
     // check if the task is taken
@@ -45,15 +76,16 @@ const CollapsedTask = (props) => {
     // update the status in the database
     apis.UpdateTask(taskInfo._id, taskInfo).then((res) => {
       console.log('res', res);
+      sendemail(res);
     });
 
     props.setTaskTaken((taskTaken) => [...taskTaken, taskInfo]);
     // redirect to task progress page
     console.log(taskInfo);
-    navigate({
-      pathname: '/task-progress',
-      search: `?taskId=${taskInfo._id}`
-    });
+    // navigate({
+    //   pathname: '/task-progress',
+    //   search: `?taskId=${taskInfo._id}`
+    // });
   };
 
   // controller for the task chatting button
