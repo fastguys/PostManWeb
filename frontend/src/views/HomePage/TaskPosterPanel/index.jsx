@@ -45,14 +45,9 @@ const TaskPosterPanel = () => {
         templateParams,
         "M258FiSyLuH3P8Pio"
       )
-      .then(
-        (result) => {
-          console.log(result.text);
-        },
-        (error) => {
-          console.log(error.text);
-        }
-      );
+      .then((result) => {
+        console.log(result.text);
+      });
   };
 
   // handle click for submit button, mock up for now
