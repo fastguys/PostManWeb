@@ -1,8 +1,10 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
+import { Box } from '@mui/system';
 import ResponsiveAppBar from '../TopBar/TopBar';
 import { useNavigate, useLocation } from 'react-router-dom';
 import apis from '../../apis/user';
+import './ProgressPage.css';
 
 const ProgressPage = () => {
   const navigate = useNavigate();
@@ -38,17 +40,56 @@ const ProgressPage = () => {
     <div>
       <ResponsiveAppBar />
       <div className="progress-page">
-        {taskInfo && (
-          <div>
-            <div>Task Status: {taskInfo.status}</div>
-            <div>Task Poster: {taskInfo.posterId}</div>
-            <div>Task Taker: {taskInfo.takerId}</div>
-            <div>Task Description: {taskInfo.description}</div>
-            <label>Confirmation code (receiver gave you):</label>
-            <input type="text" id="confirmation_code" name="confirmation_code" required />
-            <button onClick={handleFinishTask}>Finish Task</button>
+        <div className="progress-page-title">Task Progress</div>
+        <div className="progress-page-content">
+          <div className="progress-page-left-content">
+            <Box
+              sx={{
+                width: 500,
+                height: 300,
+                backgroundColor: 'white',
+                border: '1px dashed grey'
+              }}
+            />
           </div>
-        )}
+          <div className="progress-page-right-content">
+            {taskInfo && taskInfo.location && taskInfo.senderInfo && taskInfo.receiverInfo && (
+              <div>
+                <div className="progress-page-data">Task Status: {taskInfo.status}</div>
+                <div className="progress-page-data">Task Poster: {taskInfo.posterId}</div>
+                <div className="progress-page-data">Task Taker: {taskInfo.takerId}</div>
+                <div className="progress-page-data">Task Description: {taskInfo.description}</div>
+                <div className="progress-page-data">
+                  Task Location Coordinates: {taskInfo.location.coordinates}
+                </div>
+                <div className="progress-page-data">
+                  Task Sender Name: {taskInfo.senderInfo.name}
+                </div>
+                <div className="progress-page-data">
+                  Task Sender Phone: {taskInfo.senderInfo.telephone}
+                </div>
+                <div className="progress-page-data">
+                  Task Sender Address: {taskInfo.senderInfo.address}
+                </div>
+                <div className="progress-page-data">
+                  Task Receiver Name: {taskInfo.receiverInfo.name}
+                </div>
+                <div className="progress-page-data">
+                  Task Receiver Phone: {taskInfo.receiverInfo.telephone}
+                </div>
+                <div className="progress-page-data">
+                  Task Receiver Address: {taskInfo.receiverInfo.address}
+                </div>
+
+                <div className="progress-page-data">
+                  <label>Confirmation code (receiver gave you):</label>
+                  <input type="text" id="confirmation_code" name="confirmation_code" required />
+                  <button onClick={handleFinishTask}>Finish Task</button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
