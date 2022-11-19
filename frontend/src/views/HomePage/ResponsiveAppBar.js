@@ -1,29 +1,29 @@
-import * as React from "react";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
-import MenuIcon from "@mui/icons-material/Menu";
-import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import Tooltip from "@mui/material/Tooltip";
-import MenuItem from "@mui/material/MenuItem";
-import AdbIcon from "@mui/icons-material/Adb";
-import SegmentedControl from "mui-segmented-control";
-import { useNavigate } from "react-router-dom";
-import apis from "../../apis/user";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
-import TextField from "@mui/material/TextField";
-import emailjs from "@emailjs/browser";
+import * as React from 'react';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import Menu from '@mui/material/Menu';
+import MenuIcon from '@mui/icons-material/Menu';
+import Container from '@mui/material/Container';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import Tooltip from '@mui/material/Tooltip';
+import MenuItem from '@mui/material/MenuItem';
+import AdbIcon from '@mui/icons-material/Adb';
+import SegmentedControl from 'mui-segmented-control';
+import { useNavigate } from 'react-router-dom';
+import apis from '../../apis/user';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import TextField from '@mui/material/TextField';
+import emailjs from '@emailjs/browser';
 const pages = [];
-const settings = ["Profile", "Logout", "myChat", "report a bug"];
+const settings = ['Profile', 'Logout', 'myChat', 'report a bug'];
 
 export default function ResponsiveAppBar(props) {
   const navigate = useNavigate();
@@ -31,11 +31,11 @@ export default function ResponsiveAppBar(props) {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const setIsTaskTakerMode = props.setIsTaskTakerMode;
   const [open, setOpen] = React.useState(false);
-  const [bug, setBug] = React.useState("");
+  const [bug, setBug] = React.useState('');
   const [value, setValue] = React.useState(1);
   const [image, setImage] = React.useState(null);
-  const [nickname, setNickname] = React.useState("");
-  let email = localStorage.getItem("userId");
+  const [nickname, setNickname] = React.useState('');
+  let email = localStorage.getItem('userId');
   apis.FinduserByEmail({ email }).then((res) => {
     if (res[0] && res[0].ImageUrl) {
       setNickname(res[0].nickname);
@@ -67,14 +67,14 @@ export default function ResponsiveAppBar(props) {
   };
   const OpenProfile = (e) => {
     console.log(e);
-    navigate("/profilepage");
+    navigate('/profilepage');
   };
   const logout = () => {
     localStorage.clear();
-    navigate("/");
+    navigate('/');
   };
   const gotoChat = () => {
-    navigate("/chatpage");
+    navigate('/chatpage');
     window.location.reload();
   };
   const handleCloseUserMenu = () => {
@@ -83,28 +83,21 @@ export default function ResponsiveAppBar(props) {
   const report = () => {
     const templateParams = {
       name: nickname,
-      message: bug,
+      message: bug
     };
-    emailjs
-      .send(
-        "service_r6tl7s5",
-        "template_58hqzm1",
-        templateParams,
-        "M258FiSyLuH3P8Pio"
-      )
-      .then(
-        (result) => {
-          console.log(result.text);
-          alert("you have reported a bug to the developer");
-          setOpen(false);
-        },
-        (error) => {
-          console.log(error.text);
-        }
-      );
+    emailjs.send('service_r6tl7s5', 'template_58hqzm1', templateParams, 'M258FiSyLuH3P8Pio').then(
+      (result) => {
+        console.log(result.text);
+        alert('you have reported a bug to the developer');
+        setOpen(false);
+      },
+      (error) => {
+        console.log(error.text);
+      }
+    );
   };
   return (
-    <AppBar position="static" style={{ background: "#656268" }}>
+    <AppBar position="static" style={{ background: '#656268' }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           {/*<img*/}
@@ -120,46 +113,43 @@ export default function ResponsiveAppBar(props) {
             href="/homepage"
             sx={{
               mr: 2,
-              display: { xs: "none", md: "flex" },
-              fontFamily: "monospace",
+              display: { xs: 'none', md: 'flex' },
+              fontFamily: 'monospace',
               fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "inherit",
-              textDecoration: "none",
-            }}
-          >
+              letterSpacing: '.3rem',
+              color: 'inherit',
+              textDecoration: 'none'
+            }}>
             PostMan
           </Typography>
 
-          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
               aria-label="account of current user"
               aria-controls="menu-appbar"
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
-              color="inherit"
-            >
+              color="inherit">
               <MenuIcon />
             </IconButton>
             <Menu
               id="menu-appbar"
               anchorEl={anchorElNav}
               anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "left",
+                vertical: 'bottom',
+                horizontal: 'left'
               }}
               keepMounted
               transformOrigin={{
-                vertical: "top",
-                horizontal: "left",
+                vertical: 'top',
+                horizontal: 'left'
               }}
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
               sx={{
-                display: { xs: "block", md: "none" },
-              }}
-            >
+                display: { xs: 'block', md: 'none' }
+              }}>
               {pages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
                   <Typography textAlign="center">{page}</Typography>
@@ -175,24 +165,22 @@ export default function ResponsiveAppBar(props) {
             href=""
             sx={{
               mr: 2,
-              display: { xs: "flex", md: "none" },
+              display: { xs: 'flex', md: 'none' },
               flexGrow: 1,
-              fontFamily: "monospace",
+              fontFamily: 'monospace',
               fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "inherit",
-              textDecoration: "none",
-            }}
-          >
+              letterSpacing: '.3rem',
+              color: 'inherit',
+              textDecoration: 'none'
+            }}>
             PostMan
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
               <Button
                 key={page}
                 onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
+                sx={{ my: 2, color: 'white', display: 'block' }}>
                 {page}
               </Button>
             ))}
@@ -203,13 +191,13 @@ export default function ResponsiveAppBar(props) {
             color="primary"
             options={[
               {
-                label: "TaskTaker",
-                value: 1,
+                label: 'TaskTaker',
+                value: 1
               },
               {
-                label: "TaskPoster",
-                value: 2,
-              },
+                label: 'TaskPoster',
+                value: 2
+              }
             ]}
             value={value}
             onChange={setValue}
@@ -219,41 +207,36 @@ export default function ResponsiveAppBar(props) {
           <Box sx={{ flexGrow: 0, ml: 4 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar
-                  alt="Remy Sharp"
-                  src={image ? image : "/static/images/avatar/2.jpg"}
-                />
+                <Avatar alt="Remy Sharp" src={image ? image : '/static/images/avatar/2.jpg'} />
               </IconButton>
             </Tooltip>
             <Menu
-              sx={{ mt: "45px" }}
+              sx={{ mt: '45px' }}
               id="menu-appbar"
               anchorEl={anchorElUser}
               anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
+                vertical: 'top',
+                horizontal: 'right'
               }}
               keepMounted
               transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
+                vertical: 'top',
+                horizontal: 'right'
               }}
               open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
+              onClose={handleCloseUserMenu}>
               {settings.map((setting) => (
                 <MenuItem
                   key={setting}
                   onClick={
-                    setting === "Profile"
+                    setting === 'Profile'
                       ? OpenProfile
-                      : setting == "Logout"
+                      : setting == 'Logout'
                       ? logout
-                      : setting === "report a bug"
+                      : setting === 'report a bug'
                       ? handleClickOpen
                       : gotoChat
-                  }
-                >
+                  }>
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}

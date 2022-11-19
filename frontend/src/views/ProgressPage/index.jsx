@@ -91,6 +91,10 @@ const ProgressPage = () => {
           </div>
         </div>
       </div>
+      <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+        Have an issue about the tasks? Report it here!
+        <a href="mailto:jiangnanyi111@gmail.com?subject = Feedback&body = Message">Send Feedback</a>
+      </Box>
     </div>
   );
 };
