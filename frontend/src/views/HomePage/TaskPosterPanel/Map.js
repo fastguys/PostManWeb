@@ -43,41 +43,6 @@ const Map = () => {
         flexDirection: "column",
       }}
     >
-      <Autocomplete>
-        <TextField
-          sx={{ width: "100%", marginBottom: 1 }}
-          id="outlined-basic"
-          label="Enter address you want to search for task..."
-          variant="outlined"
-          onKeyPress={(e) => {
-            if (e.key === "Enter") {
-              handleSearch();
-            }
-          }}
-          inputRef={addressRef}
-          InputProps={{
-            endAdornment: (
-              <Button
-                onClick={() => {
-                  handleSearch();
-                }}
-                sx={{
-                  width: 100,
-                  height: 55,
-                  mr: -2,
-                  backgroundColor: "grey",
-                  whiteSpace: "nowrap",
-                  display: "block",
-                  color: "black",
-                  textTransform: "none",
-                }}
-              >
-                Search
-              </Button>
-            ),
-          }}
-        />
-      </Autocomplete>
       <GoogleMap
         center={center}
         zoom={zoom}
