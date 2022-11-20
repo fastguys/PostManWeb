@@ -49,12 +49,12 @@ const Map = () => {
           id="outlined-basic"
           label="Enter address you want to search for task..."
           variant="outlined"
+          inputRef={addressRef}
           onKeyPress={(e) => {
             if (e.key === "Enter") {
               handleSearch();
             }
           }}
-          inputRef={addressRef}
           InputProps={{
             endAdornment: (
               <Button

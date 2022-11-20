@@ -2,6 +2,7 @@ import { Box } from "@mui/material";
 import React from "react";
 import Login from "./Login";
 import ResponsiveAppBar from "../TopBar/TopBar";
+import Map from "./Map";
 
 
 const LoginPage = () => {
@@ -36,10 +37,10 @@ const LoginPage = () => {
               alignItems: "center",
             }}
           >
-            <Box sx={{ width: 700, height: 50, border: 1, mb: 5 }}>
-              Enter address
-            </Box>
-            <Box sx={{ width: 700, height: 400, border: 1 }} />
+            <Box sx={{ width: 750, height: 550 }} >
+              <Map />
+            </ Box>
+     
           </Box>
 
           {/*Right part*/}

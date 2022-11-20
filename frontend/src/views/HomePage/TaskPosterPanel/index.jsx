@@ -4,7 +4,7 @@ import apis from "../../../apis/user";
 import { Box } from "@mui/material";
 import "./taskposterpanel.css";
 import emailjs from "@emailjs/browser";
-import Map from "../Map";
+import Map from "./Map";
 
 const TaskPosterPanel = () => {
   const [taskName, setTaskName] = useState("");
