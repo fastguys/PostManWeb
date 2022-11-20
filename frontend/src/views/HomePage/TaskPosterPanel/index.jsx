@@ -4,6 +4,7 @@ import apis from "../../../apis/user";
 import { Box } from "@mui/material";
 import "./taskposterpanel.css";
 import emailjs from "@emailjs/browser";
+import Map from "../Map";
 
 const TaskPosterPanel = () => {
   const [taskName, setTaskName] = useState("");
@@ -284,7 +285,7 @@ const TaskPosterPanel = () => {
               backgroundColor: "white",
             }}
           >
-            map
+            <Map />
           </Box>
           <form className="form" onSubmit={handleSubmit}>
             {submitted && valid ? (
