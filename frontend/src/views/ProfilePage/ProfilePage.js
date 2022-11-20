@@ -20,6 +20,8 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import IconButton from '@mui/material/IconButton';
 import {
   getAuth,
   sendPasswordResetEmail,
@@ -31,7 +33,7 @@ import {
   signInWithPhoneNumber,
   PhoneAuthProvider,
 } from "firebase/auth";
-import { Avatar } from "@mui/material";
+import { Avatar, List } from "@mui/material";
 import { setImage } from "../../stores/chat";
 import { useDispatch } from "react-redux";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -296,6 +298,17 @@ export default function Signup() {
         };
         reader.readAsDataURL(file);
       }
+    };
+    const handleTaskProgressClick = (e) => {
+      // check if the task is not taken
+      //if (taskInfo.isTaken === false) {
+      //  console.log('task is not taken');
+      //  return;
+      //}
+      navigate({
+        pathname: '/rate-task',
+        //search: `?taskId=${taskInfo._id}`
+      });
     };
     return (
       <div>
@@ -619,6 +632,11 @@ export default function Signup() {
           >
             <Typography variant="h4" sx={{ mt: 5 }}>
               Your Posted Tasks:
+              <List>
+                task name 
+                <IconButton aria-label="progress" onClick={handleTaskProgressClick}>
+                </IconButton>
+              </List>
             </Typography>
           </Box>
           <Box
