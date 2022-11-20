@@ -1,5 +1,6 @@
 import { Box } from "@mui/system";
 import { Button, TextField } from "@mui/material";
+import { useRef, useEffect, useState } from "react";
 import {
   useJsApiLoader,
   GoogleMap,
@@ -7,17 +8,19 @@ import {
   Autocomplete,
   DirectionsRenderer,
 } from "@react-google-maps/api";
-const center = { lat: 48.8584, lng: 2.2945 };
 
 function Map() {
   //MAPS API
+  const center = { lat: 48.8584, lng: 2.2945 };
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: "AIzaSyDHcel8Zif6__KnyYRvsxHCIELH4kCRTTA",
     libraries: ["places"],
   });
-
+  const addressRef = useRef();
+  const [map, setMap] = useState(null);
   const handleSearch = () => {
-    console.log();
+    console.log(addressRef.current.value);
+    map.panTo({ lat: 48.8584, lng: 2.2945 });
   };
 
   if (!isLoaded) {
@@ -28,6 +31,8 @@ function Map() {
       sx={{
         height: "100%",
         width: "100%",
+        display: "flex",
+        flexDirection: "column",
       }}
     >
       <Autocomplete>
@@ -36,6 +41,7 @@ function Map() {
           id="outlined-basic"
           label="Enter address you want to search for task..."
           variant="outlined"
+          inputRef={addressRef}
           InputProps={{
             endAdornment: (
               <Button
@@ -63,6 +69,9 @@ function Map() {
         center={center}
         zoom={10}
         mapContainerStyle={{ width: "100%", height: "100%" }}
+        onLoad={(map) => {
+          setMap(map);
+        }}
       >
         <Marker position={center} />
       </GoogleMap>
