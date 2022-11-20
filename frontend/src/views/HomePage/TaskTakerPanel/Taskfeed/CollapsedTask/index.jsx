@@ -37,29 +37,33 @@ const CollapsedTask = (props) => {
       let nickname = res[0].nickname;
       let bio = res[0].bio;
       let phone = res[0].phoneNumber;
-      const templateParams = {
-        to_name: input.senderInfo.name,
-        id: input.title,
-        nickname: nickname,
-        bio: bio,
-        phone: phone,
-        User_email: input.posterId,
-      };
-      emailjs
-      .send(
-        "service_wvvskxm",
-        "template_gvukolw",
-        templateParams,
-        "6TQG4qyO0kxVbL4GQ"
-      )
-      .then(
-        (result) => {
-          console.log(result.text);
-        },
-        (error) => {
-          console.log(error.text);
-        }
-      );
+      let emailVisibility = res[0].emailVisibility;
+      if (emailVisibility === true) {
+        const templateParams = {
+          to_name: input.senderInfo.name,
+          id: input.title,
+          nickname: nickname,
+          bio: bio,
+          phone: phone,
+          User_email: input.posterId,
+        };
+        emailjs
+        .send(
+          "service_wvvskxm",
+          "template_gvukolw",
+          templateParams,
+          "6TQG4qyO0kxVbL4GQ"
+        )
+        .then(
+          (result) => {
+            console.log(result.text);
+          },
+          (error) => {
+            console.log(error.text);
+          }
+        );
+      }
+      
     });
   };
   // controller for the task button
