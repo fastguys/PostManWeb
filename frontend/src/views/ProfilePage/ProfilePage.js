@@ -20,6 +20,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+
 import {
   getAuth,
   sendPasswordResetEmail,
@@ -130,6 +131,8 @@ export default function Signup() {
   const handlePhoneopen = () => {
     setPhoneopen(true);
   };
+  const [emailAlignment, setEmailAlignment] = React.useState(true);
+
   const handlephoneClose = () => {
     setPhoneopen(false);
   };
@@ -145,6 +148,15 @@ export default function Signup() {
     };
     apis.UpdateUserVisibility(payload);
   };
+  const handleEmailAlignment = async (event, newAlignment) => {
+    setEmailAlignment(newAlignment);
+    const payload = {
+      email: localStorage.getItem("userId"),
+      emailVisibility: newAlignment,
+    };
+    apis.UpdateUserEmailVisibility(payload);
+  };
+
   if (!localStorage.getItem("authenticated")) {
     return <Navigate to="/" replace={true} />;
   } else {
@@ -156,6 +168,7 @@ export default function Signup() {
       setAlignment(res[0].visibility);
       setImageURL(res[0].ImageUrl);
       setRating(res[0].rating);
+      setEmailAlignment(res[0].emailVisibility);
     });
     const handleClickOpen = () => {
       setOpen(true);
@@ -473,6 +486,33 @@ export default function Signup() {
                 </ToggleButton>
               </ToggleButtonGroup>
             </Box>
+            <Box sx={{ display: "flex", flexDirection: "row" }}>
+              <Typography variant="h5" sx={{ mt: 5 }}>
+                Do you want to receive email notifications?
+              </Typography>
+              <ToggleButtonGroup
+                value={emailAlignment}
+                exclusive
+                onChange={handleEmailAlignment}
+                aria-label="text alignment"
+              >
+                <ToggleButton
+                  sx={{ mt: 5, ml: 2, height: 30 }}
+                  value={true}
+                  aria-label="Receive"
+                >
+                  receive
+                </ToggleButton>
+                <ToggleButton
+                  sx={{ mt: 5, height: 30 }}
+                  value={false}
+                  aria-label="Not receive"
+                >
+                  Not receive
+                </ToggleButton>
+              </ToggleButtonGroup>
+            </Box>
+
             <Button
               variant="contained"
               sx={{ mt: 5, height: 50, width: 350 }}
