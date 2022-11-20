@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import apis from "../../../apis/user";
 import { Box } from "@mui/material";
 import "./taskposterpanel.css";
+import emailjs from "@emailjs/browser";
+import Map from "../Map";
 
 const TaskPosterPanel = () => {
   const [taskName, setTaskName] = useState("");
@@ -31,6 +33,22 @@ const TaskPosterPanel = () => {
     setReceiverAddress2("");
     setSenderTele("");
     setReceiverTele("");
+  };
+  const report = () => {
+    const templateParams = {
+      name: "test",
+      message: "test",
+    };
+    emailjs
+      .send(
+        "service_r6tl7s5",
+        "template_58hqzm1",
+        templateParams,
+        "M258FiSyLuH3P8Pio"
+      )
+      .then((result) => {
+        console.log(result.text);
+      });
   };
 
   // handle click for submit button, mock up for now
@@ -122,7 +140,6 @@ const TaskPosterPanel = () => {
         justifyContent: "space-evenly",
       }}
     >
-
       <Box
         sx={{
           display: "flex",
@@ -252,7 +269,7 @@ const TaskPosterPanel = () => {
       >
         <h2>SENDER'S INFO</h2>
         <Box
-          sx={{   
+          sx={{
             display: "flex",
             flexDirection: "column",
             backgroundColor: "lightgrey",
@@ -268,7 +285,7 @@ const TaskPosterPanel = () => {
               backgroundColor: "white",
             }}
           >
-            map
+            <Map />
           </Box>
           <form className="form" onSubmit={handleSubmit}>
             {submitted && valid ? (
@@ -324,8 +341,6 @@ const TaskPosterPanel = () => {
           </form>
         </Box>
       </Box>
-
-      
     </Box>
   );
 };
