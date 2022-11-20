@@ -494,7 +494,7 @@ export default function Signup() {
             </Box>
             <Box sx={{ display: "flex", flexDirection: "row" }}>
               <Typography variant="h5" sx={{ mt: 5 }}>
-                Do you want to receive email notifications?
+                email notifications:
               </Typography>
               <ToggleButtonGroup
                 value={emailAlignment}
