@@ -69,6 +69,10 @@ const userSchema = mongoose.Schema(
       type: Number,
       default: 1,
     },
+    emailVisibility: {
+      type: Boolean,
+      default: true,
+    },
   },
   {
     timestamps: true,
