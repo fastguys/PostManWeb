@@ -2,23 +2,10 @@ import * as React from 'react';
 import List from '@mui/material/List';
 import { Box, Paper,Typography} from '@mui/material';
 import { useState } from 'react';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import Collapse from '@mui/material/Collapse';
-import TaskIcon from '@mui/icons-material/Task';
-import ExpandLess from '@mui/icons-material/ExpandLess';
-import ExpandMore from '@mui/icons-material/ExpandMore';
-import DescriptionIcon from '@mui/icons-material/Description';
-export default function NestedList(props) {
-  // this is the mock up task data for the task feed
-  const taskList = props.taskList;
-  const [open, setOpen] = useState(false);
+import CollapsedTask from './tasks';
 
-  // controller for the expand button
-  const handleCollapseClick = () => {
-    console.log('clicked');
-  };
+export default function NestedList(props) {
+  const taskList = props.taskList;
   return (
     <Box>
         <List
@@ -27,15 +14,7 @@ export default function NestedList(props) {
             aria-labelledby="nested-list-subheader">
             {taskList.map((task,index) => {
                 if (task.posterId === localStorage.getItem('userId')) {
-                    return (
-                    <React.Fragment>
-                    <ListItemButton onClick={handleCollapseClick}>
-                      <ListItemIcon >
-                        <TaskIcon />
-                      </ListItemIcon>
-                      <ListItemText primary={task.title} />
-                    </ListItemButton>
-                  </React.Fragment>)
+                    return (<CollapsedTask key={index} taskInfo={task} setTaskTaken={props.setTaskTaken} />)
                 }
             })}
         </List>
