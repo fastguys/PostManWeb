@@ -101,7 +101,7 @@ const TaskTakerPanel = () => {
           <div>Task Taker Page</div>
         </div>
         <div className="task-taker-search-bar">
-          <form onSubmit={handleSubmit}>
+          {/* <form onSubmit={handleSubmit}>
             <input
               type="text"
               value={searchLocationBox}
@@ -110,7 +110,7 @@ const TaskTakerPanel = () => {
               className="task-taker-search-input"
             />
             <input type="submit" value="Submit" />
-          </form>
+          </form> */}
         </div>
         <div className="task-taker-search-map">
           <Box className="task-taker-search-map-box">
