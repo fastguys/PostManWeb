@@ -11,8 +11,8 @@ import {
 
 const Map = () => {
   //MAPS API
-  const [center, setCenter] = useState({ lat: 48.8584, lng: 2.2945 });
-  const [zoom, setZoom] = useState(10);
+  const [center, setCenter] = useState({ lat: 40.425003, lng: -86.915833 });
+  const [zoom, setZoom] = useState(15);
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: "AIzaSyDHcel8Zif6__KnyYRvsxHCIELH4kCRTTA",
     libraries: ["places"],
