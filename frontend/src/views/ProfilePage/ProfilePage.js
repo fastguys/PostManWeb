@@ -34,8 +34,7 @@ import {
 import { Avatar } from "@mui/material";
 import { setImage } from "../../stores/chat";
 import { useDispatch } from "react-redux";
-import CircularProgress from "@mui/material/CircularProgress";
-import Backdrop from "@mui/material/Backdrop";
+import TaskPosted from "./taskPosted";
 export default function Signup() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -54,6 +53,8 @@ export default function Signup() {
   const [newPhone, setNewPhone] = React.useState("");
   const [newemail, setEmail] = React.useState("");
   const [rating, setRating] = useState(5);
+  const [taskList, setTaskList] = useState([]);
+  const [fetchTask, setFetchTask] = useState(false);
   const updateProfilePhoneNumber = () => {
     const auth = getAuth();
     //country code plus your phone number excluding leading 0 if exists.
@@ -123,7 +124,12 @@ export default function Signup() {
   const handleEmailChange = () => {
     setEmailChange(true);
   };
-
+  if (!fetchTask) {
+    setFetchTask(true);
+    apis.GetTaskList().then((list) => {
+      setTaskList(list);
+    });
+  }
   const handleEmailClose = () => {
     setEmailChange(false);
   };
@@ -620,6 +626,7 @@ export default function Signup() {
             <Typography variant="h4" sx={{ mt: 5 }}>
               Your Posted Tasks:
             </Typography>
+            <TaskPosted taskList={taskList}/>
           </Box>
           <Box
             sx={{
