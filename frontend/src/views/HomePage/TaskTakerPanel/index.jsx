@@ -113,7 +113,6 @@ const TaskTakerPanel = () => {
           </form>
         </div>
         <div className="task-taker-search-map">
-          <div>Map</div>
           <Box className="task-taker-search-map-box">
             <Map />
           </Box>

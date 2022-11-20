@@ -30,7 +30,9 @@ function Map() {
         center={center}
         zoom={10}
         mapContainerStyle={{ width: "100%", height: "100%" }}
-      ></GoogleMap>
+      >
+        <Marker position={center} />
+      </GoogleMap>
     </Box>
   );
 }
