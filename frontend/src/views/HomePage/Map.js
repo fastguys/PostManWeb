@@ -4,23 +4,31 @@ import { useRef, useEffect, useState } from "react";
 import {
   useJsApiLoader,
   GoogleMap,
-  Marker,
+  MarkerF,
   Autocomplete,
   DirectionsRenderer,
 } from "@react-google-maps/api";
 
-function Map() {
+const Map = () => {
   //MAPS API
-  const center = { lat: 48.8584, lng: 2.2945 };
+  const [center, setCenter] = useState({ lat: 48.8584, lng: 2.2945 });
+  const [zoom, setZoom] = useState(10);
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: "AIzaSyDHcel8Zif6__KnyYRvsxHCIELH4kCRTTA",
     libraries: ["places"],
   });
   const addressRef = useRef();
   const [map, setMap] = useState(null);
+
   const handleSearch = () => {
-    console.log(addressRef.current.value);
-    map.panTo({ lat: 48.8584, lng: 2.2945 });
+    const geocoder = new window.google.maps.Geocoder();
+    geocoder.geocode({ address: addressRef.current.value }, (results, status) => {
+      if (status === "OK") {
+        const position = results[0].geometry.location;
+        setCenter({ lat: position.lat(), lng: position.lng() });
+        setZoom(15);
+      }
+    });
   };
 
   if (!isLoaded) {
@@ -67,13 +75,13 @@ function Map() {
       </Autocomplete>
       <GoogleMap
         center={center}
-        zoom={10}
+        zoom={zoom}
         mapContainerStyle={{ width: "100%", height: "100%" }}
-        onLoad={(map) => {
-          setMap(map);
-        }}
+        // onLoad={(map) => {
+        //   setMap(map);
+        // }}
       >
-        <Marker position={center} />
+        <MarkerF position={center} />
       </GoogleMap>
     </Box>
   );
