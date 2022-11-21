@@ -176,6 +176,19 @@ router.put("/user/visibility/:id", async (req, res) => {
     res.status(500).json(err);
   }
 });
+router.put("/user/emailVisibility/:id", async (req, res) => {
+  try {
+    const user_email = req.query.payload["email"];
+    const user_emailVisibility = req.body.payload["emailVisibility"];
+    const user = await User.findOneAndUpdate(
+      { email: user_email },
+      { emailVisibility: user_emailVisibility }
+    );
+    res.status(200).json(user);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 // messages
 router.post("/message", async (req, res) => {
   console.log(req.body.payload);

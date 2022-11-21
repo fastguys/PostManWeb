@@ -41,6 +41,9 @@ const deleteUserByEmail = async (payload) => {
 const UpdateUserVisibility = async (payload) => {
   return put("/user/visibility/:id", { payload });
 };
+const UpdateUserEmailVisibility = async (payload) => {
+  return put("/user/emailVisibility/:id", { payload });
+};
 const UpdateUserImageUrl = async (payload) => {
   return put("/user/ImageUrl/:id", { payload });
 };
@@ -85,6 +88,7 @@ const apis = {
   UpdateUserVisibility,
   UpdateEmail,
   FinduserByPhone,
+  UpdateUserEmailVisibility,
   UpdatephoneNumber,
 };
 
