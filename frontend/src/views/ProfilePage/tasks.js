@@ -14,6 +14,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import { useNavigate } from 'react-router-dom';
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
       padding: theme.spacing(2),
@@ -26,7 +27,6 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   
   function BootstrapDialogTitle(props) {
     const { children, onClose, ...other } = props;
-  
     return (
       <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
         {children}
@@ -60,6 +60,14 @@ const CollapsedTask = (props) => {
   };
   const handleClose = () => {
     setOpen(false);
+  };
+  const navigate = useNavigate();
+  const [taskInfo, setTaskInfo] = useState({});
+  const handleRateTaskPoster = (e) => {
+    navigate({
+      pathname: '/rate-task',
+      search: `?taskPoster=${taskInfo.posterId}`
+    });
   };
   return (
     <div>
@@ -98,6 +106,9 @@ const CollapsedTask = (props) => {
         <DialogActions>
           <Button autoFocus onClick={handleClose}>
             Close
+          </Button>
+          <Button autoFocus onClick={handleRateTaskPoster}>
+            Feedback
           </Button>
         </DialogActions>
       </BootstrapDialog>
