@@ -20,8 +20,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import IconButton from '@mui/material/IconButton';
+
 import {
   getAuth,
   sendPasswordResetEmail,
@@ -33,11 +32,10 @@ import {
   signInWithPhoneNumber,
   PhoneAuthProvider,
 } from "firebase/auth";
-import { Avatar, List } from "@mui/material";
+import { Avatar } from "@mui/material";
 import { setImage } from "../../stores/chat";
 import { useDispatch } from "react-redux";
-import CircularProgress from "@mui/material/CircularProgress";
-import Backdrop from "@mui/material/Backdrop";
+import TaskPosted from "./taskPosted";
 export default function Signup() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -56,6 +54,8 @@ export default function Signup() {
   const [newPhone, setNewPhone] = React.useState("");
   const [newemail, setEmail] = React.useState("");
   const [rating, setRating] = useState(5);
+  const [taskList, setTaskList] = useState([]);
+  const [fetchTask, setFetchTask] = useState(false);
   const updateProfilePhoneNumber = () => {
     const auth = getAuth();
     //country code plus your phone number excluding leading 0 if exists.
@@ -125,13 +125,20 @@ export default function Signup() {
   const handleEmailChange = () => {
     setEmailChange(true);
   };
-
+  if (!fetchTask) {
+    setFetchTask(true);
+    apis.GetTaskList().then((list) => {
+      setTaskList(list);
+    });
+  }
   const handleEmailClose = () => {
     setEmailChange(false);
   };
   const handlePhoneopen = () => {
     setPhoneopen(true);
   };
+  const [emailAlignment, setEmailAlignment] = React.useState(true);
+
   const handlephoneClose = () => {
     setPhoneopen(false);
   };
@@ -147,6 +154,15 @@ export default function Signup() {
     };
     apis.UpdateUserVisibility(payload);
   };
+  const handleEmailAlignment = async (event, newAlignment) => {
+    setEmailAlignment(newAlignment);
+    const payload = {
+      email: localStorage.getItem("userId"),
+      emailVisibility: newAlignment,
+    };
+    apis.UpdateUserEmailVisibility(payload);
+  };
+
   if (!localStorage.getItem("authenticated")) {
     return <Navigate to="/" replace={true} />;
   } else {
@@ -158,6 +174,7 @@ export default function Signup() {
       setAlignment(res[0].visibility);
       setImageURL(res[0].ImageUrl);
       setRating(res[0].rating);
+      setEmailAlignment(res[0].emailVisibility);
     });
     const handleClickOpen = () => {
       setOpen(true);
@@ -298,17 +315,6 @@ export default function Signup() {
         };
         reader.readAsDataURL(file);
       }
-    };
-    const handleTaskProgressClick = (e) => {
-      // check if the task is not taken
-      //if (taskInfo.isTaken === false) {
-      //  console.log('task is not taken');
-      //  return;
-      //}
-      navigate({
-        pathname: '/rate-task',
-        //search: `?taskId=${taskInfo._id}`
-      });
     };
     return (
       <div>
@@ -486,6 +492,33 @@ export default function Signup() {
                 </ToggleButton>
               </ToggleButtonGroup>
             </Box>
+            <Box sx={{ display: "flex", flexDirection: "row" }}>
+              <Typography variant="h5" sx={{ mt: 5 }}>
+                email notifications:
+              </Typography>
+              <ToggleButtonGroup
+                value={emailAlignment}
+                exclusive
+                onChange={handleEmailAlignment}
+                aria-label="text alignment"
+              >
+                <ToggleButton
+                  sx={{ mt: 5, ml: 2, height: 30 }}
+                  value={true}
+                  aria-label="Receive"
+                >
+                  receive
+                </ToggleButton>
+                <ToggleButton
+                  sx={{ mt: 5, height: 30 }}
+                  value={false}
+                  aria-label="Not receive"
+                >
+                  Not receive
+                </ToggleButton>
+              </ToggleButtonGroup>
+            </Box>
+
             <Button
               variant="contained"
               sx={{ mt: 5, height: 50, width: 350 }}
@@ -632,12 +665,8 @@ export default function Signup() {
           >
             <Typography variant="h4" sx={{ mt: 5 }}>
               Your Posted Tasks:
-              <List>
-                task name 
-                <IconButton aria-label="progress" onClick={handleTaskProgressClick}>
-                </IconButton>
-              </List>
             </Typography>
+            <TaskPosted taskList={taskList}/>
           </Box>
           <Box
             sx={{
