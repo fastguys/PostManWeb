@@ -64,9 +64,14 @@ const ProgressPage = () => {
     if (taskInfo) {
       let confirmationCode = document.getElementById('confirmation_code').value;
       if (confirmationCode === taskInfo.confirmCode) {
+        taskInfo.status = 'completed';
+        apis.UpdateTask(taskInfo._id, taskInfo).then((res) => {
+          console.log('res', res);
+        });
+
         navigate({
           pathname: '/rate-task',
-          search: `?taskPoster=${taskInfo.posterId}`
+          search: `?taskId=${taskInfo._id}&taskPoster=${taskInfo.posterId}`
         });
       } else {
         alert('Confirmation code does not match');
