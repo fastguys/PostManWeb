@@ -1,14 +1,18 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect} from 'react';
 import { FaStar } from 'react-icons/fa';
 import ResponsiveAppBar from '../TopBar/TopBar';
 import { useLocation } from 'react-router-dom';
 import apis from '../../apis/user';
 import { useNavigate } from 'react-router-dom';
-
+import {Button} from '@material-ui/core';
 const RatePage = () => {
   const navigate = useNavigate();
   const route = useLocation();
+  const [imageURL, setImageURL] = useState(null);
+  const taskId = route.search.split('=')[1].split("&")[0];
+  const posterId = route.search.split('=')[2];
+  const [taskInfo, setTaskInfo] = useState({});
   const colors = {
     orange: '#FFBA5A',
     grey: '#a9a9a9'
@@ -17,7 +21,17 @@ const RatePage = () => {
   const [currentValue, setCurrentValue] = useState(0);
   const [hoverValue, setHoverValue] = useState(undefined);
   const stars = Array(5).fill(0);
-
+  const hiddenFileInput = React.useRef(null);
+  useEffect(() => {
+    if (taskId) {
+      // TODO: get task info from backend
+      apis.GetTask(taskId).then((res) => {
+        console.log(res[0]);
+        setTaskInfo(res[0]);
+      });
+    }
+  }, [taskId]);
+  
   const handleClick = (value) => {
     setCurrentValue(value);
   };
@@ -27,8 +41,7 @@ const RatePage = () => {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    const posterId = route.search.split('=')[1];
-    console.log(posterId);
+    console.log("POSTERID"+posterId);
     apis.FinduserByEmail({ email: posterId }).then((res) => {
       const rating = res[0].rating;
       const total = res[0].totalrating;
@@ -60,6 +73,29 @@ const RatePage = () => {
   const handleMouseLeave = () => {
     setHoverValue(undefined);
   };
+  const handleup =()=>{
+    hiddenFileInput.current.click();
+  };
+  const fileselectedHandler = (event) => {
+    const file = event.target.files[0];
+    let overSize = false;
+    if (file.size > 1024 * 512) {
+      overSize = true;
+    }
+    if (overSize) {
+      alert("Image size should not exceed 512KB");
+    } else {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setImageURL(e.target.result);
+        taskInfo.ImageUrl = e.target.result;
+        apis.UpdateTask(taskInfo._id, taskInfo).then((res) => {
+          console.log('taskComplete', res);
+        });
+      }
+      reader.readAsDataURL(file);
+    }
+  };
   return (
     <div style={styles.container}>
       <ResponsiveAppBar />
@@ -83,10 +119,24 @@ const RatePage = () => {
         })}
       </div>
       <textarea placeholder="What's your experience?" style={styles.textarea} />
-
-      <button style={styles.button} onClick={handleSubmit}>
+      {imageURL !== null ? <img
+      alt="Provence"
+      src={imageURL}
+      style={{
+        width: 300,
+        height: 300,
+      }}
+    ></img> : null}
+      <Button
+      style={styles.button}
+      onClick={handleup}
+    >
+      Upload the image to prove You Finished the Task
+      <input type="file" hidden onChange={fileselectedHandler} ref = {hiddenFileInput} />
+    </Button>
+      <Button style={styles.button} onClick={handleSubmit}>
         Submit
-      </button>
+      </Button>
     </div>
   );
 };
