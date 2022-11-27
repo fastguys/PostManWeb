@@ -4,6 +4,7 @@ import { Box } from '@mui/system';
 import ResponsiveAppBar from '../TopBar/TopBar';
 import { useNavigate, useLocation } from 'react-router-dom';
 import apis from '../../apis/user';
+import emailjs from "@emailjs/browser";
 import './ProgressPage.css';
 
 const ProgressPage = () => {
@@ -11,16 +12,52 @@ const ProgressPage = () => {
   const route = useLocation();
   const taskId = route.search.split('=')[1];
   const [taskInfo, setTaskInfo] = useState({});
-
+  const [taskStart, setTaskStart] = useState(false);
   useEffect(() => {
     if (taskId) {
       // TODO: get task info from backend
       apis.GetTask(taskId).then((res) => {
         console.log(res[0]);
         setTaskInfo(res[0]);
+        setTaskStart(res[0].status === "started");
       });
     }
   }, [taskId]);
+  const sendemail = (input) => {
+    let email = localStorage.getItem("userId");
+    apis.FinduserByEmail({ email }).then((res) => {
+      let nickname = res[0].nickname;
+      let bio = res[0].bio;
+      let phone = res[0].phoneNumber;
+      let emailVisibility = res[0].emailVisibility;
+      if (emailVisibility === true) {
+        const templateParams = {
+          to_name: input.senderInfo.name,
+          id: input.title,
+          nickname: nickname,
+          bio: bio,
+          phone: phone,
+          User_email: input.posterId,
+        };
+        emailjs
+        .send(
+          "service_wvvskxm",
+          "template_kxpcred",
+          templateParams,
+          "6TQG4qyO0kxVbL4GQ"
+        )
+        .then(
+          (result) => {
+            console.log(result.text);
+          },
+          (error) => {
+            console.log(error.text);
+          }
+        );
+      }
+      
+    });
+  };
 
   const handleFinishTask = () => {
     // check the confirm code match
@@ -35,6 +72,21 @@ const ProgressPage = () => {
         alert('Confirmation code does not match');
       }
     }
+  };
+  const handleStart = () => {
+    console.log('start task');
+    if(!taskStart){
+      setTaskStart(true);
+      sendemail(taskInfo);
+    }
+    taskInfo.status = 'started';
+    apis.UpdateTask(taskInfo._id, taskInfo).then((res) => {
+      console.log('res', res);
+    });
+  };
+  const handleCancel = () => {
+    console.log('cancel task');
+    setTaskStart(false);
   };
   return (
     <div>
@@ -80,12 +132,15 @@ const ProgressPage = () => {
                 <div className="progress-page-data">
                   Task Receiver Address: {taskInfo.receiverInfo.address}
                 </div>
-
                 <div className="progress-page-data">
+                <button onClick={handleStart}>Start Your Task</button>
+                <button onClick={handleCancel}>Cancel Your Task</button>
+                </div>
+                { taskStart? <div className="progress-page-data">
                   <label>Confirmation code (receiver gave you):</label>
                   <input type="text" id="confirmation_code" name="confirmation_code" required />
                   <button onClick={handleFinishTask}>Finish Task</button>
-                </div>
+                </div> : null}
               </div>
             )}
           </div>
