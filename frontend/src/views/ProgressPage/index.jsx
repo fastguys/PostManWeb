@@ -87,6 +87,15 @@ const ProgressPage = () => {
   const handleCancel = () => {
     console.log('cancel task');
     setTaskStart(false);
+        // set the task taken
+    taskInfo.isTaken = false;
+    taskInfo.takerId = "no-taker"
+    taskInfo.status = 'not-taken';
+        // update the status in the database
+    apis.UpdateTask(taskInfo._id, taskInfo).then((res) => {
+      console.log('res', res);
+    });
+    navigate('/homepage');
   };
   return (
     <div>
