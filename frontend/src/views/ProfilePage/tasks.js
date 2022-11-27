@@ -61,6 +61,12 @@ const CollapsedTask = (props) => {
   const handleClose = () => {
     setOpen(false);
   };
+  const defaultStyling = {
+    border: '1px solid gray',
+    backgroundColor: 'rgba(20,20,20,0.4)',
+    width: 300,
+    height: 100
+  }
   return (
     <div>
     <Box>
@@ -82,7 +88,10 @@ const CollapsedTask = (props) => {
           Posted Task details
         </BootstrapDialogTitle>
         <DialogContent dividers>
-        {task.status === 'completed' ? <Typography gutterBottom> Image Prove: <img
+        {task.status === 'completed' ? <Box sx={{display: 'flex', alignItems: 'center'}}>
+        <Typography gutterBottom> Image Prove: 
+        </Typography>
+        <img
         alt="Provence"
         src={task.ImageUrl}
         style={{
@@ -90,7 +99,7 @@ const CollapsedTask = (props) => {
           height: 200,
         }}
       ></img>
-        </Typography> : null}
+          </Box> : null}
             <Typography gutterBottom>
             Task Status: {task.status}
             </Typography>
