@@ -82,6 +82,15 @@ const CollapsedTask = (props) => {
           Posted Task details
         </BootstrapDialogTitle>
         <DialogContent dividers>
+        {task.status === 'completed' ? <Typography gutterBottom> Image Prove: <img
+        alt="Provence"
+        src={task.ImageUrl}
+        style={{
+          width: 200,
+          height: 200,
+        }}
+      ></img>
+        </Typography> : null}
             <Typography gutterBottom>
             Task Status: {task.status}
             </Typography>
