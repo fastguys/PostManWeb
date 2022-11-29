@@ -5,6 +5,7 @@ import ResponsiveAppBar from '../TopBar/TopBar';
 import { useNavigate, useLocation } from 'react-router-dom';
 import apis from '../../apis/user';
 import './ProgressPage.css';
+import emailjs from "@emailjs/browser";
 
 const ProgressPage = () => {
   const navigate = useNavigate();
@@ -21,12 +22,47 @@ const ProgressPage = () => {
       });
     }
   }, [taskId]);
+  const sendemail = (input) => {
+    let email = localStorage.getItem("userId");
+    apis.FinduserByEmail({ email }).then((res) => {
+      let nickname = res[0].nickname;
+      let bio = res[0].bio;
+      let phone = res[0].phoneNumber;
+      const templateParams = {
+        to_name: input.senderInfo.name,
+        id: input.title,
+        nickname: nickname,
+        bio: bio,
+        phone: phone,
+        User_email: input.posterId,
+      };
+      emailjs
+      .send(
+        "service_wvvskxm",
+        "template_gvukolw",
+        templateParams,
+        "6TQG4qyO0kxVbL4GQ"
+      )
+      .then(
+        (result) => {
+          console.log(result.text);
+        },
+        (error) => {
+          console.log(error.text);
+        }
+      );
+    });
+  };
 
   const handleFinishTask = () => {
     // check the confirm code match
     if (taskInfo) {
       let confirmationCode = document.getElementById('confirmation_code').value;
       if (confirmationCode === taskInfo.confirmCode) {
+        apis.UpdateTask(taskInfo._id, taskInfo).then((res) => {
+          console.log('res', res);
+          sendemail(res);
+        });
         navigate({
           pathname: '/rate-task',
           search: `?taskPoster=${taskInfo.posterId}`
