@@ -32,7 +32,7 @@ const CollapsedTask = (props) => {
     setOpen(!open);
   };
   const sendemail = (input) => {
-    let email = localStorage.getItem("email");
+    let email = localStorage.getItem("userId");
     apis.FinduserByEmail({ email }).then((res) => {
       let nickname = res[0].nickname;
       let bio = res[0].bio;
