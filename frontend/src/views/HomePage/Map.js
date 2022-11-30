@@ -119,7 +119,7 @@ const Map = (props) => {
     // update the status in the database
     apis.UpdateTask(taskInfo._id, taskInfo).then((res) => {
       console.log('res', res);
-      // sendemail(res);
+      sendemail(res);
     });
 
     props.setTaskTaken((taskTaken) => [...taskTaken, taskInfo]);
