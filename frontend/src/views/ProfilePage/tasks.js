@@ -61,14 +61,12 @@ const CollapsedTask = (props) => {
   const handleClose = () => {
     setOpen(false);
   };
-  const navigate = useNavigate();
-  const [taskInfo, setTaskInfo] = useState({});
-  const handleRateTaskPoster = (e) => {
-    navigate({
-      pathname: '/rate-task',
-      search: `?taskPoster=${taskInfo.posterId}`
-    });
-  };
+  const defaultStyling = {
+    border: '1px solid gray',
+    backgroundColor: 'rgba(20,20,20,0.4)',
+    width: 300,
+    height: 100
+  }
   return (
     <div>
     <Box>
@@ -90,6 +88,18 @@ const CollapsedTask = (props) => {
           Posted Task details
         </BootstrapDialogTitle>
         <DialogContent dividers>
+        {task.status === 'completed' ? <Box sx={{display: 'flex', alignItems: 'center'}}>
+        <Typography gutterBottom> Image Prove: 
+        </Typography>
+        <img
+        alt="Provence"
+        src={task.ImageUrl}
+        style={{
+          width: 200,
+          height: 200,
+        }}
+      ></img>
+          </Box> : null}
             <Typography gutterBottom>
             Task Status: {task.status}
             </Typography>

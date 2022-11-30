@@ -14,10 +14,10 @@ export default function NestedList(props) {
         component="nav"
         aria-labelledby="nested-list-subheader">
         {taskList.map((task, index) => {
-          if (task.isTaken === false && task.posterId !== localStorage.getItem('userId')) {
+          if (task.isTaken === false && task.posterId !== localStorage.getItem('userId') && task.status !=='completed') {
             // ignore the taken task and the task posted by the current user
             return <CollapsedTask key={index} taskInfo={task} setTaskTaken={props.setTaskTaken} />;
-          } else if (task.takerId === localStorage.getItem('userId')) {
+          } else if (task.takerId === localStorage.getItem('userId') && task.status !=='completed') {
             return <CollapsedTask key={index} taskInfo={task} setTaskTaken={props.setTaskTaken} />
           } else {
             return null;

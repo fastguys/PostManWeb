@@ -64,6 +64,10 @@ const taskSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    ImageUrl: {
+      type: String,
+      default: "None",
+    },
   },
   {
     timestamps: true,
