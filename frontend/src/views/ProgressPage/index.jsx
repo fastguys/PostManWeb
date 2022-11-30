@@ -1,16 +1,16 @@
-import React from 'react';
-import { useEffect, useState } from 'react';
-import { Box } from '@mui/system';
-import ResponsiveAppBar from '../TopBar/TopBar';
-import { useNavigate, useLocation } from 'react-router-dom';
-import apis from '../../apis/user';
+import React from "react";
+import { useEffect, useState } from "react";
+import { Box } from "@mui/system";
+import ResponsiveAppBar from "../TopBar/TopBar";
+import { useNavigate, useLocation } from "react-router-dom";
+import apis from "../../apis/user";
 import emailjs from "@emailjs/browser";
-import './ProgressPage.css';
+import "./ProgressPage.css";
 
 const ProgressPage = () => {
   const navigate = useNavigate();
   const route = useLocation();
-  const taskId = route.search.split('=')[1];
+  const taskId = route.search.split("=")[1];
   const [taskInfo, setTaskInfo] = useState({});
   const [taskStart, setTaskStart] = useState(false);
   useEffect(() => {
@@ -24,7 +24,7 @@ const ProgressPage = () => {
     }
   }, [taskId]);
   const sendemail = (input) => {
-    let email = localStorage.getItem("userId");
+    let email = input.posterId;
     apis.FinduserByEmail({ email }).then((res) => {
       let nickname = res[0].nickname;
       let bio = res[0].bio;
@@ -40,27 +40,25 @@ const ProgressPage = () => {
           User_email: input.posterId,
         };
         emailjs
-        .send(
-          "service_wvvskxm",
-          "template_kxpcred",
-          templateParams,
-          "6TQG4qyO0kxVbL4GQ"
-        )
-        .then(
-          (result) => {
-            console.log(result.text);
-          },
-          (error) => {
-            console.log(error.text);
-          }
-        );
+          .send(
+            "service_wvvskxm",
+            "template_kxpcred",
+            templateParams,
+            "6TQG4qyO0kxVbL4GQ"
+          )
+          .then(
+            (result) => {
+              console.log(result.text);
+            },
+            (error) => {
+              console.log(error.text);
+            }
+          );
       }
-      
     });
-    
   };
   const sendEmailFinish = (input) => {
-    let email = localStorage.getItem("userId");
+    let email = input.posterId;
     apis.FinduserByEmail({ email }).then((res) => {
       let nickname = res[0].nickname;
       let bio = res[0].bio;
@@ -76,68 +74,66 @@ const ProgressPage = () => {
           User_email: input.posterId,
         };
         emailjs
-        .send(
-          "service_0yvi8aq",
-          "template_0xqba73",
-          templateParams,
-          "YxEfzeRQVGqD1fr4H"
-        )
-        .then(
-          (result) => {
-            console.log(result.text);
-          },
-          (error) => {
-            console.log(error.text);
-          }
-        );
+          .send(
+            "service_0yvi8aq",
+            "template_0xqba73",
+            templateParams,
+            "YxEfzeRQVGqD1fr4H"
+          )
+          .then(
+            (result) => {
+              console.log(result.text);
+            },
+            (error) => {
+              console.log(error.text);
+            }
+          );
       }
-      
     });
-    
   };
 
   const handleFinishTask = () => {
     // check the confirm code match
     if (taskInfo) {
-      let confirmationCode = document.getElementById('confirmation_code').value;
+      let confirmationCode = document.getElementById("confirmation_code").value;
       if (confirmationCode === taskInfo.confirmCode) {
-        taskInfo.status = 'completed';
+        taskInfo.status = "completed";
         apis.UpdateTask(taskInfo._id, taskInfo).then((res) => {
-          console.log('res', res);
+          console.log("res", res);
         });
         sendEmailFinish(taskInfo);
         navigate({
-          pathname: '/rate-task',
-          search: `?taskId=${taskInfo._id}&taskPoster=${taskInfo.posterId}`
+          pathname: "/rate-task",
+          search: `?taskId=${taskInfo._id}&taskPoster=${taskInfo.posterId}`,
         });
       } else {
-        alert('Confirmation code does not match');
+        alert("Confirmation code does not match");
       }
     }
   };
   const handleStart = () => {
-    console.log('start task');
-    if(!taskStart){
+    console.log("start task");
+    if (!taskStart) {
       setTaskStart(true);
       sendemail(taskInfo);
     }
-    taskInfo.status = 'started';
+    taskInfo.status = "started";
     apis.UpdateTask(taskInfo._id, taskInfo).then((res) => {
-      console.log('res', res);
+      console.log("res", res);
     });
   };
   const handleCancel = () => {
-    console.log('cancel task');
+    console.log("cancel task");
     setTaskStart(false);
-        // set the task taken
+    // set the task taken
     taskInfo.isTaken = false;
-    taskInfo.takerId = "no-taker"
-    taskInfo.status = 'not-taken';
-        // update the status in the database
+    taskInfo.takerId = "no-taker";
+    taskInfo.status = "not-taken";
+    // update the status in the database
     apis.UpdateTask(taskInfo._id, taskInfo).then((res) => {
-      console.log('res', res);
+      console.log("res", res);
     });
-    navigate('/homepage');
+    navigate("/homepage");
   };
   return (
     <div>
@@ -150,56 +146,76 @@ const ProgressPage = () => {
               sx={{
                 width: 500,
                 height: 300,
-                backgroundColor: 'white',
-                border: '1px dashed grey'
+                backgroundColor: "white",
+                border: "1px dashed grey",
               }}
             />
           </div>
           <div className="progress-page-right-content">
-            {taskInfo && taskInfo.location && taskInfo.senderInfo && taskInfo.receiverInfo && (
-              <div>
-                <div className="progress-page-data">Task Status: {taskInfo.status}</div>
-                <div className="progress-page-data">Task Poster: {taskInfo.posterId}</div>
-                <div className="progress-page-data">Task Taker: {taskInfo.takerId}</div>
-                <div className="progress-page-data">Task Description: {taskInfo.description}</div>
-                <div className="progress-page-data">
-                  Task Location Coordinates: {taskInfo.location.coordinates}
+            {taskInfo &&
+              taskInfo.location &&
+              taskInfo.senderInfo &&
+              taskInfo.receiverInfo && (
+                <div>
+                  <div className="progress-page-data">
+                    Task Status: {taskInfo.status}
+                  </div>
+                  <div className="progress-page-data">
+                    Task Poster: {taskInfo.posterId}
+                  </div>
+                  <div className="progress-page-data">
+                    Task Taker: {taskInfo.takerId}
+                  </div>
+                  <div className="progress-page-data">
+                    Task Description: {taskInfo.description}
+                  </div>
+                  <div className="progress-page-data">
+                    Task Location Coordinates: {taskInfo.location.coordinates}
+                  </div>
+                  <div className="progress-page-data">
+                    Task Sender Name: {taskInfo.senderInfo.name}
+                  </div>
+                  <div className="progress-page-data">
+                    Task Sender Phone: {taskInfo.senderInfo.telephone}
+                  </div>
+                  <div className="progress-page-data">
+                    Task Sender Address: {taskInfo.senderInfo.address}
+                  </div>
+                  <div className="progress-page-data">
+                    Task Receiver Name: {taskInfo.receiverInfo.name}
+                  </div>
+                  <div className="progress-page-data">
+                    Task Receiver Phone: {taskInfo.receiverInfo.telephone}
+                  </div>
+                  <div className="progress-page-data">
+                    Task Receiver Address: {taskInfo.receiverInfo.address}
+                  </div>
+                  <div className="progress-page-data">
+                    <button onClick={handleStart}>Start Your Task</button>
+                    <button onClick={handleCancel}>Cancel Your Task</button>
+                  </div>
+                  {taskStart ? (
+                    <div className="progress-page-data">
+                      <label>Confirmation code (receiver gave you):</label>
+                      <input
+                        type="text"
+                        id="confirmation_code"
+                        name="confirmation_code"
+                        required
+                      />
+                      <button onClick={handleFinishTask}>Finish Task</button>
+                    </div>
+                  ) : null}
                 </div>
-                <div className="progress-page-data">
-                  Task Sender Name: {taskInfo.senderInfo.name}
-                </div>
-                <div className="progress-page-data">
-                  Task Sender Phone: {taskInfo.senderInfo.telephone}
-                </div>
-                <div className="progress-page-data">
-                  Task Sender Address: {taskInfo.senderInfo.address}
-                </div>
-                <div className="progress-page-data">
-                  Task Receiver Name: {taskInfo.receiverInfo.name}
-                </div>
-                <div className="progress-page-data">
-                  Task Receiver Phone: {taskInfo.receiverInfo.telephone}
-                </div>
-                <div className="progress-page-data">
-                  Task Receiver Address: {taskInfo.receiverInfo.address}
-                </div>
-                <div className="progress-page-data">
-                <button onClick={handleStart}>Start Your Task</button>
-                <button onClick={handleCancel}>Cancel Your Task</button>
-                </div>
-                { taskStart? <div className="progress-page-data">
-                  <label>Confirmation code (receiver gave you):</label>
-                  <input type="text" id="confirmation_code" name="confirmation_code" required />
-                  <button onClick={handleFinishTask}>Finish Task</button>
-                </div> : null}
-              </div>
-            )}
+              )}
           </div>
         </div>
       </div>
-      <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+      <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
         Have an issue about the tasks? Report it here!
-        <a href="mailto:jiangnanyi111@gmail.com?subject = Feedback&body = Message">Send Feedback</a>
+        <a href="mailto:jiangnanyi111@gmail.com?subject = Feedback&body = Message">
+          Send Feedback
+        </a>
       </Box>
     </div>
   );
