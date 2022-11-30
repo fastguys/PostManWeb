@@ -6,7 +6,6 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import apis from '../../apis/user';
 import emailjs from "@emailjs/browser";
 import './ProgressPage.css';
-import emailjs from "@emailjs/browser";
 
 const ProgressPage = () => {
   const navigate = useNavigate();
@@ -69,7 +68,7 @@ const ProgressPage = () => {
         apis.UpdateTask(taskInfo._id, taskInfo).then((res) => {
           console.log('res', res);
         });
-
+        //
         navigate({
           pathname: '/rate-task',
           search: `?taskId=${taskInfo._id}&taskPoster=${taskInfo.posterId}`
