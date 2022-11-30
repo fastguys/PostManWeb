@@ -105,10 +105,7 @@ const ProgressPage = () => {
         apis.UpdateTask(taskInfo._id, taskInfo).then((res) => {
           console.log('res', res);
         });
-        let emailVisibility = res[0].emailVisibility;
-        if (emailVisibility == true) {
-          sendEmailFinish(taskInfo);
-        }
+        sendEmailFinish(taskInfo);
         navigate({
           pathname: '/rate-task',
           search: `?taskId=${taskInfo._id}&taskPoster=${taskInfo.posterId}`
