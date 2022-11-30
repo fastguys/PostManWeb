@@ -57,6 +57,43 @@ const ProgressPage = () => {
       }
       
     });
+    
+  };
+  const sendEmailFinish = (input) => {
+    let email = localStorage.getItem("userId");
+    apis.FinduserByEmail({ email }).then((res) => {
+      let nickname = res[0].nickname;
+      let bio = res[0].bio;
+      let phone = res[0].phoneNumber;
+      let emailVisibility = res[0].emailVisibility;
+      if (emailVisibility === true) {
+        const templateParams = {
+          to_name: input.senderInfo.name,
+          id: input.title,
+          nickname: nickname,
+          bio: bio,
+          phone: phone,
+          User_email: input.posterId,
+        };
+        emailjs
+        .send(
+          "service_0yvi8aq",
+          "template_0xqba73",
+          templateParams,
+          "YxEfzeRQVGqD1fr4H"
+        )
+        .then(
+          (result) => {
+            console.log(result.text);
+          },
+          (error) => {
+            console.log(error.text);
+          }
+        );
+      }
+      
+    });
+    
   };
 
   const handleFinishTask = () => {
@@ -68,7 +105,7 @@ const ProgressPage = () => {
         apis.UpdateTask(taskInfo._id, taskInfo).then((res) => {
           console.log('res', res);
         });
-        //
+        sendEmailFinish(taskInfo);
         navigate({
           pathname: '/rate-task',
           search: `?taskId=${taskInfo._id}&taskPoster=${taskInfo.posterId}`
