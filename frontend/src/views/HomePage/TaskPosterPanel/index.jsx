@@ -109,10 +109,12 @@ const TaskPosterPanel = () => {
       taskDscrpt &&
       senderName &&
       confirmCode &&
-      senderAddress1 &&
-      receiverAddress1
+      addressRefSender.current.value &&
+      addressRefReceiver.current.value
     ) {
       setValid(true);
+      //pop up a window to show success
+      alert("Success!");
     }
     setSubmitted(true);
     console.log("handleSubmit", e);
@@ -259,7 +261,7 @@ const TaskPosterPanel = () => {
               }}
             />
           </Autocomplete>
-          {submitted && !senderAddress1 ? (
+          {submitted && !addressRefSender.current.value ? (
             <div className="failed-message">
               Error: sender's address can't be empty
             </div>
@@ -367,7 +369,7 @@ const TaskPosterPanel = () => {
             />
           </Autocomplete>
 
-          {submitted && !receiverAddress1 ? (
+          {submitted && !addressRefReceiver.current.value ? (
             <div className="failed-message">
               Error: receiver's address can't be empty
             </div>
