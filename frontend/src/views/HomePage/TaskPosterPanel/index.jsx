@@ -259,7 +259,7 @@ const TaskPosterPanel = () => {
               }}
             />
           </Autocomplete>
-          {submitted && !senderAddress1 ? (
+          {submitted && !addressRefSender ? (
             <div className="failed-message">
               Error: sender's address can't be empty
             </div>
@@ -367,7 +367,7 @@ const TaskPosterPanel = () => {
             />
           </Autocomplete>
 
-          {submitted && !receiverAddress1 ? (
+          {submitted && !addressRefReceiver ? (
             <div className="failed-message">
               Error: receiver's address can't be empty
             </div>
