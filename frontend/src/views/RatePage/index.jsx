@@ -20,6 +20,7 @@ const RatePage = () => {
 
   const [currentValue, setCurrentValue] = useState(0);
   const [hoverValue, setHoverValue] = useState(undefined);
+  const [upload,setUpload] = useState(false);
   const stars = Array(5).fill(0);
   const hiddenFileInput = React.useRef(null);
   useEffect(() => {
@@ -40,35 +41,39 @@ const RatePage = () => {
     setHoverValue(newHoverValue);
   };
   const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("POSTERID"+posterId);
-    apis.FinduserByEmail({ email: posterId }).then((res) => {
-      const rating = res[0].rating;
-      const total = res[0].totalrating;
-      const count = res[0].ratingcount;
-      const newRating = (total + currentValue) / (count + 1);
-      const newTotal = total + currentValue;
-      const newCount = count + 1;
-      const ratingpayload = {
-        email: posterId,
-        rating: newRating
-      };
-      apis.UpdateRating(ratingpayload).then((res) => {
-        const totalpayload = {
+    if (upload === false) {
+      alert("You must upload a Image");
+    } else {
+      e.preventDefault();
+      console.log("POSTERID"+posterId);
+      apis.FinduserByEmail({ email: posterId }).then((res) => {
+        const rating = res[0].rating;
+        const total = res[0].totalrating;
+        const count = res[0].ratingcount;
+        const newRating = (total + currentValue) / (count + 1);
+        const newTotal = total + currentValue;
+        const newCount = count + 1;
+        const ratingpayload = {
           email: posterId,
-          totalrating: newTotal
+          rating: newRating
         };
-        apis.UpdateTotalRating(totalpayload).then((res) => {
-          const countpayload = {
+        apis.UpdateRating(ratingpayload).then((res) => {
+          const totalpayload = {
             email: posterId,
-            ratingcount: newCount
+            totalrating: newTotal
           };
-          apis.UpdateRatingCount(countpayload).then((res) => {
-            navigate('/homepage');
+          apis.UpdateTotalRating(totalpayload).then((res) => {
+            const countpayload = {
+              email: posterId,
+              ratingcount: newCount
+            };
+            apis.UpdateRatingCount(countpayload).then((res) => {
+              navigate('/homepage');
+            });
           });
         });
       });
-    });
+    }
   };
   const handleMouseLeave = () => {
     setHoverValue(undefined);
@@ -77,6 +82,7 @@ const RatePage = () => {
     hiddenFileInput.current.click();
   };
   const fileselectedHandler = (event) => {
+    setUpload(true);
     const file = event.target.files[0];
     let overSize = false;
     if (file.size > 1024 * 512) {
