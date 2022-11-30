@@ -43,7 +43,6 @@ const TaskPosterPanel = () => {
   });
   const addressRefSender = useRef();
   const addressRefReceiver = useRef();
-  const [map, setMap] = useState(null);
 
   const reset = () => {
     setTaskName("");
@@ -218,11 +217,11 @@ const TaskPosterPanel = () => {
           >
             <GoogleMap
               center={centerSender}
+              options={{
+                disableDefaultUI: true,
+              }}
               zoom={zoomSender}
               mapContainerStyle={{ width: "100%", height: "100%" }}
-              // onLoad={(map) => {
-              //   setMap(map);
-              // }}
             >
               <MarkerF position={centerSender} />
             </GoogleMap>
@@ -323,6 +322,9 @@ const TaskPosterPanel = () => {
             <GoogleMap
               center={centerReceiver}
               zoom={zoomReceiver}
+              options={{
+                disableDefaultUI: true,
+              }}
               mapContainerStyle={{ width: "100%", height: "100%" }}
               // onLoad={(map) => {
               //   setMap(map);
