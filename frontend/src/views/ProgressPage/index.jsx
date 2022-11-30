@@ -24,71 +24,75 @@ const ProgressPage = () => {
     }
   }, [taskId]);
   const sendemail = (input) => {
-    let email = input.posterId;
+    let email = localStorage.getItem("email");
     apis.FinduserByEmail({ email }).then((res) => {
       let nickname = res[0].nickname;
       let bio = res[0].bio;
       let phone = res[0].phoneNumber;
-      let emailVisibility = res[0].emailVisibility;
-      if (emailVisibility === true) {
-        const templateParams = {
-          to_name: input.senderInfo.name,
-          id: input.title,
-          nickname: nickname,
-          bio: bio,
-          phone: phone,
-          User_email: input.posterId,
-        };
-        emailjs
-          .send(
-            "service_wvvskxm",
-            "template_kxpcred",
-            templateParams,
-            "6TQG4qyO0kxVbL4GQ"
-          )
-          .then(
-            (result) => {
-              console.log(result.text);
-            },
-            (error) => {
-              console.log(error.text);
-            }
-          );
-      }
+      apis.FinduserByEmail({ email: input.posterId }).then((res) => {
+        let emailVisibility = res[0].emailVisibility;
+        if (emailVisibility === true) {
+          const templateParams = {
+            to_name: input.senderInfo.name,
+            id: input.title,
+            nickname: nickname,
+            bio: bio,
+            phone: phone,
+            User_email: input.posterId,
+          };
+          emailjs
+            .send(
+              "service_wvvskxm",
+              "template_kxpcred",
+              templateParams,
+              "6TQG4qyO0kxVbL4GQ"
+            )
+            .then(
+              (result) => {
+                console.log(result.text);
+              },
+              (error) => {
+                console.log(error.text);
+              }
+            );
+        }
+      });
     });
   };
   const sendEmailFinish = (input) => {
-    let email = input.posterId;
+    let email = localStorage.getItem("email");
     apis.FinduserByEmail({ email }).then((res) => {
       let nickname = res[0].nickname;
       let bio = res[0].bio;
       let phone = res[0].phoneNumber;
-      let emailVisibility = res[0].emailVisibility;
-      if (emailVisibility === true) {
-        const templateParams = {
-          to_name: input.senderInfo.name,
-          id: input.title,
-          nickname: nickname,
-          bio: bio,
-          phone: phone,
-          User_email: input.posterId,
-        };
-        emailjs
-          .send(
-            "service_0yvi8aq",
-            "template_0xqba73",
-            templateParams,
-            "YxEfzeRQVGqD1fr4H"
-          )
-          .then(
-            (result) => {
-              console.log(result.text);
-            },
-            (error) => {
-              console.log(error.text);
-            }
-          );
-      }
+      apis.FinduserByEmail({ email: input.posterId }).then((res) => {
+        let emailVisibility = res[0].emailVisibility;
+        if (emailVisibility === true) {
+          const templateParams = {
+            to_name: input.senderInfo.name,
+            id: input.title,
+            nickname: nickname,
+            bio: bio,
+            phone: phone,
+            User_email: input.posterId,
+          };
+          emailjs
+            .send(
+              "service_0yvi8aq",
+              "template_0xqba73",
+              templateParams,
+              "YxEfzeRQVGqD1fr4H"
+            )
+            .then(
+              (result) => {
+                console.log(result.text);
+              },
+              (error) => {
+                console.log(error.text);
+              }
+            );
+        }
+      });
     });
   };
 
