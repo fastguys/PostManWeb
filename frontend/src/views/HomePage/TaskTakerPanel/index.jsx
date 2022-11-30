@@ -1,14 +1,14 @@
-import React from "react";
-import { useState, useEffect } from "react";
-import Taskfeed from "./Taskfeed/index";
-import { Box } from "@mui/material";
-import apis from "../../../apis/user";
-import "./tasktakerpanel.css";
-import Map from "../Map";
+import React from 'react';
+import { useState, useEffect } from 'react';
+import Taskfeed from './Taskfeed/index';
+import { Box } from '@mui/material';
+import apis from '../../../apis/user';
+import './tasktakerpanel.css';
+import Map from '../Map';
 
 const TaskTakerPanel = () => {
-  const [searchLocationBox, setSearchLocationBox] = useState("");
-  const [searchLocation, setSearchLocation] = useState("");
+  const [searchLocationBox, setSearchLocationBox] = useState('');
+  const [searchLocation, setSearchLocation] = useState('');
 
   const [taskTaken, setTaskTaken] = useState([]);
   const [taskList, setTaskList] = useState([]);
@@ -19,16 +19,16 @@ const TaskTakerPanel = () => {
   };
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log("searchLocationBox", searchLocationBox);
+    console.log('searchLocationBox', searchLocationBox);
     // set the search location
     setSearchLocation(searchLocationBox);
-    setSearchLocationBox("");
+    setSearchLocationBox('');
   };
 
   // handle the search location, TODO: need to call google map API later
   useEffect(() => {
     if (searchLocation) {
-      console.log("searchLocation", searchLocation);
+      console.log('searchLocation', searchLocation);
       // TODO: search the location of the map and show the result˜
     }
     // console.log("searchLocation", searchLocation);
@@ -91,7 +91,7 @@ const TaskTakerPanel = () => {
   useEffect(() => {
     if (taskTaken.length > 0) {
       // TODO: post the taken task to the server
-      console.log("taskTaken", taskTaken);
+      console.log('taskTaken', taskTaken);
     }
   }, [taskTaken]);
   return (
@@ -114,7 +114,7 @@ const TaskTakerPanel = () => {
         </div>
         <div className="task-taker-search-map">
           <Box className="task-taker-search-map-box">
-            <Map />
+            <Map taskList={taskList} />
           </Box>
         </div>
       </div>
