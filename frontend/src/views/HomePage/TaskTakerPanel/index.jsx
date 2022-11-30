@@ -114,7 +114,7 @@ const TaskTakerPanel = () => {
         </div>
         <div className="task-taker-search-map">
           <Box className="task-taker-search-map-box">
-            <Map taskList={taskList} />
+            <Map taskList={taskList} setTaskTaken={setTaskTaken} />
           </Box>
         </div>
       </div>
