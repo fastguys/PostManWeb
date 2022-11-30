@@ -24,7 +24,7 @@ const ProgressPage = () => {
     }
   }, [taskId]);
   const sendemail = (input) => {
-    let email = localStorage.getItem("email");
+    let email = localStorage.getItem("userId");
     apis.FinduserByEmail({ email }).then((res) => {
       let nickname = res[0].nickname;
       let bio = res[0].bio;
@@ -60,7 +60,7 @@ const ProgressPage = () => {
     });
   };
   const sendEmailFinish = (input) => {
-    let email = localStorage.getItem("email");
+    let email = localStorage.getItem("userId");
     apis.FinduserByEmail({ email }).then((res) => {
       let nickname = res[0].nickname;
       let bio = res[0].bio;
