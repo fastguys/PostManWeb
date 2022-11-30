@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { Box } from '@mui/system';
 import { Button, TextField } from '@mui/material';
 import { useRef, useEffect, useState } from 'react';
@@ -9,21 +10,31 @@ import {
   Autocomplete,
   DirectionsRenderer
 } from '@react-google-maps/api';
+import emailjs from '@emailjs/browser';
+
+import apis from '../../apis/user';
 const Markers = (props) => {
   // return the markers from the mapped array
   return props.taskList.map((task, index) => {
     // TODO: adjust the coordinates later
-    return (
-      <Marker
-        key={index}
-        position={{ lat: task.location.coordinates[0], lng: task.location.coordinates[1] }}
-        onClick={() => props.onMarkerClick(index)}
-      />
-    );
+    if (
+      task.isTaken === false &&
+      task.posterId !== localStorage.getItem('userId') &&
+      task.status !== 'completed'
+    ) {
+      return (
+        <Marker
+          key={index}
+          position={{ lat: task.location.coordinates[0], lng: task.location.coordinates[1] }}
+          onClick={() => props.onMarkerClick(index)}
+        />
+      );
+    }
   });
 };
 
 const Map = (props) => {
+  const navigate = useNavigate();
   //MAPS API
   const [center, setCenter] = useState({ lat: 48.8584, lng: 2.2945 });
   const [zoom, setZoom] = useState(10);
@@ -61,10 +72,63 @@ const Map = (props) => {
     }
   ];
 
+  const sendemail = (input) => {
+    let email = localStorage.getItem('userId');
+    apis.FinduserByEmail({ email }).then((res) => {
+      let nickname = res[0].nickname;
+      let bio = res[0].bio;
+      let phone = res[0].phoneNumber;
+      let emailVisibility = res[0].emailVisibility;
+      if (emailVisibility === true) {
+        const templateParams = {
+          to_name: input.senderInfo.name,
+          id: input.title,
+          nickname: nickname,
+          bio: bio,
+          phone: phone,
+          User_email: input.posterId
+        };
+        emailjs
+          .send('service_wvvskxm', 'template_gvukolw', templateParams, '6TQG4qyO0kxVbL4GQ')
+          .then(
+            (result) => {
+              console.log(result.text);
+            },
+            (error) => {
+              console.log(error.text);
+            }
+          );
+      }
+    });
+  };
 
   const handleMarkerClick = (index) => {
     console.log(index);
     console.log(props.taskList[index]);
+    // click the marker to take task
+    const taskInfo = props.taskList[index];
+    // check if the task is taken
+    if (taskInfo.isTaken === true) {
+      console.log('task is taken');
+      return;
+    }
+    // set the task taken
+    taskInfo.isTaken = true;
+    taskInfo.takerId = localStorage.getItem('userId');
+    taskInfo.status = 'taken';
+    // update the status in the database
+    apis.UpdateTask(taskInfo._id, taskInfo).then((res) => {
+      console.log('res', res);
+      // sendemail(res);
+    });
+
+    props.setTaskTaken((taskTaken) => [...taskTaken, taskInfo]);
+    // redirect to task progress page
+    console.log(taskInfo);
+    navigate({
+      pathname: '/task-progress',
+      search: `?taskId=${taskInfo._id}`
+    });
   };
 
   if (!isLoaded) {
