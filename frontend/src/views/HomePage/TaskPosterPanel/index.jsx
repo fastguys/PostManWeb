@@ -118,10 +118,12 @@ const TaskPosterPanel = () => {
     console.log("handleSubmit", e);
     var senderCoords = [];
     var receiverCoords = [];
-    senderCoords.push(senderAddress1);
-    // senderCoords.push(senderAddress2);
-    receiverCoords.push(receiverAddress1);
-    // receiverCoords.push(receiverAddress2);
+    senderCoords.push(centerSender.lat);
+    senderCoords.push(centerSender.lng);
+    receiverCoords.push(centerReceiver.lat);
+    receiverCoords.push(centerReceiver.lng);
+    console.log("senderCoords", senderCoords);
+    console.log("receiverCoords", receiverCoords);
     const task = {
       title: taskName,
       description: taskDscrpt,
