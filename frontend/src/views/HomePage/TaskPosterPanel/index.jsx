@@ -260,7 +260,7 @@ const TaskPosterPanel = () => {
           </Autocomplete>
           {submitted && !senderAddress1 ? (
             <div className="failed-message">
-              Error: sender's address1 cant be empty
+              Error: sender's address can't be empty
             </div>
           ) : null}
           <TextField
@@ -365,7 +365,7 @@ const TaskPosterPanel = () => {
 
           {submitted && !receiverAddress1 ? (
             <div className="failed-message">
-              Error: sender's address1 cant be empty
+              Error: receiver's address can't be empty
             </div>
           ) : null}
           <TextField
@@ -401,7 +401,7 @@ const TaskPosterPanel = () => {
           />
           {submitted && !receiverName ? (
             <div className="failed-message">
-              Error: sender's name can't be empty
+              Error: receiver's name can't be empty
             </div>
           ) : null}
 
