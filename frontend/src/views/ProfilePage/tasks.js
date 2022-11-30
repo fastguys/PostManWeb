@@ -5,6 +5,7 @@ import { useState } from "react";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
+import Rating from "@mui/material/Rating";
 import TaskIcon from "@mui/icons-material/Task";
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
@@ -14,6 +15,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
+import apis from '../../apis/user';
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
     padding: theme.spacing(2),
@@ -52,6 +54,11 @@ const CollapsedTask = (props) => {
   const task = props.taskInfo;
   const [open, setOpen] = useState(false);
   const [inneropen, setInnerOpen] = useState(false);
+  const [takerrating, setTakerRating] = useState(0);
+  const [value, setValue] = useState(0);
+  apis.FinduserByEmail({ email: task.takerId }).then((res) => {
+    setTakerRating(res[0].rating);
+  });
   const handlerateopen = (props) => {
     setInnerOpen(true);
   };
@@ -65,6 +72,37 @@ const CollapsedTask = (props) => {
   };
   const handlerateClose = () => {
     setInnerOpen(false);
+  };
+  const handleRate = () => {
+    console.log(task.takerId);
+    apis.FinduserByEmail({ email: task.takerId }).then((res) => {
+      const total = res[0].totalrating;
+      const count = res[0].ratingcount;
+      const newRating = (total + value) / (count + 1);
+      const newTotal = total + value;
+      const newCount = count + 1;
+      const ratingpayload = {
+        email: task.takerId,
+        rating: newRating
+      };
+      apis.UpdateRating(ratingpayload).then((res) => {
+        const totalpayload = {
+          email: task.takerId,
+          totalrating: newTotal
+        };
+        apis.UpdateTotalRating(totalpayload).then((res) => {
+          const countpayload = {
+            email: task.takerId,
+            ratingcount: newCount
+          };
+          apis.UpdateRatingCount(countpayload).then((res) => {
+            
+          });
+        });
+      });
+    });
+    setInnerOpen(false);
+    setValue(0);
   };
   const defaultStyling = {
     border: "1px solid gray",
@@ -115,6 +153,7 @@ const CollapsedTask = (props) => {
             Task Description: {task.description}
           </Typography>
           <Typography gutterBottom>Task Taken By: {task.takerId}</Typography>
+          <Typography gutterBottom>Task Taker's rating: {Math.round(takerrating * 100) / 100}</Typography>
         </DialogContent>
         <DialogActions>
           {task.status === "completed" ? (
@@ -137,6 +176,22 @@ const CollapsedTask = (props) => {
           >
             Rate the task taker
           </BootstrapDialogTitle>
+          <DialogContent>
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <Rating
+                name="simple-controlled"
+                value={value}
+                onChange={(event, newValue) => {
+                  setValue(newValue);
+                }}
+              />
+            </Box>
+          </DialogContent>
+          <DialogActions>
+            <Button autoFocus onClick={handleRate}>
+              Rate
+            </Button>
+          </DialogActions>
         </BootstrapDialog>
       </BootstrapDialog>
     </div>
