@@ -162,6 +162,8 @@ const TaskPosterPanel = () => {
         telephone: receiverTele,
         address: receiverCoords,
       },
+      senderAddress: addressRefSender.current.value,
+      receiverAddress: addressRefReceiver.current.value,
       posterId: localStorage.getItem("userId"),
       takerId: "no-taker",
       timeRemaining: "10min",

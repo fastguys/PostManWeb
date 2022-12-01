@@ -184,7 +184,7 @@ const ProgressPage = () => {
                     Task Description: {taskInfo.description}
                   </div>
                   <div className="progress-page-data">
-                    Task Location Coordinates: {taskInfo.location.coordinates}
+                    Task Location: {taskInfo.senderAddress}
                   </div>
                   <div className="progress-page-data">
                     Task Sender Name: {taskInfo.senderInfo.name}
@@ -193,7 +193,7 @@ const ProgressPage = () => {
                     Task Sender Phone: {taskInfo.senderInfo.telephone}
                   </div>
                   <div className="progress-page-data">
-                    Task Sender Address: {taskInfo.senderInfo.address}
+                    Task Sender Address: {taskInfo.senderAddress}
                   </div>
                   <div className="progress-page-data">
                     Task Receiver Name: {taskInfo.receiverInfo.name}
@@ -202,7 +202,7 @@ const ProgressPage = () => {
                     Task Receiver Phone: {taskInfo.receiverInfo.telephone}
                   </div>
                   <div className="progress-page-data">
-                    Task Receiver Address: {taskInfo.receiverInfo.address}
+                    Task Receiver Address: {taskInfo.receiverAddress}
                   </div>
                   <div className="progress-page-data">
                     <button onClick={handleStart}>Start Your Task</button>
@@ -228,7 +228,7 @@ const ProgressPage = () => {
       <Box
         sx={{
           flexGrow: 1,
-          display: { xs: "none", md: "flex", marginLeft: 295, marginTop: 20 },
+          display: { xs: "none", md: "flex", marginLeft: 220, marginTop: 20 },
         }}
       >
         Have an issue about the tasks? Report it here!
