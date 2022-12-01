@@ -44,6 +44,14 @@ const taskSchema = mongoose.Schema(
       type: JSON,
       required: true,
     },
+    senderAddress: {
+      type: String,
+      required: true,
+    },
+    receiverAddress: {
+      type: String,
+      required: true,
+    },
     posterId: {
       type: String,
       required: true,
