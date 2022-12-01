@@ -67,9 +67,10 @@ const PostTask = async (payload) => {
 const deleteTask = async (payload) => {
   return deleteFrom("/task/delete", { payload });
 };
-// const UpdateTask = async (id, payload) => {
-//   return put("/task/" + id, { payload });
-// };
+const UpdateTask = async (id, payload) => {
+  return put("/task/" + id, { payload });
+};
+
 const updateTask = async (payload) => {
   return put("/task/update", { payload });
 };
@@ -90,6 +91,7 @@ const apis = {
   deleteTask,
   UpdateUserImageUrl,
   updateTask,
+  UpdateTask,
   deleteUserByEmail,
   UpdateUserVisibility,
   UpdateEmail,

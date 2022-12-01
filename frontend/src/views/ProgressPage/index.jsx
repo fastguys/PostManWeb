@@ -139,6 +139,7 @@ const ProgressPage = () => {
       console.log("res", res);
     });
     navigate("/homepage");
+    window.location.reload();
   };
   return (
     <div>

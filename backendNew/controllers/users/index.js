@@ -36,7 +36,7 @@ router.get("/user/phoneNumber/:id", async (req, res) => {
     const user_phone = req.query.payload;
     console.log(user_phone);
     const user = await User.find({ phoneNumber: user_phone["phone"] });
-    console.log(user)
+    console.log(user);
     res.status(200).json(user);
   } catch (err) {
     res.status(500).json(err);
@@ -263,20 +263,31 @@ router.delete("/task/delete", async (req, res) => {
   }
 });
 
+router.put("/task/:id", async (req, res) => {
+  try {
+    const task = await Task.findByIdAndUpdate(req.params.id, {
+      $set: req.body.payload,
+    });
+    res.status(200).json(task);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 router.put("/task/update", async (req, res) => {
   try {
     console.log(req.body.payload);
     let task = await Task.findOneAndUpdate(
-      {_id: req.body.payload.id}, 
-      {title: req.body.payload.title},
+      { _id: req.body.payload.id },
+      { title: req.body.payload.title }
     );
     task = await Task.findOneAndUpdate(
-      {_id: req.body.payload.id}, 
-      {description: req.body.payload.description},
+      { _id: req.body.payload.id },
+      { description: req.body.payload.description }
     );
     task = await Task.findOneAndUpdate(
-      {_id: req.body.payload.id}, 
-      {confirmCode: req.body.payload.category},
+      { _id: req.body.payload.id },
+      { confirmCode: req.body.payload.category }
     );
     res.status(200).json(task);
   } catch (err) {
