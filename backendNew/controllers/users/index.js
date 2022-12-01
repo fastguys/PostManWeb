@@ -252,12 +252,32 @@ router.post("/task", async (req, res) => {
     res.status(500).json(err);
   }
 });
-// put APIs
-router.put("/task/:id", async (req, res) => {
+
+router.delete("/task/delete", async (req, res) => {
   try {
-    const task = await Task.findByIdAndUpdate(req.params.id, {
-      $set: req.body.payload,
-    });
+    const id = req.query.payload.id;
+    await Task.deleteOne({ _id: id });
+    res.send("Task deleted");
+  } catch (err) {
+    res.send("Task not deleted");
+  }
+});
+
+router.put("/task/update", async (req, res) => {
+  try {
+    console.log(req.body.payload);
+    let task = await Task.findOneAndUpdate(
+      {_id: req.body.payload.id}, 
+      {title: req.body.payload.title},
+    );
+    task = await Task.findOneAndUpdate(
+      {_id: req.body.payload.id}, 
+      {description: req.body.payload.description},
+    );
+    task = await Task.findOneAndUpdate(
+      {_id: req.body.payload.id}, 
+      {confirmCode: req.body.payload.category},
+    );
     res.status(200).json(task);
   } catch (err) {
     res.status(500).json(err);
