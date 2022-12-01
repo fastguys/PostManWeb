@@ -1,6 +1,7 @@
 import { TextField, Box, Button } from "@mui/material";
 import { useState, useEffect } from "react";
 import { useRef } from "react";
+import emailjs from "@emailjs/browser";
 import LeftMessage from "./leftMessage";
 import { useSelector } from "react-redux";
 import RightMessage from "./rightMessage";
@@ -57,6 +58,49 @@ function Chat() {
       receiver: otherUserName,
       taskId: searchParams.get("taskId") ?? "0",
     };
+    let title = "";
+    let description = "";
+    let to_name = "";
+    let email = localStorage.getItem("userId");
+    let sender_name = "";
+    apis.FinduserByEmail({ email: email }).then((res) => {
+      sender_name = res[0].nickname;
+      apis.FinduserByEmail({ email: otherUserName }).then((res1) => {
+        to_name = res1[0].nickname;
+        let emailVisibility = res1[0].emailVisibility;
+        if (emailVisibility === true) {
+          apis.GetTask(searchParams.get("taskId")).then((res2) => {
+            title = res2[0].title;
+            description = res2[0].description;
+            const templateParams = {
+              User_email: otherUserName,
+              sender_name: sender_name,
+              message: message,
+              to_name: to_name,
+              task_title: title,
+              task_description: description,
+            };
+            console.log(templateParams);
+            emailjs
+              .send(
+                "service_289kt24",
+                "template_wkw0ny9",
+                templateParams,
+                "B5jGQN4gC8kDhnRqc"
+              )
+              .then(
+                (result) => {
+                  console.log(result.text);
+                },
+                (error) => {
+                  console.log(error.text);
+                }
+              );
+          });
+        }
+      });
+    });
+
     socket.emit("send_message", newMessage);
     apis.SendMessage(newMessage).then((res) => {
       console.log(res);
