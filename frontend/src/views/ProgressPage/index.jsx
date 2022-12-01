@@ -6,6 +6,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import apis from "../../apis/user";
 import emailjs from "@emailjs/browser";
 import "./ProgressPage.css";
+import Map from "./Map";
 
 const ProgressPage = () => {
   const navigate = useNavigate();
@@ -153,7 +154,17 @@ const ProgressPage = () => {
                 backgroundColor: "white",
                 border: "1px dashed grey",
               }}
-            />
+            >
+              {taskInfo &&
+                taskInfo.location &&
+                taskInfo.senderInfo &&
+                taskInfo.receiverInfo && (
+                  <Map
+                    start={taskInfo.senderInfo.address}
+                    end={taskInfo.receiverInfo.address}
+                  />
+                )}
+            </Box>
           </div>
           <div className="progress-page-right-content">
             {taskInfo &&
