@@ -149,10 +149,9 @@ const ProgressPage = () => {
           <div className="progress-page-left-content">
             <Box
               sx={{
-                width: 500,
-                height: 300,
+                width: 600,
+                height: 400,
                 backgroundColor: "white",
-                border: "1px dashed grey",
               }}
             >
               {taskInfo &&
@@ -226,7 +225,12 @@ const ProgressPage = () => {
           </div>
         </div>
       </div>
-      <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+      <Box
+        sx={{
+          flexGrow: 1,
+          display: { xs: "none", md: "flex", marginLeft: 295, marginTop: 20 },
+        }}
+      >
         Have an issue about the tasks? Report it here!
         <a href="mailto:jiangnanyi111@gmail.com?subject = Feedback&body = Message">
           Send Feedback
