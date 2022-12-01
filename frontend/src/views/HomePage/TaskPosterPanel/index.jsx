@@ -1,93 +1,121 @@
-import React from 'react';
-import { useState, useEffect, useRef } from 'react';
-import apis from '../../../apis/user';
-import { Box } from '@mui/material';
-import './taskposterpanel.css';
-import emailjs from '@emailjs/browser';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
+import React from "react";
+import { useState, useEffect, useRef } from "react";
+import apis from "../../../apis/user";
+import { Box } from "@mui/material";
+import "./taskposterpanel.css";
+import emailjs from "@emailjs/browser";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
 import {
   useJsApiLoader,
   GoogleMap,
   MarkerF,
   Autocomplete,
-  DirectionsRenderer
-} from '@react-google-maps/api';
+  DirectionsRenderer,
+} from "@react-google-maps/api";
 
 const TaskPosterPanel = () => {
-  const [taskName, setTaskName] = useState('');
-  const [taskDscrpt, setTaskDscrpt] = useState('');
-  const [senderName, setSenderName] = useState('');
-  const [receiverName, setReceiverName] = useState('');
-  const [confirmCode, setConfirmCode] = useState('');
-  const [senderAddress1, setSenderAddress1] = useState('');
-  const [senderTele, setSenderTele] = useState('');
-  const [receiverTele, setReceiverTele] = useState('');
-  const [receiverAddress1, setReceiverAddress1] = useState('');
+  const [taskName, setTaskName] = useState("");
+  const [taskDscrpt, setTaskDscrpt] = useState("");
+  const [senderName, setSenderName] = useState("");
+  const [receiverName, setReceiverName] = useState("");
+  const [confirmCode, setConfirmCode] = useState("");
+  const [senderAddress1, setSenderAddress1] = useState("");
+  const [senderTele, setSenderTele] = useState("");
+  const [receiverTele, setReceiverTele] = useState("");
+  const [receiverAddress1, setReceiverAddress1] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [valid, setValid] = useState(false);
 
   const [centerSender, setCenterSender] = useState({
     lat: 40.425003,
-    lng: -86.915833
+    lng: -86.915833,
   });
   const [centerReceiver, setCenterReceiver] = useState({
     lat: 40.425003,
-    lng: -86.915833
+    lng: -86.915833,
   });
   const [zoomSender, setZoomSender] = useState(10);
   const [zoomReceiver, setZoomReceiver] = useState(10);
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: 'AIzaSyDHcel8Zif6__KnyYRvsxHCIELH4kCRTTA',
-    libraries: ['places']
+    googleMapsApiKey: "AIzaSyDHcel8Zif6__KnyYRvsxHCIELH4kCRTTA",
+    libraries: ["places"],
   });
   const addressRefSender = useRef();
   const addressRefReceiver = useRef();
 
   const reset = () => {
-    setTaskName('');
-    setTaskDscrpt('');
-    setSenderName('');
-    setReceiverName('');
-    setConfirmCode('');
-    setSenderAddress1('');
-    setReceiverAddress1('');
-    setSenderTele('');
-    setReceiverTele('');
+    setTaskName("");
+    setTaskDscrpt("");
+    setSenderName("");
+    setReceiverName("");
+    setConfirmCode("");
+    setSenderAddress1("");
+    setReceiverAddress1("");
+    setSenderTele("");
+    setReceiverTele("");
   };
-  const report = () => {
-    const templateParams = {
-      name: 'test',
-      message: 'test'
-    };
-    emailjs
-      .send('service_r6tl7s5', 'template_58hqzm1', templateParams, 'M258FiSyLuH3P8Pio')
-      .then((result) => {
-        console.log(result.text);
-      });
-  };
+
+  async function sendemail() {
+    let email = localStorage.getItem("userId");
+    apis.FinduserByEmail({ email: email }).then((res) => {
+      let emailVisibility = res[0].emailVisibility;
+      if (emailVisibility === true) {
+        console.log("emailVisibility is true" + res[0].nickname);
+        const templateParams = {
+          User_email: email,
+          to_name: res[0].nickname,
+          task_title: taskName,
+          task_description: taskDscrpt,
+          sender_address: addressRefSender.current.value,
+          receiver_address: addressRefReceiver.current.value,
+        };
+        emailjs
+          .send(
+            "service_289kt24",
+            "template_s1o1gqt",
+            templateParams,
+            "B5jGQN4gC8kDhnRqc"
+          )
+          .then(
+            (result) => {
+              console.log(result.text);
+            },
+            (error) => {
+              console.log(error.text);
+            }
+          );
+      }
+    });
+  }
 
   const handleSearchSender = () => {
     const geocoder = new window.google.maps.Geocoder();
-    geocoder.geocode({ address: addressRefSender.current.value }, (results, status) => {
-      if (status === 'OK') {
-        const position = results[0].geometry.location;
-        console.log({ lat: position.lat(), lng: position.lng() });
-        setCenterSender({ lat: position.lat(), lng: position.lng() });
-        setZoomSender(15);
+    geocoder.geocode(
+      { address: addressRefSender.current.value },
+      (results, status) => {
+        if (status === "OK") {
+          const position = results[0].geometry.location;
+          console.log({ lat: position.lat(), lng: position.lng() });
+          setCenterSender({ lat: position.lat(), lng: position.lng() });
+          setZoomSender(15);
+        }
       }
-    });
+    );
   };
 
   const handleSearchReceiver = () => {
     const geocoder = new window.google.maps.Geocoder();
-    geocoder.geocode({ address: addressRefReceiver.current.value }, (results, status) => {
-      if (status === 'OK') {
-        const position = results[0].geometry.location;
-        setCenterReceiver({ lat: position.lat(), lng: position.lng() });
-        setZoomReceiver(15);
+    geocoder.geocode(
+      { address: addressRefReceiver.current.value },
+      (results, status) => {
+        if (status === "OK") {
+          const position = results[0].geometry.location;
+          setCenterReceiver({ lat: position.lat(), lng: position.lng() });
+          setZoomReceiver(15);
+        }
       }
-    });
+    );
   };
 
   // handle click for submit button, mock up for now
@@ -103,51 +131,51 @@ const TaskPosterPanel = () => {
     ) {
       setValid(true);
       //pop up a window to show success
-      alert('Success!');
+      alert("Task posted successfully!");
       window.location.reload();
     }
     setSubmitted(true);
-    console.log('handleSubmit', e);
+    console.log("handleSubmit", e);
     var senderCoords = [];
     var receiverCoords = [];
     senderCoords.push(centerSender.lat);
     senderCoords.push(centerSender.lng);
     receiverCoords.push(centerReceiver.lat);
     receiverCoords.push(centerReceiver.lng);
-    console.log('senderCoords', senderCoords);
-    console.log('receiverCoords', receiverCoords);
+    console.log("senderCoords", senderCoords);
+    console.log("receiverCoords", receiverCoords);
     const task = {
       title: taskName,
       description: taskDscrpt,
       location: {
-        type: 'Point',
-        coordinates: senderCoords
+        type: "Point",
+        coordinates: senderCoords,
       },
       isTaken: false,
       senderInfo: {
         name: senderName,
         telephone: senderTele,
-        address: senderCoords
+        address: senderCoords,
       },
       receiverInfo: {
         name: receiverName,
         telephone: receiverTele,
-        address: receiverCoords
+        address: receiverCoords,
       },
-      posterId: localStorage.getItem('userId'),
-      takerId: 'no-taker',
-      timeRemaining: '10min',
-      status: 'not-taken',
-      confirmCode: confirmCode
+      posterId: localStorage.getItem("userId"),
+      takerId: "no-taker",
+      timeRemaining: "10min",
+      status: "not-taken",
+      confirmCode: confirmCode,
     };
-    console.log('task', task);
+    console.log("task", task);
     apis
       .PostTask(task)
       .then((res) => {
-        console.log('res', res);
+        console.log("res", res);
       })
       .catch((err) => {
-        console.log('err', err);
+        console.log("err", err);
       });
   };
 
@@ -177,45 +205,52 @@ const TaskPosterPanel = () => {
   return (
     <Box
       sx={{
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-evenly'
-      }}>
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-evenly",
+      }}
+    >
       <Box
         sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          mt: 5
-        }}>
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          mt: 5,
+        }}
+      >
         <h2>SENDER'S INFO</h2>
         <Box
           sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            backgroundColor: 'lightgrey',
+            display: "flex",
+            flexDirection: "column",
+            backgroundColor: "lightgrey",
             p: 5,
             borderRadius: 2,
-            alignItems: 'center',
-            '& .MuiTextField-root': { m: 1, width: '40ch' }
-          }}>
+            alignItems: "center",
+            "& .MuiTextField-root": { m: 1, width: "40ch" },
+          }}
+        >
           <Box
             sx={{
               width: 350,
               height: 200,
-              marginBottom: 2
-            }}>
+              marginBottom: 2,
+            }}
+          >
             <GoogleMap
               center={centerSender}
               options={{
-                disableDefaultUI: true
+                disableDefaultUI: true,
               }}
               zoom={zoomSender}
-              mapContainerStyle={{ width: '100%', height: '100%' }}>
+              mapContainerStyle={{ width: "100%", height: "100%" }}
+            >
               <MarkerF position={centerSender} />
             </GoogleMap>
           </Box>
-          {submitted && valid ? <div className="success-message">Successfully Posted!</div> : null}
+          {submitted && valid ? (
+            <div className="success-message">Successfully Posted!</div>
+          ) : null}
           <Autocomplete>
             <TextField
               label="Please enter sender's address"
@@ -231,20 +266,23 @@ const TaskPosterPanel = () => {
                       width: 100,
                       height: 55,
                       mr: -2,
-                      backgroundColor: 'grey',
-                      whiteSpace: 'nowrap',
-                      display: 'block',
-                      color: 'black',
-                      textTransform: 'none'
-                    }}>
+                      backgroundColor: "grey",
+                      whiteSpace: "nowrap",
+                      display: "block",
+                      color: "black",
+                      textTransform: "none",
+                    }}
+                  >
                     SHOW
                   </Button>
-                )
+                ),
               }}
             />
           </Autocomplete>
           {submitted && !addressRefSender.current.value ? (
-            <div className="failed-message">Error: sender's address can't be empty</div>
+            <div className="failed-message">
+              Error: sender's address can't be empty
+            </div>
           ) : null}
           <TextField
             id="outlined-basic"
@@ -254,7 +292,9 @@ const TaskPosterPanel = () => {
             onChange={(e) => setSenderName(e.target.value)}
           />
           {submitted && !senderName ? (
-            <div className="failed-message">Error: task name can't be empty</div>
+            <div className="failed-message">
+              Error: task name can't be empty
+            </div>
           ) : null}
           <TextField
             id="outlined-basic"
@@ -264,45 +304,50 @@ const TaskPosterPanel = () => {
             onChange={(e) => setSenderTele(e.target.value)}
           />
           {submitted && !receiverTele ? (
-            <div className="failed-message">Error: sender's telephone cant be empty</div>
+            <div className="failed-message">
+              Error: sender's telephone cant be empty
+            </div>
           ) : null}
         </Box>
       </Box>
       <Box
         sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
           mt: 5,
-          mb: 5
-        }}>
+          mb: 5,
+        }}
+      >
         <h2>RECEIVER'S INFO</h2>
         <Box
           component="form"
           sx={{
-            width: '100%',
-            height: '100%',
-            display: 'flex',
-            flexDirection: 'column',
-            backgroundColor: 'lightgrey',
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            flexDirection: "column",
+            backgroundColor: "lightgrey",
             p: 2,
             borderRadius: 2,
-            alignItems: 'center',
-            '& .MuiTextField-root': { m: 1, width: '40ch' }
-          }}>
+            alignItems: "center",
+            "& .MuiTextField-root": { m: 1, width: "40ch" },
+          }}
+        >
           <Box
             sx={{
               width: 350,
               height: 200,
-              marginBottom: 2
-            }}>
+              marginBottom: 2,
+            }}
+          >
             <GoogleMap
               center={centerReceiver}
               zoom={zoomReceiver}
               options={{
-                disableDefaultUI: true
+                disableDefaultUI: true,
               }}
-              mapContainerStyle={{ width: '100%', height: '100%' }}
+              mapContainerStyle={{ width: "100%", height: "100%" }}
               // onLoad={(map) => {
               //   setMap(map);
               // }}
@@ -310,7 +355,9 @@ const TaskPosterPanel = () => {
               <MarkerF position={centerReceiver} />
             </GoogleMap>
           </Box>
-          {submitted && valid ? <div className="success-message">Successfully Posted!</div> : null}
+          {submitted && valid ? (
+            <div className="success-message">Successfully Posted!</div>
+          ) : null}
           <Autocomplete>
             <TextField
               label="Please enter receiver's address"
@@ -326,21 +373,24 @@ const TaskPosterPanel = () => {
                       width: 100,
                       height: 55,
                       mr: -2,
-                      backgroundColor: 'grey',
-                      whiteSpace: 'nowrap',
-                      display: 'block',
-                      color: 'black',
-                      textTransform: 'none'
-                    }}>
+                      backgroundColor: "grey",
+                      whiteSpace: "nowrap",
+                      display: "block",
+                      color: "black",
+                      textTransform: "none",
+                    }}
+                  >
                     SHOW
                   </Button>
-                )
+                ),
               }}
             />
           </Autocomplete>
 
           {submitted && !addressRefReceiver.current.value ? (
-            <div className="failed-message">Error: receiver's address can't be empty</div>
+            <div className="failed-message">
+              Error: receiver's address can't be empty
+            </div>
           ) : null}
           <TextField
             id="outlined-basic"
@@ -350,7 +400,9 @@ const TaskPosterPanel = () => {
             onChange={(e) => setTaskName(e.target.value)}
           />
           {submitted && !taskName ? (
-            <div className="failed-message">Error: task name can't be empty</div>
+            <div className="failed-message">
+              Error: task name can't be empty
+            </div>
           ) : null}
           <TextField
             id="outlined-basic"
@@ -360,7 +412,9 @@ const TaskPosterPanel = () => {
             onChange={(e) => setTaskDscrpt(e.target.value)}
           />
           {submitted && !taskDscrpt ? (
-            <div className="failed-message">Error: task description can't be empty</div>
+            <div className="failed-message">
+              Error: task description can't be empty
+            </div>
           ) : null}
           <TextField
             id="outlined-basic"
@@ -370,7 +424,9 @@ const TaskPosterPanel = () => {
             onChange={(e) => setReceiverName(e.target.value)}
           />
           {submitted && !receiverName ? (
-            <div className="failed-message">Error: receiver's name can't be empty</div>
+            <div className="failed-message">
+              Error: receiver's name can't be empty
+            </div>
           ) : null}
 
           <TextField
@@ -381,7 +437,9 @@ const TaskPosterPanel = () => {
             onChange={(e) => setConfirmCode(e.target.value)}
           />
           {submitted && !confirmCode ? (
-            <div className="failed-message">Error: confirmation code can't be empty!</div>
+            <div className="failed-message">
+              Error: confirmation code can't be empty!
+            </div>
           ) : null}
           <TextField
             id="outlined-basic"
@@ -391,7 +449,9 @@ const TaskPosterPanel = () => {
             onChange={(e) => setReceiverTele(e.target.value)}
           />
           {submitted && !receiverTele ? (
-            <div className="failed-message">Error: receiver's telephone can't be empty</div>
+            <div className="failed-message">
+              Error: receiver's telephone can't be empty
+            </div>
           ) : null}
           <Button
             onClick={handleSubmit}
@@ -399,7 +459,8 @@ const TaskPosterPanel = () => {
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
-            style={{ background: '#656268' }}>
+            style={{ background: "#656268" }}
+          >
             Post Task
           </Button>
         </Box>
