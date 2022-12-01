@@ -7,7 +7,8 @@ import CollapsedTask from './tasks';
 export default function NestedList(props) {
   const taskList = props.taskList;
   return (
-    <Box>
+    <Box
+    >
         <List
             sx={{width: '100%', bgcolor: 'background.paper' }} 
             component="nav"

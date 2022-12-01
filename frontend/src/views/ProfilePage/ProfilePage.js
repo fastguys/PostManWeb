@@ -334,7 +334,7 @@ export default function Signup() {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              width: "33%",
+              width: "30%",
               height: "100vh",
             }}
           >
@@ -668,27 +668,39 @@ export default function Signup() {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              width: "33%",
+              width: "70%",
               height: "100vh",
+              justifyContent: "center",
             }}
           >
-            <Typography variant="h4" sx={{ mt: 5 }}>
-              Your Posted Tasks:
+            <Typography
+              variant="h6"
+              sx={{
+                mt: 10,
+                width: "100%",
+                textAlign: "center",
+                color: "#656268",
+                fontFamily: "sans-serif",
+                fontWeight: "bold",
+              }}
+            >
+              Your Posted Tasks
             </Typography>
+            <Typography
+              variant="h6"
+              sx={{
+                mb: 2,
+                width: "100%",
+                textAlign: "center",
+                color: "#656268",
+                fontFamily: "sans-serif",
+                fontWeight: "bold",
+              }}
+            >
+              ________________________________
+            </Typography>
+
             <TaskPosted taskList={taskList} />
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              width: "34%",
-              height: "100vh",
-            }}
-          >
-            {/* <Typography variant="h4" sx={{ mt: 5 }}>
-              Your Finished Tasks:
-            </Typography> */}
           </Box>
         </Box>
       </div>
