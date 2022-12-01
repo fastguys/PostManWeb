@@ -57,7 +57,7 @@ export default function Signup() {
   const [taskList, setTaskList] = useState([]);
   const [fetchTask, setFetchTask] = useState(false);
   useEffect(() => {
-    if(email!== "") {
+    if (email !== "") {
       apis.FinduserByEmail({ email }).then((res) => {
         setTimeout(() => {}, 1000);
         setName(res[0].nickname);
@@ -160,17 +160,17 @@ export default function Signup() {
     updateProfilePhoneNumber();
   };
   const handleAlignment = async (event, newAlignment) => {
-    if(newAlignment === null){
+    if (newAlignment === null) {
       return;
     }
     const payload = {
       email: email,
       visibility: newAlignment,
     };
-    console.log(newAlignment)
+    console.log(newAlignment);
     apis.UpdateUserVisibility(payload).then((res) => {
       setAlignment(newAlignment);
-      console.log(res)
+      console.log(res);
     });
   };
   const handleEmailAlignment = async (event, newAlignment) => {
@@ -675,7 +675,7 @@ export default function Signup() {
             <Typography variant="h4" sx={{ mt: 5 }}>
               Your Posted Tasks:
             </Typography>
-            <TaskPosted taskList={taskList}/>
+            <TaskPosted taskList={taskList} />
           </Box>
           <Box
             sx={{
@@ -686,9 +686,9 @@ export default function Signup() {
               height: "100vh",
             }}
           >
-            <Typography variant="h4" sx={{ mt: 5 }}>
+            {/* <Typography variant="h4" sx={{ mt: 5 }}>
               Your Finished Tasks:
-            </Typography>
+            </Typography> */}
           </Box>
         </Box>
       </div>
