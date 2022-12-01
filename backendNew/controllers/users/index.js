@@ -165,7 +165,7 @@ router.put("/user/email/:id", async (req, res) => {
 });
 router.put("/user/visibility/:id", async (req, res) => {
   try {
-    const user_email = req.query.payload["email"];
+    const user_email = req.body.payload["email"];
     const user_visibility = req.body.payload["visibility"];
     const user = await User.findOneAndUpdate(
       { email: user_email },
@@ -178,7 +178,7 @@ router.put("/user/visibility/:id", async (req, res) => {
 });
 router.put("/user/emailVisibility/:id", async (req, res) => {
   try {
-    const user_email = req.query.payload["email"];
+    const user_email = req.body.payload["email"];
     const user_emailVisibility = req.body.payload["emailVisibility"];
     const user = await User.findOneAndUpdate(
       { email: user_email },

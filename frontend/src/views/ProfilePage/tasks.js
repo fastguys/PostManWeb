@@ -57,7 +57,9 @@ const CollapsedTask = (props) => {
   const [takerrating, setTakerRating] = useState(0);
   const [value, setValue] = useState(0);
   apis.FinduserByEmail({ email: task.takerId }).then((res) => {
-    setTakerRating(res[0].rating);
+    if (res.length > 0) {
+      setTakerRating(res[0].rating);
+    }
   });
   const handlerateopen = (props) => {
     setInnerOpen(true);
@@ -153,7 +155,7 @@ const CollapsedTask = (props) => {
             Task Description: {task.description}
           </Typography>
           <Typography gutterBottom>Task Taken By: {task.takerId}</Typography>
-          <Typography gutterBottom>Task Taker's rating: {Math.round(takerrating * 100) / 100}</Typography>
+          {task.status === "completed" ? <Typography gutterBottom>Task Taker's rating: {Math.round(takerrating * 100) / 100}</Typography> : null}
         </DialogContent>
         <DialogActions>
           {task.status === "completed" ? (
