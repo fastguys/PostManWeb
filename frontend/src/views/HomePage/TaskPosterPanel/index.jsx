@@ -56,7 +56,7 @@ const TaskPosterPanel = () => {
     setReceiverTele("");
   };
 
-  async function sendemail() {
+  const sendemail = () => {
     let email = localStorage.getItem("userId");
     apis.FinduserByEmail({ email: email }).then((res) => {
       let emailVisibility = res[0].emailVisibility;
@@ -80,6 +80,7 @@ const TaskPosterPanel = () => {
           .then(
             (result) => {
               console.log(result.text);
+              window.location.reload();
             },
             (error) => {
               console.log(error.text);
@@ -87,7 +88,7 @@ const TaskPosterPanel = () => {
           );
       }
     });
-  }
+  };
 
   const handleSearchSender = () => {
     const geocoder = new window.google.maps.Geocoder();
@@ -131,8 +132,10 @@ const TaskPosterPanel = () => {
     ) {
       setValid(true);
       //pop up a window to show success
+
+      sendemail();
+
       alert("Task posted successfully!");
-      window.location.reload();
     }
     setSubmitted(true);
     console.log("handleSubmit", e);

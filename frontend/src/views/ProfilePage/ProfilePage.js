@@ -670,7 +670,7 @@ export default function Signup() {
               alignItems: "center",
               width: "70%",
               height: "100vh",
-              justifyContent: "center",
+
             }}
           >
             <Typography
