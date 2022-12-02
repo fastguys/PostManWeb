@@ -25,7 +25,10 @@ const Markers = (props) => {
       return (
         <Marker
           key={index}
-          position={{ lat: task.location.coordinates[0], lng: task.location.coordinates[1] }}
+          position={{
+            lat: task.location.coordinates[0],
+            lng: task.location.coordinates[1]
+          }}
           onClick={() => props.onMarkerClick(index)}
         />
       );
@@ -36,7 +39,7 @@ const Markers = (props) => {
 const Map = (props) => {
   const navigate = useNavigate();
   //MAPS API
-  const [center, setCenter] = useState({ lat: 48.8584, lng: 2.2945 });
+  const [center, setCenter] = useState({ lat: 40.425003, lng: -86.915833 });
   const [zoom, setZoom] = useState(10);
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: 'AIzaSyDHcel8Zif6__KnyYRvsxHCIELH4kCRTTA',

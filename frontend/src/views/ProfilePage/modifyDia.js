@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect, useRef } from "react";
-import apis from "../../../apis/user";
+import apis from "../../apis/user";
 import { Box } from "@mui/material";
 import "./taskposterpanel.css";
 import emailjs from "@emailjs/browser";
@@ -11,10 +11,9 @@ import {
   GoogleMap,
   MarkerF,
   Autocomplete,
-  DirectionsRenderer,
 } from "@react-google-maps/api";
 
-const TaskPosterPanel = () => {
+const ModifyDia = () => {
   const [taskName, setTaskName] = useState("");
   const [taskDscrpt, setTaskDscrpt] = useState("");
   const [senderName, setSenderName] = useState("");
@@ -56,7 +55,7 @@ const TaskPosterPanel = () => {
     setReceiverTele("");
   };
 
-  const sendemail = () => {
+  async function sendemail() {
     let email = localStorage.getItem("userId");
     apis.FinduserByEmail({ email: email }).then((res) => {
       let emailVisibility = res[0].emailVisibility;
@@ -80,7 +79,6 @@ const TaskPosterPanel = () => {
           .then(
             (result) => {
               console.log(result.text);
-              window.location.reload();
             },
             (error) => {
               console.log(error.text);
@@ -88,7 +86,7 @@ const TaskPosterPanel = () => {
           );
       }
     });
-  };
+  }
 
   const handleSearchSender = () => {
     const geocoder = new window.google.maps.Geocoder();
@@ -132,10 +130,8 @@ const TaskPosterPanel = () => {
     ) {
       setValid(true);
       //pop up a window to show success
-
-      sendemail();
-
       alert("Task posted successfully!");
+      window.location.reload();
     }
     setSubmitted(true);
     console.log("handleSubmit", e);
@@ -474,4 +470,4 @@ const TaskPosterPanel = () => {
   );
 };
 
-export default TaskPosterPanel;
+export default ModifyDia;

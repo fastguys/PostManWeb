@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
@@ -20,7 +20,6 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-
 import {
   getAuth,
   sendPasswordResetEmail,
@@ -39,6 +38,7 @@ import TaskPosted from "./taskPosted";
 export default function Signup() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const email = localStorage.getItem("userId");
   const [name, setName] = useState("");
   const [imageURL, setImageURL] = useState(null);
   const [tempname, setTempName] = useState(name);
@@ -46,7 +46,7 @@ export default function Signup() {
   const [bio, setBio] = useState("");
   const [tempbio, setTempBio] = useState(bio);
   const [updateBio, setUpdateBio] = useState(false);
-  const [alignment, setAlignment] = useState();
+  const [alignment, setAlignment] = useState(false);
   const [open, setOpen] = React.useState(false);
   const [open2, setDelete] = React.useState(false);
   const [emailChange, setEmailChange] = React.useState(false);
@@ -56,6 +56,19 @@ export default function Signup() {
   const [rating, setRating] = useState(5);
   const [taskList, setTaskList] = useState([]);
   const [fetchTask, setFetchTask] = useState(false);
+  useEffect(() => {
+    if (email !== "") {
+      apis.FinduserByEmail({ email }).then((res) => {
+        setTimeout(() => {}, 1000);
+        setName(res[0].nickname);
+        setBio(res[0].bio);
+        setAlignment(res[0].visibility);
+        setImageURL(res[0].ImageUrl);
+        setRating(res[0].rating);
+        setEmailAlignment(res[0].emailVisibility);
+      });
+    }
+  }, [email]);
   const updateProfilePhoneNumber = () => {
     const auth = getAuth();
     //country code plus your phone number excluding leading 0 if exists.
@@ -147,12 +160,18 @@ export default function Signup() {
     updateProfilePhoneNumber();
   };
   const handleAlignment = async (event, newAlignment) => {
-    setAlignment(newAlignment);
+    if (newAlignment === null) {
+      return;
+    }
     const payload = {
-      email: localStorage.getItem("userId"),
+      email: email,
       visibility: newAlignment,
     };
-    apis.UpdateUserVisibility(payload);
+    console.log(newAlignment);
+    apis.UpdateUserVisibility(payload).then((res) => {
+      setAlignment(newAlignment);
+      console.log(res);
+    });
   };
   const handleEmailAlignment = async (event, newAlignment) => {
     setEmailAlignment(newAlignment);
@@ -166,16 +185,6 @@ export default function Signup() {
   if (!localStorage.getItem("authenticated")) {
     return <Navigate to="/" replace={true} />;
   } else {
-    let email = localStorage.getItem("userId");
-    apis.FinduserByEmail({ email }).then((res) => {
-      setTimeout(() => {}, 1000);
-      setName(res[0].nickname);
-      setBio(res[0].bio);
-      setAlignment(res[0].visibility);
-      setImageURL(res[0].ImageUrl);
-      setRating(res[0].rating);
-      setEmailAlignment(res[0].emailVisibility);
-    });
     const handleClickOpen = () => {
       setOpen(true);
     };
@@ -325,7 +334,7 @@ export default function Signup() {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              width: "33%",
+              width: "30%",
               height: "100vh",
             }}
           >
@@ -659,27 +668,39 @@ export default function Signup() {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              width: "33%",
+              width: "70%",
               height: "100vh",
+
             }}
           >
-            <Typography variant="h4" sx={{ mt: 5 }}>
-              Your Posted Tasks:
+            <Typography
+              variant="h6"
+              sx={{
+                mt: 10,
+                width: "100%",
+                textAlign: "center",
+                color: "#656268",
+                fontFamily: "sans-serif",
+                fontWeight: "bold",
+              }}
+            >
+              Your Posted Tasks
             </Typography>
-            <TaskPosted taskList={taskList}/>
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              width: "34%",
-              height: "100vh",
-            }}
-          >
-            <Typography variant="h4" sx={{ mt: 5 }}>
-              Your Finished Tasks:
+            <Typography
+              variant="h6"
+              sx={{
+                mb: 2,
+                width: "100%",
+                textAlign: "center",
+                color: "#656268",
+                fontFamily: "sans-serif",
+                fontWeight: "bold",
+              }}
+            >
+              ________________________________
             </Typography>
+
+            <TaskPosted taskList={taskList} />
           </Box>
         </Box>
       </div>

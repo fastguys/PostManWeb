@@ -6,6 +6,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import apis from "../../apis/user";
 import emailjs from "@emailjs/browser";
 import "./ProgressPage.css";
+import Map from "./Map";
 
 const ProgressPage = () => {
   const navigate = useNavigate();
@@ -138,6 +139,7 @@ const ProgressPage = () => {
       console.log("res", res);
     });
     navigate("/homepage");
+    window.location.reload();
   };
   return (
     <div>
@@ -148,12 +150,21 @@ const ProgressPage = () => {
           <div className="progress-page-left-content">
             <Box
               sx={{
-                width: 500,
-                height: 300,
+                width: 600,
+                height: 400,
                 backgroundColor: "white",
-                border: "1px dashed grey",
               }}
-            />
+            >
+              {taskInfo &&
+                taskInfo.location &&
+                taskInfo.senderInfo &&
+                taskInfo.receiverInfo && (
+                  <Map
+                    start={taskInfo.senderInfo.address}
+                    end={taskInfo.receiverInfo.address}
+                  />
+                )}
+            </Box>
           </div>
           <div className="progress-page-right-content">
             {taskInfo &&
@@ -174,7 +185,7 @@ const ProgressPage = () => {
                     Task Description: {taskInfo.description}
                   </div>
                   <div className="progress-page-data">
-                    Task Location Coordinates: {taskInfo.location.coordinates}
+                    Task Location: {taskInfo.senderAddress}
                   </div>
                   <div className="progress-page-data">
                     Task Sender Name: {taskInfo.senderInfo.name}
@@ -183,7 +194,7 @@ const ProgressPage = () => {
                     Task Sender Phone: {taskInfo.senderInfo.telephone}
                   </div>
                   <div className="progress-page-data">
-                    Task Sender Address: {taskInfo.senderInfo.address}
+                    Task Sender Address: {taskInfo.senderAddress}
                   </div>
                   <div className="progress-page-data">
                     Task Receiver Name: {taskInfo.receiverInfo.name}
@@ -192,7 +203,7 @@ const ProgressPage = () => {
                     Task Receiver Phone: {taskInfo.receiverInfo.telephone}
                   </div>
                   <div className="progress-page-data">
-                    Task Receiver Address: {taskInfo.receiverInfo.address}
+                    Task Receiver Address: {taskInfo.receiverAddress}
                   </div>
                   <div className="progress-page-data">
                     <button onClick={handleStart}>Start Your Task</button>
@@ -215,7 +226,12 @@ const ProgressPage = () => {
           </div>
         </div>
       </div>
-      <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+      <Box
+        sx={{
+          flexGrow: 1,
+          display: { xs: "none", md: "flex", marginLeft: 220, marginTop: 20 },
+        }}
+      >
         Have an issue about the tasks? Report it here!
         <a href="mailto:jiangnanyi111@gmail.com?subject = Feedback&body = Message">
           Send Feedback

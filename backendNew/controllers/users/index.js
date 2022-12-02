@@ -36,7 +36,7 @@ router.get("/user/phoneNumber/:id", async (req, res) => {
     const user_phone = req.query.payload;
     console.log(user_phone);
     const user = await User.find({ phoneNumber: user_phone["phone"] });
-    console.log(user)
+    console.log(user);
     res.status(200).json(user);
   } catch (err) {
     res.status(500).json(err);
@@ -165,7 +165,7 @@ router.put("/user/email/:id", async (req, res) => {
 });
 router.put("/user/visibility/:id", async (req, res) => {
   try {
-    const user_email = req.query.payload["email"];
+    const user_email = req.body.payload["email"];
     const user_visibility = req.body.payload["visibility"];
     const user = await User.findOneAndUpdate(
       { email: user_email },
@@ -178,7 +178,7 @@ router.put("/user/visibility/:id", async (req, res) => {
 });
 router.put("/user/emailVisibility/:id", async (req, res) => {
   try {
-    const user_email = req.query.payload["email"];
+    const user_email = req.body.payload["email"];
     const user_emailVisibility = req.body.payload["emailVisibility"];
     const user = await User.findOneAndUpdate(
       { email: user_email },
@@ -252,12 +252,43 @@ router.post("/task", async (req, res) => {
     res.status(500).json(err);
   }
 });
-// put APIs
+
+router.delete("/task/delete", async (req, res) => {
+  try {
+    const id = req.query.payload.id;
+    await Task.deleteOne({ _id: id });
+    res.send("Task deleted");
+  } catch (err) {
+    res.send("Task not deleted");
+  }
+});
+
 router.put("/task/:id", async (req, res) => {
   try {
     const task = await Task.findByIdAndUpdate(req.params.id, {
       $set: req.body.payload,
     });
+    res.status(200).json(task);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+router.put("/task/update", async (req, res) => {
+  try {
+    console.log(req.body.payload);
+    let task = await Task.findOneAndUpdate(
+      { _id: req.body.payload.id },
+      { title: req.body.payload.title }
+    );
+    task = await Task.findOneAndUpdate(
+      { _id: req.body.payload.id },
+      { description: req.body.payload.description }
+    );
+    task = await Task.findOneAndUpdate(
+      { _id: req.body.payload.id },
+      { confirmCode: req.body.payload.category }
+    );
     res.status(200).json(task);
   } catch (err) {
     res.status(500).json(err);
