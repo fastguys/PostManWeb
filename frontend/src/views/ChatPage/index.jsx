@@ -2,17 +2,34 @@ import ResponsiveAppBar from "../TopBar/TopBar";
 import { Box, Button } from "@mui/material";
 import Sidebar from "./sideBar";
 import Chat from "./chat";
-import { FinduserByEmail } from "../../apis/user";
-import { useState } from "react";
+import apis from "../../apis/user";
+import { useState, useEffect } from "react";
+import { setUsers } from "../../stores/chat";
+import { useDispatch } from "react-redux";
+
 
 const ChatPage = () => {
-  const [allmessages, setAllMessages] = useState([]);
-  const handleSearch = () => {
-    const email = "bx@gmail.com";
-    FinduserByEmail({ email }).then((res) => {
-      console.log(res);
-    });
-  };
+  const dispatch = useDispatch();
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+  apis.GetallUser().then((res) => {
+    const n = res.length;
+    let temp = [];
+    for (let i = 0; i < n; i++) {
+      if (res[i].email !== localStorage.getItem("userId")) {
+        temp.push({
+          name: res[i].nickname,
+          id: res[i].email,
+          image: res[i].ImageUrl,
+        });
+      };
+    }
+    setUser(temp);
+    console.log(temp);
+    dispatch(setUsers(temp));
+  });
+}, []);
+
 
   return (
     <div>
@@ -22,6 +39,7 @@ const ChatPage = () => {
           flexDirection: "column",
           width: "100%",
           height: "100vh",
+          boxSizing: "border-box",
         }}
       >
         <ResponsiveAppBar />
@@ -32,6 +50,7 @@ const ChatPage = () => {
             alignItems: "center",
             width: "100%",
             height: "100%",
+            boxSizing: "border-box",
           }}
         >
           {/*Side Bar*/}
@@ -46,7 +65,7 @@ const ChatPage = () => {
               boxSizing: "border-box",
             }}
           >
-            <Sidebar />
+            <Sidebar user={user}/>
           </Box>
 
           {/*ChatRoom*/}
@@ -57,9 +76,10 @@ const ChatPage = () => {
               alignItems: "center",
               width: "70%",
               height: "100%",
+              boxSizing: "border-box",
             }}
           >
-            <Chat allmessages={allmessages} setAllMessages={setAllMessages} />
+            <Chat />
           </Box>
         </Box>
       </Box>

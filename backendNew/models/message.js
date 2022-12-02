@@ -8,6 +8,14 @@ const msgSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  receiver: {
+    type: String,
+    required: true,
+  },
+  taskId: {
+    type: String,
+    required: true,
+  },
 });
 
 const Msg = mongoose.model("msg", msgSchema);

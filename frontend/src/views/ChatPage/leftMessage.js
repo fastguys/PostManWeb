@@ -1,23 +1,39 @@
 import { Box } from "@mui/system";
 
-function LeftMessage({ message }) {
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemAvatar from "@mui/material/ListItemAvatar";
+import Avatar from "@mui/material/Avatar";
+
+function LeftMessage({ message, image }) {
   return (
-    <Box
+    <List
       sx={{
-        padding: 2,
-        margin: 2,
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "lightblue",
-        borderRadius: 2,
         alignSelf: "flex-end",
-        marginRight: 5,
+        bgcolor: "background.paper",
       }}
     >
-      {message}
-    </Box>
+      <ListItem alignItems="flex-start">
+        <Box
+          sx={{
+            padding: 2,
+            mx: 2,
+            display: "flex",
+            justifyContent: "center",
+            backgroundColor: "lightblue",
+            borderRadius: 2,
+          }}
+        >
+          {message}
+        </Box>
+        <ListItemAvatar sx={{ alignItems: "flex-start", my: 0.5 }}>
+          <Avatar
+            alt="Remy Sharp"
+            src={image}
+          />
+        </ListItemAvatar>
+      </ListItem>
+    </List>
   );
 }
 

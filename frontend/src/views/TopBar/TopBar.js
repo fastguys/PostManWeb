@@ -9,18 +9,44 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import { useNavigate } from "react-router-dom";
+import apis from "../../apis/user";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import emailjs from "@emailjs/browser";
 const pages = [];
-const settings = ["Profile", "Logout"];
+const settings = ["Profile", "Logout", "report a bug"];
 
 export default function ResponsiveAppBar() {
   const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-
+  const [image, setImage] = React.useState(null);
+  const [open, setOpen] = React.useState(false);
+  const [bug, setBug] = React.useState("");
+  const [nickname, setNickname] = React.useState("");
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+  let email = localStorage.getItem("userId");
+  if (email) {
+    apis.FinduserByEmail({ email }).then((res) => {
+      if (res[0] && res[0].ImageUrl) {
+        setNickname(res[0].nickname);
+        setImage(res[0].ImageUrl);
+      }
+    });
+  }
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -42,6 +68,29 @@ export default function ResponsiveAppBar() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+  const report = () => {
+    const templateParams = {
+      name: nickname,
+      message: bug,
+    };
+    emailjs
+      .send(
+        "service_r6tl7s5",
+        "template_58hqzm1",
+        templateParams,
+        "M258FiSyLuH3P8Pio"
+      )
+      .then(
+        (result) => {
+          console.log(result.text);
+          alert("you have reported a bug to the developer");
+          setOpen(false);
+        },
+        (error) => {
+          console.log(error.text);
+        }
+      );
+  };
 
   return (
     <AppBar position="static" style={{ background: "#656268" }}>
@@ -57,7 +106,6 @@ export default function ResponsiveAppBar() {
             variant="h6"
             noWrap
             component="a"
-            href="/homepage"
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
@@ -66,6 +114,10 @@ export default function ResponsiveAppBar() {
               letterSpacing: ".3rem",
               color: "inherit",
               textDecoration: "none",
+            }}
+            onClick={() => {
+              navigate("/homepage");
+              window.location.reload();
             }}
           >
             PostMan
@@ -126,6 +178,7 @@ export default function ResponsiveAppBar() {
           >
             PostMan
           </Typography>
+
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
               <Button
@@ -137,11 +190,13 @@ export default function ResponsiveAppBar() {
               </Button>
             ))}
           </Box>
-
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar
+                  alt="Remy Sharp"
+                  src={image ? image : "/static/images/avatar/2.jpg"}
+                />
               </IconButton>
             </Tooltip>
             <Menu
@@ -163,13 +218,41 @@ export default function ResponsiveAppBar() {
               {settings.map((setting) => (
                 <MenuItem
                   key={setting}
-                  onClick={setting === "Profile" ? OpenProfile : logout}
+                  onClick={
+                    setting === "Profile"
+                      ? OpenProfile
+                      : setting === "Logout"
+                      ? logout
+                      : handleClickOpen
+                  }
                 >
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}
             </Menu>
           </Box>
+          <Dialog open={open} onClose={handleClose}>
+            <DialogTitle>Report a bug</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                Please write down a bug and send it to us. We will contact
+              </DialogContentText>
+              <TextField
+                autoFocus
+                margin="dense"
+                id="name"
+                label="Bug description"
+                value={bug}
+                fullWidth
+                variant="standard"
+                onChange={(e) => setBug(e.target.value)}
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose}>Cancel</Button>
+              <Button onClick={report}>Report</Button>
+            </DialogActions>
+          </Dialog>
         </Toolbar>
       </Container>
     </AppBar>
