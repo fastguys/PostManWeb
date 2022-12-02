@@ -274,7 +274,7 @@ router.put("/task/:id", async (req, res) => {
   }
 });
 
-router.put("/task/update", async (req, res) => {
+router.put("/task/update/:id", async (req, res) => {
   try {
     console.log(req.body.payload);
     let task = await Task.findOneAndUpdate(

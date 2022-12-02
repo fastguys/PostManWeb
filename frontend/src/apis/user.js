@@ -72,7 +72,8 @@ const UpdateTask = async (id, payload) => {
 };
 
 const updateTask = async (payload) => {
-  return put("/task/update", { payload });
+  console.log("/task/update"+payload.id)
+  return put("/task/update/"+payload.id, { payload });
 };
 
 const apis = {
